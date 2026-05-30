@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.dd544d45.css",
+    "main.js": "/static/js/main.97e06022.js",
+    "static/js/563.d6019a26.chunk.js": "/static/js/563.d6019a26.chunk.js",
+    "static/media/Semitec_Logo.png": "/static/media/Semitec_Logo.ab78f674215a9f7825eb.png",
+    "index.html": "/index.html",
+    "main.dd544d45.css.map": "/static/css/main.dd544d45.css.map",
+    "main.97e06022.js.map": "/static/js/main.97e06022.js.map",
+    "563.d6019a26.chunk.js.map": "/static/js/563.d6019a26.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.dd544d45.css",
+    "static/js/main.97e06022.js"
+  ]
+}

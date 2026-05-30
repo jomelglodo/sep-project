@@ -1,0 +1,236 @@
+* {
+  box-sizing: border-box;
+}
+
+.ris-setcutoff-container {
+  padding: 20px 20px 10px 20px;
+  animation: modalSlideDown 1s ease;
+}
+
+/* CONFIRM MODAL */
+.ris-setcutoff-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.ris-setcutoff-confirm-modal {
+  min-width: 400px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px 20px 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  animation: modalSlideDown 1s ease;
+}
+
+/* .ris-ongoingris-setvoid-header h2 {
+  color: #1e3a8a;
+  font-size: 26px;
+  margin-bottom: 20px;
+} */
+
+.ris-setcutoff-confirm-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 30px;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.ris-setcutoff-confirm-btn-container button {
+  padding: 9px;
+  min-width: 120px;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s ease;
+}
+
+.ris-setcutoff-confirm-btn-container button:first-of-type {
+  background-color: rgb(77, 215, 103);
+  color: rgb(5, 65, 16);
+}
+
+.ris-setcutoff-confirm-btn-container button:first-of-type:hover {
+  background-color: rgb(37, 225, 72);
+}
+
+.ris-setcutoff-confirm-btn-container button:nth-child(2) {
+  background-color: #cfcfcf;
+}
+
+.ris-setcutoff-confirm-btn-container button:nth-of-type(2):hover {
+  background-color: #c0bdbd;
+}
+
+/* Close Button */
+.ris-setcutoff-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background-color: #dc2626;
+  color: white;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+
+  opacity: 0;
+  animation: closeBtnOpacity 1.5s forwards;
+}
+
+.ris-setcutoff-close-btn:hover {
+  background-color: #b91c1c;
+  transform: scale(1.05);
+}
+
+/* HEADER */
+
+.ris-setcutoff-header {
+  text-align: center;
+  margin-bottom: 10px;
+  min-width: 500px;
+}
+
+.ris-setcutoff-header h2 {
+  color: #1e3a8a;
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+.ris-setcutoff-header p {
+  margin: 0;
+  color: #1e3a8a;
+  font-size: 18px;
+}
+
+/* GROUP */
+
+.ris-setcutoff-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 0 20px 20px;
+  border: 1px solid rgba(37, 99, 235, 0.5);
+}
+
+.ris-setcutoff-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.ris-setcutoff-group input {
+  padding: 12px;
+  width: 80%;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.ris-setcutoff-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* FORM */
+.ris-setcutoff-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* SUBMIT BUTTON */
+
+.ris-setcutoff-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ris-setcutoff-group .ris-setcutoff-status {
+  font-weight: 700;
+  font-size: 16px;
+  color: #1e3a8a;
+}
+
+.ris-setcutoff-form button {
+  margin-top: 10px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #1e3a8a;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+  color: white;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.ris-setcutoff-form button:hover {
+  background-color: #2563ab;
+}
+
+.ris-setcutoff-form button img {
+  height: 30px;
+  width: 30px;
+}
+
+/* CONFIRM MESSAGE TRANSITION */
+@keyframes modalSlideDown {
+  from {
+    transform: translateY(-100px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* CLOSE BUTTON ANIMATION */
+@keyframes closeBtnOpacity {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  25% {
+    opacity: 0;
+    transform: scale(0.25);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  75% {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

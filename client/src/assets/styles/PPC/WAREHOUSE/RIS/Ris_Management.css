@@ -1,0 +1,385 @@
+* {
+  box-sizing: border-box;
+}
+
+.ris-mgmt-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #f4f7fb;
+  padding: 20px;
+}
+
+/* SUCCESS MESSAGE */
+
+.ris-mgmt-success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  z-index: 1000;
+}
+
+.ris-mgmt-success-modal {
+  position: relative;
+  min-width: 300px;
+  height: 150px;
+  background-color: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  animation: modalSlideDown 1s ease;
+}
+
+.ris-mgmt-success-close-btn {
+  position: absolute;
+  height: 35px;
+  width: 35px;
+  top: -15px;
+  right: -15px;
+  border-radius: 50%;
+  background-color: #dc2626;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.ris-mgmt-success-close-btn:hover {
+  background-color: #e66363;
+}
+/* OVERLAY */
+.ris-mgmt-page-overlay {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.45);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.ris-mgmt-page-modal {
+  background-color: white;
+  border-radius: 14px;
+  padding: 20px;
+  min-width: 350px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: modalSlideDown 1s ease;
+}
+/* .ris-mgmt-header {
+  margin-bottom: 20px;
+}
+
+.ris-mgmt-header h1 {
+  font-size: 42px;
+  color: #0d2b68;
+  font-weight: 700;
+} */
+
+/* HEADERS BUTTON */
+.ris-mgmt-headers-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.ris-mgmt-headers-btn button {
+  border: none;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.5s ease;
+  white-space: nowrap;
+}
+
+.ris-mgmt-headers-normal-btn,
+.ris-mgmt-headers-critical-btn,
+.ris-mgmt-logout-btn-container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ris-mgmt-headers-normal-btn button,
+.ris-mgmt-headers-critical-btn button,
+.ris-mgmt-logout-btn-container button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.ris-mgmt-headers-normal-btn img,
+.ris-mgmt-headers-critical-btn img,
+.ris-mgmt-logout-btn-container img {
+  height: 20px;
+  width: 20px;
+}
+
+.ris-mgmt-headers-normal-btn {
+  flex: 1;
+}
+
+.ris-mgmt-headers-critical-btn {
+  flex: 3;
+  justify-content: flex-start;
+}
+
+.ris-mgmt-logout-btn-container {
+  margin-left: auto;
+}
+.btn-mgmt-createris {
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+}
+
+.btn-mgmt-createris:hover {
+  background: #1d4ed8;
+}
+
+.btn-mgmt-secondary {
+  background-color: white;
+  border: 1px solid #6b88b5 !important;
+  color: #1e3a8a;
+}
+
+.btn-mgmt-secondary:hover {
+  background: #eef4ff;
+}
+
+.btn-mgmt-receive {
+  background: #59ea7b;
+  color: #020202;
+  border: 1px solid #fecdd3 !important;
+  font-weight: bold;
+}
+
+.btn-mgmt-receive:hover {
+  background: #22d84d;
+}
+/* FILTER */
+.ris-mgmt-filter-container {
+  background-color: white;
+  border-radius: 14px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.ris-mgmt-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ris-mgmt-filter-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.ris-mgmt-filter-group input,
+.ris-mgmt-filter-group select {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+.ris-mgmt-filter-group input:focus,
+.ris-mgmt-filter-group select:focus {
+  border-color: #2563eb;
+}
+
+/* STATUS BUTTONS */
+.ris-mgmt-status-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+}
+
+.ris-mgmt-status-btn button {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s ease;
+  flex: 1;
+}
+
+.ris-mgmt-status-btn button.btnactive {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-ris-mgmt-ongoing {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.btn-ris-mgmt-received {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.ris-mgmt-logout-btn {
+  background-color: #87eebe;
+  color: #637c6c;
+  transition: 0.5s;
+}
+
+.ris-mgmt-logout-btn {
+  background-color: #87eebe;
+  color: #637c6c;
+  transition: 0.5s;
+}
+
+.ris-mgmt-logout-btn:hover {
+  background-color: #45e49a;
+}
+
+/* TABLE */
+
+.ris-mgmt-table-wrapper {
+  max-height: 70vh;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.ris-mgmt-table {
+  width: 100%;
+  border-collapse: collapse;
+  position: relative;
+  z-index: 1;
+}
+
+.ris-mgmt-table thead {
+  background-color: #0d2b68;
+  color: white;
+}
+
+.ris-mgmt-table thead th {
+  padding: 16px;
+  font-size: 14px;
+  text-align: left;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  /* 🔥 MUST have solid background */
+  background: #0d2b68;
+  color: white;
+
+  /* optional but helps smooth layering */
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ris-mgmt-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #eef2f7;
+  font-size: 14px;
+  color: #334155;
+}
+
+.ris-mgmt-table tbody tr:hover {
+  background-color: #f8fbff;
+  cursor: default;
+}
+
+/* TABLE DATA BADGE */
+
+.ris-mgmt-status-badge {
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.ris-mgmt-status-badge.received {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.ris-mgmt-status-badge.ongoing {
+  background-color: #ffedd5;
+  color: #ea580c;
+}
+
+/* FOOTER */
+
+.ris-mgmt-table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  border-radius: 0 0 14px 14px;
+  background-color: white;
+}
+
+.ris-mgmt-table-footer p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* MEDIA */
+
+@media (max-width: 1200px) {
+  .ris-mgmt-filter-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .ris-mgmt-headers-btn {
+    flex-direction: column;
+  }
+
+  .ris-mgmt-headers-critical-btn {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+/* MODAL ANIMATION */
+
+@keyframes modalSlideDown {
+  from {
+    transform: translateY(-100px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}

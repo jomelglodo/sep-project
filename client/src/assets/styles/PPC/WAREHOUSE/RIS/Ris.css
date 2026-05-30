@@ -1,0 +1,365 @@
+* {
+  box-sizing: border-box;
+}
+
+.curtain-open {
+  animation: curtainOpen 1s ease forwards;
+}
+
+/* PAGE */
+
+.ris-page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px 50px 20px;
+}
+
+/* SUCCESS MESSAGE MODAL */
+.ris-success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  z-index: 1000;
+}
+
+.ris-success-modal {
+  position: relative;
+  min-width: 300px;
+  height: 150px;
+  background-color: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  animation: modalSlideDown 1s ease;
+}
+
+.ris-success-close-btn {
+  position: absolute;
+  height: 35px;
+  width: 35px;
+  top: -15px;
+  right: -15px;
+  border-radius: 50%;
+  background-color: #dc2626;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.ris-success-close-btn:hover {
+  background-color: #e66363;
+}
+/* RIS LOGIN OVERLAY */
+.ris-login-overlay {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* RIS LOGIN MODAL */
+.ris-login-modal {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  min-width: 350px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+  animation: modalSlideDown 1s ease;
+}
+
+/* WHEN RIS LOGIN IS DISABLED */
+.ris-login-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* CONFIRM MESSAGE MODAL */
+.ris-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.ris-confirm-modal {
+  min-width: 400px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px 20px 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  animation: modalSlideDown 1s ease;
+}
+
+.ris-confirm-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 30px;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.ris-confirm-btn-container button {
+  padding: 9px;
+  min-width: 120px;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s ease;
+}
+
+.ris-confirm-btn-container button:first-of-type {
+  background-color: rgb(77, 215, 103);
+  color: rgb(5, 65, 16);
+}
+
+.ris-confirm-btn-container button:first-of-type:hover {
+  background-color: rgb(37, 225, 72);
+}
+
+.ris-confirm-btn-container button:nth-child(2) {
+  background-color: #cfcfcf;
+}
+
+.ris-confirm-btn-container button:nth-child(2):hover {
+  background-color: #c0bdbd;
+}
+
+/* CLOSE BUTTON */
+.ris-login-close {
+  margin-top: 15px;
+  padding: 10px 15px;
+  border: none;
+  background: #dc2626;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* CARD */
+.ris-card {
+  width: 100%;
+  max-width: 700px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 35px;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.8),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+  border: 1px solid #e5e7eb;
+}
+
+/* HEADER */
+.ris-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ris-login-btn-container button {
+  border: none;
+  border-radius: 10px;
+  background: #1e3a8a;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  padding: 10px 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.ris-login-btn-container button img {
+  height: 30px;
+  width: 30px;
+}
+
+.ris-login-btn-container button:hover {
+  background-color: #2563ab;
+  transform: translatex(5px);
+}
+
+.ris-header h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.ris-header p {
+  margin-top: 8px;
+  font-size: 15px;
+  color: #64748b;
+}
+
+/* BODY */
+.ris-body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* INPUT */
+.ris-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.ris-date-container {
+  display: flex;
+  align-items: center;
+}
+
+.ris-date-container label {
+  margin-right: 20px;
+}
+
+.ris-date-container p {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ris-input-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.ris-input-group input {
+  height: 48px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0 15px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.ris-input-group input[type="text"]:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+.ris-input-group select {
+  height: 48px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0 15px;
+  font-size: 16px;
+  outline: none;
+}
+
+.ris-qty-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ris-qty-group {
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid #cbd5e1;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.ris-qty-group label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.ris-qty-group input {
+  cursor: pointer;
+}
+
+/* BUTTON */
+.btn-request {
+  height: 48px;
+  border: none;
+  border-radius: 10px;
+  background: #1e3a8a;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-request:hover {
+  background-color: #2563ab;
+  transform: translateY(-1px);
+}
+
+.btn-request img {
+  height: 30px;
+  width: 30px;
+}
+
+@keyframes modalSlideDown {
+  from {
+    transform: translateY(-100px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes curtainOpen {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+    filter: brightness(0.5);
+  }
+
+  60% {
+    transform: scaleX(1.05);
+    opacity: 1;
+    filter: brightness(1.1);
+  }
+
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+    filter: brightness(1);
+  }
+}

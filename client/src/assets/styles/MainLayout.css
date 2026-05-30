@@ -1,0 +1,221 @@
+/* GENERAL LAYOUT */
+* {
+  box-sizing: border-box;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f2f4f6;
+}
+
+.header {
+  background: #1e3a8a;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap; /* allows wrapping on small screens */
+  padding: 10px 16px;
+  gap: 12px;
+}
+/* HEADER LOGO */
+
+.btn-dept {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dept-icon {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+}
+/* LOGO */
+.logo {
+  font-weight: bold;
+  font-size: 18px;
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  padding-right: 16px;
+  white-space: nowrap;
+}
+
+.home-semitec-logo {
+  height: 30px;
+}
+/* DEPARTMENT BUTTON*/
+.btn-dept {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-dept:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* MENU WRAPPER */
+.menu-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* DROPDOWN */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  color: #111;
+  width: 220px;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease-in-out;
+}
+
+/* DROPDOWN SECTION */
+
+.subitem-section {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.subitem-section:hover {
+  background: #f1f1f1;
+}
+
+/* MAIN CONTENT */
+.main-container {
+  flex: 1;
+  padding: 20px;
+}
+
+.content-box {
+  background: white;
+  height: 100%;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  animation: contentAnimation 1s ease;
+}
+
+.content-box h2 {
+  margin-top: 0;
+}
+.empty-space {
+  text-align: center;
+  margin-top: 100px;
+  color: #777;
+}
+
+/*===================
+    ANIMATION
+=====================*/
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* CONTENT ANIMATION */
+
+@keyframes contentAnimation {
+  from {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes curtainOpen {
+  0% {
+    clip-path: inset(0 50% 0 50%);
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/*===================
+   RESPONSIVE DESIGN
+=====================*/
+
+/* TABLET */
+
+@media (max-width: 768px) {
+  .header {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .dropdown {
+    width: 200px;
+  }
+
+  .btn-dept {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo {
+    border-right: none;
+    padding-right: 0;
+    margin-bottom: 8px;
+  }
+
+  .dropdown {
+    position: relative; /* importannt for mobile usability */
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .menu-wrapper {
+    width: 100%;
+  }
+
+  .btn-dept {
+    width: 100%;
+    text-align: left;
+  }
+
+  .subitem-section {
+    padding: 12px;
+  }
+}

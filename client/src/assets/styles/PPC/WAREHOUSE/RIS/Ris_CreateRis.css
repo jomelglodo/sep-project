@@ -1,0 +1,346 @@
+* {
+  box-sizing: border-box;
+}
+
+/* CONTAINER */
+
+.ris-createris-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px 40px 20px 20px;
+  min-width: 550px;
+
+  animation: modalSlideDown 1s ease;
+}
+
+/* SUCCESS MESSAGE MODAL */
+.ris-createris-success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  z-index: 1000;
+}
+
+.ris-createris-success-modal {
+  position: relative;
+  min-width: 300px;
+  height: 150px;
+  background-color: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  animation: modalSlideDown 1s ease;
+}
+
+.ris-createris-success-close-btn {
+  position: absolute;
+  height: 35px;
+  width: 35px;
+  top: -15px;
+  right: -15px;
+  border-radius: 50%;
+  background-color: #dc2626;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.ris-createris-success-close-btn:hover {
+  background-color: #e66363;
+}
+
+/* MODAL */
+.ris-createris-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.ris-createris-confirm-modal {
+  min-width: 400px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px 20px 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  animation: modalSlideDown 1s ease;
+}
+
+.ris-createris-confirm-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.ris-createris-confirm-btn-container button {
+  padding: 9px;
+  min-width: 120px;
+  cursor: pointer;
+  margin-top: 20px;
+  align-items: center;
+  border: none;
+}
+
+.ris-createris-confirm-btn-container button:first-of-type {
+  background-color: rgb(77, 215, 103);
+  color: rgb(5, 65, 16);
+}
+
+.ris-createris-confirm-btn-container button:first-of-type:hover {
+  background-color: rgb(37, 225, 72);
+}
+
+.ris-createris-confirm-btn-container button:nth-child(2) {
+  background-color: #cfcfcf;
+}
+
+.ris-createris-confirm-btn-container button:nth-child(2):hover {
+  background-color: #c0bdbd;
+}
+
+/* CLOSE BUTTON */
+.ris-createris-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background-color: #dc2626;
+  color: white;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+
+  animation: closeBtnOpacity 1.5s forwards;
+}
+
+.ris-createris-close-btn:hover {
+  background-color: #b91c1c;
+  transform: scale(1.05);
+}
+
+/* HEADER */
+.ris-createris-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.ris-createris-header h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.ris-createris-header p {
+  margin-top: 8px;
+  font-size: 15px;
+  color: #64748b;
+}
+
+/* BODY */
+.ris-createris-body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* INPUT GROUP */
+.ris-createris-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-left: 20px;
+}
+
+.ris-createris-date-container {
+  display: flex;
+  align-items: center;
+}
+
+.ris-createris-date-container label {
+  margin-right: 20px;
+}
+
+.ris-createris-container p {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ris-createris-input-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.ris-createris-input-group input {
+  height: 48px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0 15px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.ris-createris-input-group input[type="text"]:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+.ris-createris-input-group select {
+  height: 48px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0 15px;
+  font-size: 16px;
+  outline: none;
+}
+
+.ris-createris-qty-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.ris-createris-qty-group {
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid #cbd5e1;
+  gap: 15px;
+}
+
+.ris-createris-qty-group label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.ris-createris-qty-group input {
+  cursor: pointer;
+}
+
+/* CREATE BUTTON */
+
+.btn-createris-create {
+  height: 48px;
+  border: none;
+  border-radius: 10px;
+  background: #1e3a8a;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-createris-create img {
+  height: 30px;
+  width: 30px;
+}
+
+.btn-createris-create:hover {
+  background-color: #2563ab;
+  transform: translateY(-1px);
+}
+
+/* SET CUTOFF STATUS */
+.ris-createris-status {
+  background-color: rgb(244, 170, 170);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.ris-createris-status p {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #4b0404;
+}
+
+/* CONFIRM MESSAGE TRANSITION */
+@keyframes modalSlideDown {
+  from {
+    transform: translateY(-100px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* CLOSE BUTTON ANIMATION */
+@keyframes closeBtnOpacity {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  25% {
+    opacity: 0;
+    transform: scale(0.25);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  75% {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

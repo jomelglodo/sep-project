@@ -1,0 +1,219 @@
+* {
+  box-sizing: border-box;
+}
+
+.ris-void-container {
+  padding: 20px 20px 10px 20px;
+
+  animation: modalSlideDown 1s ease;
+}
+
+/* CONFIRM MODAL */
+.ris-void-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.ris-void-confirm-modal {
+  min-width: 400px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px 20px 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  animation: modalSlideDown 1s ease;
+}
+
+.ris-void-confirm-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 30px;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.ris-void-confirm-btn-container button {
+  padding: 9px;
+  min-width: 120px;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s ease;
+}
+
+.ris-void-confirm-btn-container button:first-of-type {
+  background-color: rgb(77, 215, 103);
+  color: rgb(5, 65, 16);
+}
+
+.ris-void-confirm-btn-container button:first-of-type:hover {
+  background-color: rgb(37, 225, 72);
+}
+
+.ris-void-confirm-btn-container button:nth-of-type(2) {
+  background-color: #cfcfcf;
+}
+
+.ris-void-confirm-btn-container button:nth-of-type(2):hover {
+  background-color: #c0bdbd;
+}
+
+/* Close BUTTON */
+
+.ris-void-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background-color: #dc2626;
+  color: white;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
+
+  animation: closeBtnOpacity 1.5s forwards;
+}
+
+.ris-void-close-btn:hover {
+  transform: scale(1.05);
+  background-color: #b91c1c;
+}
+
+/* HEADER */
+.ris-void-header {
+  text-align: center;
+  margin-bottom: 10px;
+  min-width: 500px;
+}
+
+.ris-void-header h2 {
+  color: #1e3a8a;
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+.ris-void-header p {
+  margin: 0;
+  color: #1e3a8a;
+  font-size: 18px;
+}
+
+/* GROUP */
+
+.ris-void-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid rgba(37, 99, 235, 0.5);
+  padding: 20px 0 20px 20px;
+}
+
+.ris-void-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.ris-void-group input {
+  padding: 12px;
+  width: 80%;
+  border: 1px solid #d1d5db;
+  outline: none;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.ris-void-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* FORM */
+
+.ris-void-submit-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ris-void-submit-btn {
+  margin-top: 20px;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1e3a8a;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+  color: white;
+  width: 70%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.ris-void-submit-btn img {
+  height: 30px;
+  width: 30px;
+}
+
+.ris-void-submit-btn:hover {
+  background-color: #2563ab;
+}
+
+/* CONFIRM MESSAGE TRANSITION */
+@keyframes modalSlideDown {
+  from {
+    transform: translateY(-100px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* CLOSE BUTTON ANIMATION */
+@keyframes closeBtnOpacity {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  25% {
+    opacity: 0;
+    transform: scale(0.25);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  75% {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

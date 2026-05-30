@@ -1,0 +1,262 @@
+/* PAGE */
+
+.convertion-page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px 50px 20px;
+  box-sizing: border-box;
+}
+
+/* CARD */
+
+.convertion-card {
+  width: 100%;
+  max-width: 700px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 35px;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.8),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+  border: 1px solid #e5e7eb;
+}
+
+/* HEADER */
+
+.card-header {
+  margin-bottom: 30px;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.card-header p {
+  margin-top: 8px;
+  font-size: 15px;
+  color: #64748b;
+}
+
+/* BODY */
+
+.converter-body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* INPUT */
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.input-group input {
+  height: 48px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0 15px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.input-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+.input-group select {
+  height: 48px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0 15px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+/* BUTTON */
+
+.convert-btn {
+  height: 48px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.convert-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* RESULT */
+
+.result-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.result-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.result-header button {
+  border-radius: 5px;
+  border: none;
+  padding: 10px 20px;
+  transition: background-color 0.5s ease;
+  background: #84a7ec;
+  cursor: pointer;
+}
+
+.result-header button:hover {
+  background-color: #3d74e2;
+}
+
+.result-header label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334153;
+}
+
+.result-text {
+  min-height: 120px;
+  background-color: #f8fafc;
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  padding: 18px;
+  color: #0f172a;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+/* MENU WRAPPER */
+.menu-wrapper {
+  position: relative;
+}
+
+/* FIRST DROPDOWN */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  color: #111;
+  min-width: 220px;
+  overflow: visible;
+  z-index: 1000;
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.12),
+    0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+/* SUBMENU DROPDOWN */
+.submenu-dropdown {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  min-width: 220px;
+  background: white;
+  border-radius: 10px;
+  overflow: visible;
+  z-index: 2000;
+  border: 1px solid #e2e8f0;
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.12),
+    0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+/* SUBITEM WRAPPER */
+
+.subitem-wrapper {
+  position: relative;
+}
+
+.subitem-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+  color: #1e293b;
+  background-color: white;
+}
+
+.subitem-section:hover {
+  background-color: #d2e5f8;
+}
+/* SUBMENU ARROW */
+
+.submenu-arrow {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* SECOND DROPDOWN */
+
+.submenu-dropdown {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  min-width: 220px;
+  background: white;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.12),
+    0 4px 10px rgba(0, 0, 0, 0.6);
+  z-index: 2000;
+  animation: fadeSubmenu 0.15s ease;
+  border-radius: 0;
+}
+
+/* SUBMENU ITEM */
+.submenu-item {
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #1e293b;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    padding-left 0.2s ease;
+}
+
+.submenu-item:hover {
+  background-color: #d2e5f8;
+}
+
+/* SUBMENU ANIMATION */
+
+@keyframes fadeSubmenu {
+  from {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
