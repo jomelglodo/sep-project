@@ -33,7 +33,11 @@ export const getCutOffStatus = async (req, res) => {
 // GENERATE EXCEL RIS
 
 export const generateRIS = async (req, res) => {
+  const client = await risPool.connect();
+
   try {
+    await client.query("BEGIN");
+
     let currentDate = new Date().toISOString().split("T")[0];
     currentDate = currentDate.replace(/-/g, "/");
 
@@ -43,26 +47,28 @@ export const generateRIS = async (req, res) => {
 
     const { selectedSection, requestor, risQty, formattedDate } = req.body;
 
-    //// GET THE LAST RIS CONTROL NUMBER
-    const result_lastris = await risPool.query(`
-     SELECT MAX(risnum::bigint) AS last_highest
-      FROM tbl_ris;
-    `);
-
-    //let lastRisNum = Number(result_lastris.rows[0]?.last_highest) + 1 || "0001";
-    let lastRisNum = result_lastris.rows[0]?.last_highest;
-
-    if (lastRisNum === null) {
-      lastRisNum = "0001";
-    } else {
-      lastRisNum = String(Number(String(lastRisNum).slice(-4)) + 1).padStart(
-        4,
-        "0",
-      );
-    }
-
-    let formattedRisNum = `${year}${month}${lastRisNum}`;
     const qty = Number(risQty);
+
+    //FUNCTION TO FORMAT RIS NUMBER
+    const buildRisNum = (num) =>
+      `${year}${month}${String(num).padStart(4, "0")}`;
+
+    // =========================
+    // FIRST NUMBER (ATOMIC)
+    // =========================
+
+    const result = await client.query(`
+      UPDATE ris_control
+      SET last_number = last_number + 1
+      WHERE id=1
+      RETURNING last_number
+      `);
+
+    let currentNum = result.rows[0].last_number;
+    let firstRis = buildRisNum(currentNum);
+
+    /* EXCEL SET UP */
+
     // TEMPLATE PATH
     const templatePath = path.join(
       process.cwd(),
@@ -71,7 +77,7 @@ export const generateRIS = async (req, res) => {
     );
 
     // LOAD EXCEL (ExcelJS)
-    let totalWksUsed = 0;
+
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.readFile(templatePath);
 
@@ -84,31 +90,35 @@ export const generateRIS = async (req, res) => {
       fs.mkdirSync(qrDir);
     }
 
+    let totalWksUsed = 1;
+
+    // =========================
+    // ONE RIS
+    // =========================
+
     //original template sheet
     //const originalSheetName = templateSheet.name();
-    templateSheet.getCell("O4").value = formattedRisNum;
+    templateSheet.getCell("O4").value = firstRis;
     templateSheet.getCell("F4").value = selectedSection;
     templateSheet.getCell("W3").value = requestor;
     templateSheet.getCell("W5").value = formattedDate;
 
     //adding qr code
-    let qrPath1 = path.join(qrDir, `${formattedRisNum}.png`);
-    await QRCode.toFile(qrPath1, formattedRisNum);
+    let qrPath = path.join(qrDir, `${firstRis}.png`);
+    await QRCode.toFile(qrPath, firstRis);
 
-    const img1 = workbook.addImage({
-      filename: qrPath1,
+    const img = workbook.addImage({
+      filename: qrPath,
       extension: "png",
     });
 
-    templateSheet.addImage(img1, {
+    templateSheet.addImage(img, {
       tl: { col: 2.2, row: 5.9 }, // B6
       ext: { width: 50, height: 50 },
     });
-
-    totalWksUsed++;
     //INSERT THE DATA
 
-    await risPool.query(
+    await client.query(
       `
       INSERT INTO tbl_ris(
       risnum,
@@ -118,45 +128,49 @@ export const generateRIS = async (req, res) => {
       )
       VALUES ($1,$2,$3,$4)
       `,
-      [formattedRisNum, currentDate, requestor, selectedSection],
+      [firstRis, currentDate, requestor, selectedSection],
     );
 
-    let risNum_FileName = formattedRisNum;
+    let risNum_FileName = firstRis;
+
+    // =========================
+    // MULTIPLE RIS
+    // =========================
 
     for (let i = 2; i <= qty; i++) {
+      const seq = await client.query(`
+      UPDATE ris_control
+      SET last_number = last_number + 1
+      WHERE id=1
+      RETURNING last_number
+      `);
+
+      const num = seq.rows[0].last_number;
+
+      const newRis = buildRisNum(num);
       //const newSheet = workbook.cloneSheet(templateSheet, `RIS_${i}`);
       const newSheet = workbook.getWorksheet(`RIS_${i}`);
 
-      let getTheRisNum = String(
-        Number(String(formattedRisNum).slice(-4)) + 1,
-      ).padStart(4, "0");
-
-      //assign a new value to the formattedRisNum
-
-      const newFormattedRisNum = `${year}${month}${getTheRisNum}`;
-
-      formattedRisNum = newFormattedRisNum;
-
-      newSheet.getCell("O4").value = newFormattedRisNum;
+      newSheet.getCell("O4").value = newRis;
       newSheet.getCell("F4").value = selectedSection;
       newSheet.getCell("W3").value = requestor;
       newSheet.getCell("W5").value = formattedDate;
 
       //adding qr code
-      qrPath1 = path.join(qrDir, `${newFormattedRisNum}.png`);
-      await QRCode.toFile(qrPath1, newFormattedRisNum);
+      qrPath = path.join(qrDir, `${newRis}.png`);
+      await QRCode.toFile(qrPath, newRis);
 
-      const img1 = workbook.addImage({
-        filename: qrPath1,
+      const img2 = workbook.addImage({
+        filename: qrPath,
         extension: "png",
       });
 
-      newSheet.addImage(img1, {
+      newSheet.addImage(img2, {
         tl: { col: 2.2, row: 5.9 }, // B6
         ext: { width: 50, height: 50 },
       });
 
-      await risPool.query(
+      await client.query(
         `
       INSERT INTO tbl_ris(
       risnum,
@@ -166,11 +180,13 @@ export const generateRIS = async (req, res) => {
       )
       VALUES ($1,$2,$3,$4)
       `,
-        [newFormattedRisNum, currentDate, requestor, selectedSection],
+        [newRis, currentDate, requestor, selectedSection],
       );
+
       totalWksUsed++;
+
       if (i === qty) {
-        risNum_FileName = `${risNum_FileName}-${newFormattedRisNum}`;
+        risNum_FileName = `${risNum_FileName}-${newRis}`;
       }
     }
 
@@ -178,20 +194,18 @@ export const generateRIS = async (req, res) => {
     if (totalWksUsed < 5) {
       for (let wksCounter = totalWksUsed + 1; wksCounter <= 5; wksCounter++) {
         const sheetToHide = workbook.getWorksheet(`RIS_${wksCounter}`);
-        if (sheetToHide) {
-          sheetToHide.state = "veryHidden";
-        }
+        if (sheetToHide) sheetToHide.state = "veryHidden";
       }
     }
 
     //ORIGNAL WORKSHEET COPY
     const orignalWks = workbook.getWorksheet(`ORIGINAL`);
-    if (orignalWks) {
-      orignalWks.state = "veryHidden";
-    }
+    if (orignalWks) orignalWks.state = "veryHidden";
 
     //output buffer
     const buffer = await workbook.xlsx.writeBuffer();
+
+    await client.query("COMMIT");
 
     //send excel file
     res.setHeader(
@@ -207,9 +221,12 @@ export const generateRIS = async (req, res) => {
     res.setHeader("Access-Control-Expose-Headers", "new-risnum");
     res.send(buffer);
   } catch (err) {
+    await client.query("ROLLBACK");
     console.error(err);
     res.status(500).json({
       error: err.message,
     });
+  } finally {
+    client.release;
   }
 };

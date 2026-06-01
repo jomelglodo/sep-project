@@ -41,13 +41,6 @@ const department = {
     },
   },
 
-  MAINTENANCE: {
-    image: HEADER_IMAGE.header_maintenance,
-    menu: {
-      "Trouble Report": [],
-    },
-  },
-
   PPC: {
     image: HEADER_IMAGE.header_ppc,
     menu: {
@@ -56,6 +49,13 @@ const department = {
       Planning: ["OS Program"],
     },
   },
+  MAINTENANCE: {
+    image: HEADER_IMAGE.header_maintenance,
+    menu: {
+      "Trouble Report": [],
+    },
+  },
+
   QA: {
     image: HEADER_IMAGE.header_qaqc,
     menu: {
