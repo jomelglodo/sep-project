@@ -165,10 +165,10 @@
 /* CARD */
 .ris-card {
   width: 100%;
-  max-width: 700px;
+  max-width: 500px;
   background: #ffffff;
   border-radius: 18px;
-  padding: 35px;
+  padding: 25px;
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.8),
     0 2px 6px rgba(0, 0, 0, 0.5);
@@ -190,7 +190,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.5s ease;
-  padding: 10px 20px;
+  padding: 8px 20px;
 
   display: flex;
   justify-content: center;
@@ -199,8 +199,8 @@
 }
 
 .ris-login-btn-container button img {
-  height: 30px;
-  width: 30px;
+  height: 20px;
+  width: 20px;
 }
 
 .ris-login-btn-container button:hover {
@@ -210,14 +210,14 @@
 
 .ris-header h2 {
   margin: 0;
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 700;
   color: #1e293b;
 }
 
 .ris-header p {
   margin-top: 8px;
-  font-size: 15px;
+  font-size: 12px;
   color: #64748b;
 }
 
@@ -246,12 +246,12 @@
 }
 
 .ris-date-container p {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .ris-input-group label {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   color: #334155;
 }
@@ -261,7 +261,7 @@
   border: 1px solid #cbd5e1;
   border-radius: 10px;
   padding: 0 15px;
-  font-size: 16px;
+  font-size: 12px;
   outline: none;
   transition: all 0.2s ease;
 }
@@ -276,7 +276,7 @@
   border: 1px solid #cbd5e1;
   border-radius: 10px;
   padding: 0 15px;
-  font-size: 16px;
+  font-size: 12px;
   outline: none;
 }
 
@@ -299,6 +299,7 @@
   align-items: center;
   gap: 5px;
   cursor: pointer;
+  font-size: 12px;
 }
 
 .ris-qty-group input {
@@ -307,12 +308,12 @@
 
 /* BUTTON */
 .btn-request {
-  height: 48px;
+  height: 45px;
   border: none;
   border-radius: 10px;
   background: #1e3a8a;
   color: white;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -320,7 +321,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 .btn-request:hover {

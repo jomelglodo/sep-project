@@ -17,7 +17,7 @@
   align-items: center;
   justify-content: flex-start;
   flex-wrap: wrap; /* allows wrapping on small screens */
-  padding: 10px 16px;
+  padding: 2px 16px;
   gap: 12px;
 }
 /* HEADER LOGO */
@@ -52,7 +52,7 @@
   color: white;
   cursor: pointer;
   padding: 8px 10px;
-  font-size: 14px;
+  font-size: 10px;
   border-radius: 6px;
   transition: 0.2s ease;
   white-space: nowrap;

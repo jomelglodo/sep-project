@@ -8,9 +8,9 @@ export default function CreateRis({ closeRis }) {
   const [selectedSection, setSelectedSection] = useState("");
   const [requestor, setRequestor] = useState("");
   const [risQty, setRisQty] = useState(1);
-  let currentDate = new Date().toISOString().split("T")[0];
-  const toFormatDate = new Date();
-
+  //let currentDate = new Date().toISOString().split("T")[0];
+  //const toFormatDate = new Date();
+  const [currentDate, setCurrentDate] = useState("");
   const selectedRef = useRef(null);
   const cancelBtnRef = useRef(null);
 
@@ -18,16 +18,39 @@ export default function CreateRis({ closeRis }) {
   const [showSuccessDownloaded, setShowSuccessDownloaded] = useState(false);
   const [isCutOff, setIsCutOff] = useState(true);
 
-  //split the date and then format it to (e.g: 26/05/19)
-  const year = String(toFormatDate.getFullYear()).slice(-2);
-  const month = String(toFormatDate.getMonth() + 1).padStart(2, "0");
-  const day = String(toFormatDate.getDate()).padStart(2, "0");
-
-  const formattedDate = `${year}/${month}/${day}`;
-
   //disable Confirm button when generating excel to avoid the user to click confirm multiple times
   const [isGenerating, setIsGenerating] = useState(false);
   const isGeneratingRef = useRef(false);
+
+  function getCurrentDate() {
+    const now = new Date();
+
+    const year = String(now.getFullYear()).slice(-2);
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}/${month}/${day}`;
+  }
+
+  function getFormattedDate() {
+    const now = new Date();
+
+    const year = String(now.getFullYear()).slice(-2);
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}/${month}/${day}`;
+  }
+
+  useEffect(() => {
+    setCurrentDate(getCurrentDate());
+
+    //update everyminute
+    const interval = setInterval(() => {
+      setCurrentDate(getCurrentDate());
+    }, 50000);
+    return () => clearInterval(interval);
+  });
 
   //USEEFFECT
   useEffect(() => {
@@ -122,7 +145,7 @@ export default function CreateRis({ closeRis }) {
             selectedSection,
             requestor,
             risQty,
-            formattedDate,
+            formattedDate: getFormattedDate(),
           }),
         },
       );
@@ -156,7 +179,7 @@ export default function CreateRis({ closeRis }) {
       setRequestor("");
       setSelectedSection("");
       setRisQty(1);
-      currentDate = new Date().toISOString().split("T")[0];
+      //currentDate = new Date().toISOString().split("T")[0];
 
       setShowConfirmMessage(false);
       setShowSuccessDownloaded(true);
@@ -231,7 +254,9 @@ export default function CreateRis({ closeRis }) {
       {/* HEADER */}
       <div className="ris-createris-header">
         <h2>Request RIS</h2>
-        <p>Please fill out the required field</p>
+        <p className="ris-createris-subtext">
+          Please fill out the required field
+        </p>
       </div>
       {/* BODY */}
       <div className="ris-createris-body">

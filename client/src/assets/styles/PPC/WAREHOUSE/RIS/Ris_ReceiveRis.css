@@ -4,6 +4,7 @@
 
 /* PAGE */
 .ris-receive-ris-container {
+  position: relative;
   width: 100%;
   padding: 20px 20px 5px 20px;
 
@@ -13,8 +14,8 @@
 /* Close Button */
 .ris-receive-ris-close-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -40px;
+  right: -40px;
   width: 40px;
   height: 40px;
   background-color: #dc2626;
@@ -47,7 +48,7 @@
 .ris-receive-ris-header h2 {
   color: #1e3a8a;
   margin: 0;
-  font-size: 26px;
+  font-size: 20px;
 }
 
 /* FORM */
@@ -67,7 +68,7 @@
 }
 
 .ris-receive-ris-group label {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   color: #374151;
 }
@@ -82,7 +83,7 @@
   border: 1px solid #d1d5db;
   border-radius: 8px;
   outline: none;
-  font-size: 14px;
+  font-size: 12px;
   transition: 0.2s;
 }
 
@@ -95,12 +96,12 @@
 /* RECEIVE BUTTON */
 .ris-receive-ris-receivebtn {
   margin-top: 20px;
-  padding: 15px;
+  padding: 5px;
   border: none;
   border-radius: 8px;
   background: #1e3a8a;
   color: white;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: bold;
   cursor: pointer;
   transition: 0.2s;
@@ -108,12 +109,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 .ris-receive-ris-receivebtn img {
-  height: 35px;
-  width: 35px;
+  height: 30px;
+  width: 30px;
 }
 
 .ris-receive-ris-receivebtn:hover {

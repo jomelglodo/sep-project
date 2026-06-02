@@ -16,19 +16,13 @@ export default function RIS() {
   const [requestor, setRequestor] = useState("");
   const [risQty, setRisQty] = useState(1);
   const selectedRef = useRef(null);
-  let currentDate = new Date().toISOString().split("T")[0];
-  const toFormatDate = new Date();
+  //let currentDate = new Date().toISOString().split("T")[0];
+  const [currentDate, setCurrentDate] = useState("");
+  //const toFormatDate = new Date();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showConfirmMessage, setShowConfirmMessage] = useState(false);
   const [showSuccessDownloaded, setShowSuccessDownloaded] = useState(false);
   const [isCutOff, setIsCutOff] = useState(false);
-
-  //split the date and then format it to (e.g: 26/05/19)
-  const year = String(toFormatDate.getFullYear()).slice(-2);
-  const month = String(toFormatDate.getMonth() + 1).padStart(2, "0");
-  const day = String(toFormatDate.getDate()).padStart(2, "0");
-
-  const formattedDate = `${year}/${month}/${day}`;
 
   const cancelBtnRef = useRef(null);
 
@@ -39,6 +33,37 @@ export default function RIS() {
   //disable Confirm button when generating excel to avoid the user to click confirm multiple times
   const [isGenerating, setIsGenerating] = useState(false);
   const isGeneratingRef = useRef(false);
+
+  //split the date and then format it to (e.g: 26/05/19)
+  function getCurrentDate() {
+    const now = new Date();
+
+    const year = String(now.getFullYear()).slice(-2);
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}/${month}/${day}`;
+  }
+
+  function getFormattedDate() {
+    const now = new Date();
+
+    const year = String(now.getFullYear()).slice(-2);
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}/${month}/${day}`;
+  }
+
+  useEffect(() => {
+    setCurrentDate(getCurrentDate());
+
+    //update everyminute
+    const interval = setInterval(() => {
+      setCurrentDate(getCurrentDate());
+    }, 50000);
+    return () => clearInterval(interval);
+  });
 
   useEffect(() => {
     if (cancelBtnRef.current) {
@@ -120,7 +145,7 @@ export default function RIS() {
             selectedSection,
             requestor,
             risQty,
-            formattedDate,
+            formattedDate: getFormattedDate(),
           }),
         },
       );
@@ -155,7 +180,7 @@ export default function RIS() {
       setRequestor("");
       setSelectedSection("");
       setRisQty(1);
-      currentDate = new Date().toISOString().split("T")[0];
+      //currentDate = new Date().toISOString().split("T")[0];
 
       setShowConfirmMessage(false);
 

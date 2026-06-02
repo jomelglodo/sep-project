@@ -30,6 +30,21 @@ export const getCutOffStatus = async (req, res) => {
   }
 };
 
+//get the current year and compare it to the user computer`s year
+export const getCurrentYear = async (req, res) => {
+  const client = await risPool.connect();
+  try {
+    await client.query("BEGIN");
+    const result = await client.query(`SELECT "risYear" FROM tbl_year`);
+
+    const dbYear = result.rows[0].risYear;
+    res.json({ db_year: dbYear });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // GENERATE EXCEL RIS
 
 export const generateRIS = async (req, res) => {

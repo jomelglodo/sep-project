@@ -5,11 +5,12 @@
 /* CONTAINER */
 
 .ris-createris-container {
+  position: relative;
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 20px 40px 20px 20px;
-  min-width: 550px;
+  padding: 20px;
+  min-width: 450px;
 
   animation: modalSlideDown 1s ease;
 }
@@ -125,8 +126,8 @@
 /* CLOSE BUTTON */
 .ris-createris-close-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -40px;
+  right: -40px;
   width: 40px;
   height: 40px;
   border: none;
@@ -161,14 +162,14 @@
 
 .ris-createris-header h2 {
   margin: 0;
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 700;
   color: #1e293b;
 }
 
-.ris-createris-header p {
+.ris-createris-header .ris-createris-subtext {
   margin-top: 8px;
-  font-size: 15px;
+  font-size: 14px;
   color: #64748b;
 }
 
@@ -184,7 +185,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-left: 20px;
+  margin-left: 0px;
 }
 
 .ris-createris-date-container {
@@ -197,12 +198,12 @@
 }
 
 .ris-createris-container p {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .ris-createris-input-group label {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   color: #334155;
 }
@@ -212,7 +213,7 @@
   border: 1px solid #cbd5e1;
   border-radius: 10px;
   padding: 0 15px;
-  font-size: 16px;
+  font-size: 12px;
   outline: none;
   transition: all 0.2s ease;
 }
@@ -227,7 +228,7 @@
   border: 1px solid #cbd5e1;
   border-radius: 10px;
   padding: 0 15px;
-  font-size: 16px;
+  font-size: 12px;
   outline: none;
 }
 
@@ -235,7 +236,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .ris-createris-qty-group {
@@ -259,12 +260,12 @@
 /* CREATE BUTTON */
 
 .btn-createris-create {
-  height: 48px;
+  height: 40px;
   border: none;
   border-radius: 10px;
   background: #1e3a8a;
   color: white;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -272,7 +273,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 .btn-createris-create img {

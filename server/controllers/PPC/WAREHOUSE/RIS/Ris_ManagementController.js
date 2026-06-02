@@ -252,6 +252,10 @@ async function backupClearRisData() {
 
     await client.query(`UPDATE ris_control SET last_number = 0 WHERE id = 1`);
 
+    await client.query(
+      `UPDATE "tbl_risStatus" SET status = 'FALSE' WHERE id = 1`,
+    );
+
     await client.query("COMMIT");
   } catch (err) {
     await client.query("ROLLBACK");
