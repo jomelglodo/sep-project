@@ -218,20 +218,6 @@ export const saveCheckAllRis = async (req, res) => {
   }
 };
 
-//FETCH ALL RIS DATA
-async function fetchAllRISData() {
-  try {
-    const data = await risPool.query(
-      "SELECT * FROM tbl_ris ORDER BY CAST(risnum AS INTEGER) DESC",
-    );
-
-    return data.rows;
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
-}
-
 async function backupClearRisData() {
   const client = await risPool.connect();
 
@@ -262,6 +248,20 @@ async function backupClearRisData() {
     throw err;
   } finally {
     client.release();
+  }
+}
+
+//FETCH ALL RIS DATA
+async function fetchAllRISData() {
+  try {
+    const data = await risPool.query(
+      "SELECT * FROM tbl_ris ORDER BY CAST(risnum AS INTEGER) DESC",
+    );
+
+    return data.rows;
+  } catch (err) {
+    console.error(err);
+    return [];
   }
 }
 

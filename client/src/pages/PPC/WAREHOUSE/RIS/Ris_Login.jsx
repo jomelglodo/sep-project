@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "../../../../assets/styles/PPC/WAREHOUSE/RIS/Ris_Login.css";
 
 //import all images inside the src folder
-import { RIS_IMAGE } from "../../../../assets/images/ris_index";
+import { RIS_IMAGE } from "../../../../assets/images/ppc/ris_index";
 
 export default function RisLogin({ closeLogin, onSuccess }) {
   const [username, setUsername] = useState("");

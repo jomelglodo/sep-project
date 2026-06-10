@@ -8,7 +8,7 @@ import CreateRis from "./Ris_CreateRis";
 import SaveData from "./Ris_SaveData";
 
 //import all images inside the src folder
-import { RIS_IMAGE } from "../../../../assets/images/ris_index";
+import { RIS_IMAGE } from "../../../../assets/images/ppc/ris_index";
 
 export default function RISManagement({ closeRisManagement, className }) {
   const [search, setSearch] = useState("");

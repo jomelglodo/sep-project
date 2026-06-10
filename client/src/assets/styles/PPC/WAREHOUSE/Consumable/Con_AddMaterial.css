@@ -1,0 +1,187 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* CONFIRM MODAL */
+.con-addmaterial-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.con-addmaterial-confirm-modal {
+  position: relative;
+  min-width: 500px;
+  background-color: white;
+  box-shadow: var(--shadow);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+
+  animation: modalSlideDown 1s ease;
+}
+
+.con-addmaterial-confirm-modal h2 {
+  border-bottom: 1px solid rgb(210, 206, 206);
+  text-align: center;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.con-addmaterial-confirm-modal p {
+  margin-bottom: 20px;
+  color: rgb(135, 133, 133);
+}
+
+.con-addmaterial-confirm-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.con-addmaterial-confirm-button-container button {
+  padding: 9px;
+  min-width: 120px;
+  cursor: pointer;
+  border: none;
+  transition: 0.4s ease;
+}
+
+.con-addmaterial-confirm-button-container button:first-child {
+  background-color: rgb(77, 215, 103);
+  color: rgb(5, 65, 16);
+}
+
+.con-addmaterial-confirm-button-container button:first-child:hover {
+  background-color: rgb(37, 225, 72);
+}
+
+.con-addmaterial-confirm-button-container button:last-child {
+  background-color: #cfcfcf;
+}
+
+.con-addmaterial-confirm-button-container button:last-child:hover {
+  background-color: #c0bdbd;
+}
+
+/* CONTAINER */
+.con-addmaterial-container {
+  position: relative;
+  width: 100%;
+}
+
+.con-addmaterial-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  background-color: rgb(237, 235, 235);
+  width: 100%;
+  padding: 5px;
+}
+
+/* FORM */
+.con-addmaterial-form {
+  position: relative;
+  width: 100%;
+}
+
+/* FORM GROUP */
+.con-addmaterial-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.con-addmaterial-group label {
+  width: 120px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d3748;
+  letter-spacing: 0.3px;
+}
+
+.con-addmaterial-group input,
+.con-addmaterial-group select {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  background-color: #fff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.con-addmaterial-group input:focus,
+.con-addmaterial-group select:focus {
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+}
+
+/* BUTTON CONTAINER */
+.con-addmaterial-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.con-addmaterial-button-container button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  width: 140px;
+  transition: 0.2s ease;
+  cursor: pointer;
+  background-color: #3182ce;
+  color: white;
+  margin-top: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.con-addmaterial-button-container button img {
+  height: 20px;
+  width: 20px;
+}
+
+.con-addmaterial-button-container button:hover {
+  background-color: #2b6cb0;
+}
+
+/* SUCCESS MESSAGE */
+.con-addmaterial-success-container {
+  background-color: rgb(202, 249, 202);
+  padding: 10px;
+  text-align: center;
+}
+
+.con-addmaterial-success-container p {
+  color: rgb(5, 110, 5);
+}
+
+@keyframes modalSlideDown {
+  from {
+    transform: translateY(-100px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0), scale(1);
+    opacity: 1;
+  }
+}

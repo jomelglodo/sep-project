@@ -17,6 +17,7 @@
   "scripts": {
     "client": "npm start --prefix client",
     "server": "cd server && nodemon index.js",
+    "_server": "nodemon --watch server server/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "eslintConfig": {

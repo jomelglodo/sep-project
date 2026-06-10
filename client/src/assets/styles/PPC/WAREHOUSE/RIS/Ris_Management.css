@@ -2,6 +2,12 @@
   box-sizing: border-box;
 }
 
+:root {
+  --content-font-size: 12px;
+  --button-font-size: 12px;
+  --footer-font-size: 14px;
+}
+
 .ris-mgmt-page {
   width: 100%;
   min-height: 70vh;
@@ -105,7 +111,7 @@
   border: none;
   padding: 6px 22px;
   border-radius: 10px;
-  font-size: 10px;
+  font-size: var(--button-font-size);
   cursor: pointer;
   transition: 0.5s ease;
   white-space: nowrap;
@@ -119,6 +125,10 @@
   flex-wrap: wrap;
 }
 
+.ris-mgmt-headers-critical-btn {
+  padding: 0 20px;
+}
+
 .ris-mgmt-headers-normal-btn button,
 .ris-mgmt-headers-critical-btn button,
 .ris-mgmt-logout-btn-container button {
@@ -126,6 +136,8 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
+  flex: 1;
+  padding: 10px;
 }
 .ris-mgmt-headers-normal-btn img,
 .ris-mgmt-headers-critical-btn img,
@@ -195,7 +207,7 @@
 }
 
 .ris-mgmt-filter-group label {
-  font-size: 10px;
+  font-size: var(--content-font-size);
   font-weight: 600;
   color: #1e3a8a;
 }
@@ -206,7 +218,7 @@
   border: 1px solid #d1d5db;
   border-radius: 8px;
   outline: none;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .ris-mgmt-filter-group input:focus,
@@ -231,7 +243,7 @@
   font-weight: bold;
   transition: 0.3s ease;
   flex: 1;
-  font-size: 10px;
+  font-size: var(--content-font-size);
 }
 
 .ris-mgmt-status-btn button.btnactive {
@@ -291,7 +303,7 @@
 
 .ris-mgmt-table thead th {
   padding: 12px;
-  font-size: 12px;
+  font-size: var(--content-font-size);
   text-align: left;
 
   position: sticky;
@@ -309,7 +321,7 @@
 .ris-mgmt-table td {
   padding: 14px 16px;
   border-bottom: 1px solid #eef2f7;
-  font-size: 10px;
+  font-size: var(--content-font-size);
   color: #334155;
 }
 
@@ -323,7 +335,7 @@
 .ris-mgmt-status-badge {
   padding: 6px 14px;
   border-radius: 30px;
-  font-size: 13px;
+  font-size: var(--content-font-size);
   font-weight: bold;
 }
 
@@ -350,7 +362,7 @@
 
 .ris-mgmt-table-footer p {
   color: #64748b;
-  font-size: 14px;
+  font-size: var(--footer-font-size);
 }
 
 /* MEDIA */
@@ -369,6 +381,7 @@
   .ris-mgmt-headers-critical-btn {
     overflow-x: auto;
     white-space: nowrap;
+    padding: 0;
   }
 }
 

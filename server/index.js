@@ -1,101 +1,139 @@
-import dotenv from "dotenv";
-dotenv.config();
+/* import dotenv from "dotenv";
+dotenv.config(); */
 
 import express from "express";
 import cors from "cors";
-import { risPool } from "./db.js";
 import path from "path";
 import { fileURLToPath } from "url";
+
+import { risPool, conPool } from "./db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+/* ========================
+   MIDDLEWARE
+======================== */
 
-//RIS ROUTES
+app.use(cors());
+//app.use(express.json());
+app.use(
+  express.json({
+    limit: "50mb",
+  }),
+);
+
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: "50mb",
+  }),
+);
+//PPC-WAREHOUSE
+
+//RIS ROUTES-------------------------------------------------------------------------
 
 import RisRoutes from "./routes/PPC/WAREHOUSE/RIS/RisRoutes.js";
 import Ris_LoginRoutes from "./routes/PPC/WAREHOUSE/RIS/Ris_LoginRoutes.js";
 import Ris_ManagementRoutes from "./routes/PPC/WAREHOUSE/RIS/Ris_ManagementRoutes.js";
 import Ris_ReceiveRoutes from "./routes/PPC/WAREHOUSE/RIS/Ris_ReceiveRoutes.js";
 
+//------------------------------------------------------------------------------------
+
+//COMSUMABLE ROUTES--------------------------------------------------------------------
+
+import Con_LoginRoutes from "./routes/PPC/WAREHOUSE/Consumable/Con_Routes.js";
+
+//------------------------------------------------------------------------------------
+
+// =========================================================
+// DATABASE CONNECTION TEST
+// =========================================================
+
+risPool
+  .connect()
+  .then((client) => {
+    console.log("RIS Database Connected");
+    client.release();
+  })
+  .catch((err) => {
+    console.error("RIS Database Connection Error: ", err);
+  });
+
+conPool
+  .connect()
+  .then((client) => {
+    console.log("Consumable Database Connected");
+  })
+  .catch((err) => {
+    console.error("Consumable Database Connection Error: ", err);
+  });
+
 //import "./config.js";
 
 //REGISTER ROUTES
 
-//PPC - RIS
+//PPC - WAREHOUSE - RIS
 app.use("/ris", RisRoutes);
 app.use("/ris", Ris_LoginRoutes);
 app.use("/ris/management", Ris_ManagementRoutes);
 app.use("/ris/receive", Ris_ReceiveRoutes);
 
-//Serve React static files (manual copying of build folder inside the client folder)
-//app.use(express.static(path.join(__dirname, "build")));
+//PPC - WAREHOUSE - CONSUMABLE
+app.use("/con", Con_LoginRoutes);
+
+app.get("/test", (req, res) => {
+  res.json({ ok: true, time: Date.now() });
+});
 
 // save react static files directly inside the client folder
-app.use(express.static(path.join(__dirname, "../client/build")));
+//app.use(express.static(path.join(__dirname, "../client/build")));
+
+const buildPath = path.join(__dirname, "../client/build");
+
+//save react static files directly inside the client folder
+//app.use(express.static(buildPath));
 
 //SPA fallback(Important for React Router)
-app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+// app.get(/.*/, (req, res) => {
+//   res.sendFile(path.join(buildPath, "index.html"));
+// });
+
+// =========================================================
+// GLOBAL ERROR HANDLERS
+// =========================================================
+
+process.on("uncaughtException", (err) => {
+  console.error("UNCAUGHT EXCEPTION: ", err);
 });
 
-app.listen(5000, "0.0.0.0", () => {
+process.on("unhandledRejection", (err) => {
+  console.error("UNHANDLED REJECTION: ", err);
+});
+
+// =========================================================
+// GRACEFUL SHUTDOWN
+// =========================================================
+
+process.on("SIGINT", async () => {
+  console.log("Closing database pools...");
+
+  try {
+    await risPool.end();
+    console.log("RIS Pool Closed");
+
+    await conPool.end();
+    console.log("Consumable Pool Closed");
+  } catch (err) {
+    console.error("Error Closing Pools:", err);
+  } finally {
+    process.exit(0);
+  }
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, "0.0.0.0", () => {
   console.log("Server is running on port 5000");
 });
-
-/* app.get("/test", async (req, res) => {
-  const result = await pool.query("SELECT * FROM tbl_warehousestaff");
-  res.json(result.rows);
-  console.log(result.rows);
-}); */
-
-/* RIS GET SECTIONS */
-/* app.get("/sections", async (req, res) => {
-  try {
-    const result = await pool.query(
-      "SELECT section FROM tbl_section ORDER BY section ASC",
-    );
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: "Server Error" });
-  }
-}); */
-
-/* RIS LOGIN VERIFICATION */
-/* app.post("/risLogin", async (req, res) => {
-  const { username, password } = req.body;
-
-  try {
-    const result = await pool.query(
-      `SELECT username,password
-      FROM tbl_accounts 
-      WHERE username=$1
-      AND password=$2
-      `,
-      [username, password],
-    );
-    if (result.rows.length > 0) {
-      res.json({
-        success: true,
-        user: result.rows[0],
-      });
-    } else {
-      res.json({
-        success: false,
-        message: "Invalid Credentials",
-      });
-    }
-  } catch (error) {
-    console.error(error);
-
-    res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
-  }
-}); */

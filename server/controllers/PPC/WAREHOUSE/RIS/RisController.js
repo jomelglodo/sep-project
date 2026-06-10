@@ -34,7 +34,6 @@ export const getCutOffStatus = async (req, res) => {
 export const getCurrentYear = async (req, res) => {
   const client = await risPool.connect();
   try {
-    await client.query("BEGIN");
     const result = await client.query(`SELECT "risYear" FROM tbl_year`);
 
     const dbYear = result.rows[0].risYear;
@@ -42,6 +41,8 @@ export const getCurrentYear = async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: err.message });
+  } finally {
+    client.release();
   }
 };
 
@@ -242,6 +243,6 @@ export const generateRIS = async (req, res) => {
       error: err.message,
     });
   } finally {
-    client.release;
+    client.release();
   }
 };

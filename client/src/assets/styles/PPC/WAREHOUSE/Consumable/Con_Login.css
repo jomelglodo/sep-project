@@ -1,0 +1,136 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* CONTAINER */
+.con-login-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.con-login-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.con-login-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 10px 25px;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.8),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+  border: 1px solid #e5e7eb;
+}
+
+.con-login-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  border: 1px solid rgba(37, 99, 235, 0.5);
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.con-login-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.con-login-group input {
+  padding: 12px;
+  width: 100%;
+  border: 1px solid #d1d5db;
+  outline: none;
+  font-size: 12px;
+  transition: 0.2s;
+}
+
+.con-login-group .con-login-password-container {
+  flex: 1;
+}
+
+.con-login-password-container {
+  position: relative;
+}
+
+.con-login-password-container span {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.con-login-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.con-login-button-container {
+  padding: 20px;
+  width: 100%;
+}
+
+.con-login-button-container button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.con-login-button-container img {
+  height: 30px;
+  width: 30px;
+}
+.con-login-button-container button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1e3a8a;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+  color: white;
+  width: 100%;
+}
+
+.con-login-button-container button:hover {
+  background-color: #4d76e4;
+}
+
+/* STATUS MESSAGE */
+
+.con-login-statusmessage-success {
+  background-color: rgb(192, 249, 192);
+  color: rgb(2, 70, 2);
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.con-login-statusmessage-error {
+  background-color: rgb(244, 208, 208);
+  color: rgb(81, 4, 4);
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+}

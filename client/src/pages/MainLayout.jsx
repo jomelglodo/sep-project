@@ -3,6 +3,7 @@ import Header from "../components/MainHeader";
 import "../assets/styles/MainLayout.css";
 import Convertion from "./FINANCE/CONVERTION/Convertion";
 import Ris from "../pages/PPC/WAREHOUSE/RIS/Ris";
+import ConLogin from "../pages/PPC/WAREHOUSE/Consumable/Con_Login";
 
 export default function MainLayout() {
   const [activeSub, setActiveSub] = useState(null);
@@ -12,7 +13,8 @@ export default function MainLayout() {
       document.title = "Finance - Convertion";
     } else if (activeSub === "PPC - Warehouse - RIS") {
       document.title = "Warehouse - RIS";
-    }
+    } else if (activeSub === "PPC - Warehouse - Consumable Issuance")
+      document.title = "Warehouse - Consumable Issuance";
   }, [activeSub]);
 
   return (
@@ -29,6 +31,11 @@ export default function MainLayout() {
             <>
               <h2>{activeSub}</h2>
               <Ris />
+            </>
+          ) : activeSub === "PPC - Warehouse - Consumable Issuance" ? (
+            <>
+              <h2>{activeSub}</h2>
+              <ConLogin />
             </>
           ) : activeSub ? (
             <>

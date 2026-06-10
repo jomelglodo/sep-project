@@ -29,8 +29,10 @@ const department = {
   ADMIN: {
     image: HEADER_IMAGE.header_admin,
     menu: {
-      Sample1: [],
-      Sample2: [],
+      FACILITY: [],
+      GA: [],
+      HR: [],
+      IT: [],
     },
   },
 

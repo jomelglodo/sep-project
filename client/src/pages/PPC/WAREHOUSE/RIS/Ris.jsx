@@ -7,7 +7,7 @@ import RISManagement from "./Ris_Management";
 import { saveAs } from "file-saver";
 
 //import all images inside the src folder
-import { RIS_IMAGE } from "../../../../assets/images/ris_index";
+import { RIS_IMAGE } from "../../../../assets/images/ppc/ris_index";
 
 export default function RIS() {
   const [showCurtain, setShowCurtain] = useState(false);

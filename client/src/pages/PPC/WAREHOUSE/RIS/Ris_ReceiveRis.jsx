@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "../../../../assets/styles/PPC/WAREHOUSE/RIS/Ris_ReceiveRis.css";
 
 //import all images inside the src folder
-import { RIS_IMAGE } from "../../../../assets/images/ris_index";
+import { RIS_IMAGE } from "../../../../assets/images/ppc/ris_index";
 
 export default function RisReceiveRis({ closeReceivePage }) {
   const [risNum, setRisNum] = useState("");

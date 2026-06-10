@@ -3,7 +3,7 @@ import axios from "axios";
 import "../../../../assets/styles/PPC/WAREHOUSE/RIS/Ris_SaveData.css";
 
 //import all images inside the src folder
-import { RIS_IMAGE } from "../../../../assets/images/ris_index";
+import { RIS_IMAGE } from "../../../../assets/images/ppc/ris_index";
 
 export default function SaveData({ closeSaveData, successSaved }) {
   const [staffs, setStaffs] = useState([]);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../../../assets/styles/PPC/WAREHOUSE/RIS/Ris_CreateRis.css";
 //import all images inside the src folder
-import { RIS_IMAGE } from "../../../../assets/images/ris_index";
+import { RIS_IMAGE } from "../../../../assets/images/ppc/ris_index";
 
 export default function CreateRis({ closeRis }) {
   const [sections, setSections] = useState([]);
