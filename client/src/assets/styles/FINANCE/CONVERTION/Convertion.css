@@ -1,5 +1,14 @@
 /* PAGE */
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --fc: white;
+}
 .convertion-page {
   width: 100%;
   display: flex;
@@ -13,13 +22,43 @@
 .convertion-card {
   width: 100%;
   max-width: 600px;
-  background: #ffffff;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.08);
+
   border-radius: 18px;
   padding: 35px;
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.8),
-    0 2px 6px rgba(0, 0, 0, 0.5);
-  border: 1px solid #e5e7eb;
+
+  animation: pulseBorder 2s ease infinite;
+}
+
+.convertion-card::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: inherit;
+
+  padding: 1px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.4),
+    rgba(139, 92, 246, 0.4)
+  );
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  mask-composite: exclude;
+
+  pointer-events: none;
 }
 
 /* HEADER */
@@ -31,14 +70,14 @@
 .card-header h2 {
   margin: 0;
   font-size: 20px;
-  color: #1e293b;
+  color: var(--fc);
   font-weight: 700;
 }
 
 .card-header p {
   margin-top: 8px;
   font-size: 12px;
-  color: #64748b;
+  color: var(--fc);
 }
 
 /* BODY */
@@ -60,7 +99,7 @@
 .input-group label {
   font-size: 12px;
   font-weight: 600;
-  color: #334155;
+  color: var(--fc);
 }
 
 .input-group input {
@@ -94,7 +133,7 @@
   border: none;
   border-radius: 10px;
   background: #2563eb;
-  color: white;
+  color: var(--fc);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -138,7 +177,7 @@
 .result-header label {
   font-size: 12px;
   font-weight: 600;
-  color: #334153;
+  color: var(--fc);
 }
 
 .result-text {
@@ -147,7 +186,7 @@
   border: 1px solid #dbeafe;
   border-radius: 12px;
   padding: 10px;
-  color: #0f172a;
+  color: #424d64;
   line-height: 1.6;
   word-break: break-word;
 }
@@ -262,5 +301,20 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+/* PULSE BORDER */
+@keyframes pulseBorder {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 12px rgba(37, 99, 235, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
   }
 }

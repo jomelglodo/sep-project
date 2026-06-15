@@ -11,6 +11,7 @@ import AddMaterial from "./Con_AddMaterial";
 import { CON_IMAGE } from "../../../../assets/images/ppc/consumable_index";
 
 export default function ConManagement() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
@@ -213,17 +214,8 @@ export default function ConManagement() {
       setIsLoading(true); //SHOW A LOADING SCREEN
 
       const params = new URLSearchParams();
-      console.log({
-        search,
-        dateFrom,
-        dateTo,
-      });
 
-      console.log(
-        `${process.env.REACT_APP_API_URL}/con/getdata?${params.toString()}`,
-      );
       if (search.trim() !== "") {
-        console.log(search);
         params.append("search", search);
       }
 
@@ -254,7 +246,7 @@ export default function ConManagement() {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       fetchIssuanceData();
-    }, 400);
+    }, 500); //debounce
 
     return () => clearTimeout(timeoutId);
   }, [search]);
@@ -390,8 +382,14 @@ export default function ConManagement() {
       itemCodeRef.current.focus();
     }
   }
+
   async function handleSubmit(e) {
     e.preventDefault();
+
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/con/insertdata`,
@@ -442,6 +440,8 @@ export default function ConManagement() {
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -957,7 +957,9 @@ export default function ConManagement() {
                 <label htmlFor="">Convertion</label>
                 <div className="con-modal-convertion-container">
                   <label>Quantity :</label>
-                  <label value={conQty}>{conQty || "-"}</label>
+                  <label className="con-modal-convertion-conqty" value={conQty}>
+                    {conQty || "-"}
+                  </label>
                   <label>Unit :</label>
                   <label value={conUnit}>{conUnit || "-"}</label>
                 </div>
@@ -973,11 +975,11 @@ export default function ConManagement() {
               )}
 
               <div className="con-modal-group">
-                <button>
+                <button disabled={isSubmitting}>
                   <img src={CON_IMAGE.all_savebtn} alt="Save Button" />
-                  Save
+                  {isSubmitting ? "Saving..." : "Save"}
                 </button>
-                <button onClick={issueItemClearData}>
+                <button type="button" onClick={issueItemClearData}>
                   <img
                     src={CON_IMAGE.main_issueitem_clearbtn}
                     alt="Clear Button"

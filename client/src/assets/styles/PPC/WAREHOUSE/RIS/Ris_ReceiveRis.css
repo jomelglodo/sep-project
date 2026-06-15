@@ -6,6 +6,7 @@
 .ris-receive-ris-container {
   position: relative;
   width: 100%;
+  max-width: 800px;
   padding: 20px 20px 5px 20px;
 
   animation: modalSlideDown 1s ease;

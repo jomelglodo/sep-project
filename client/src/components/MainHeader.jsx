@@ -32,7 +32,7 @@ const department = {
       FACILITY: [],
       GA: [],
       HR: [],
-      IT: [],
+      IT: ["Ticketing"],
     },
   },
 
@@ -79,7 +79,7 @@ export default function Header({ setActiveSub }) {
   const [activeSubmenu, setActiveSubMenu] = useState(null);
 
   return (
-    <div className="header  ">
+    <div className="header">
       {/* LOGO */}
       <div className="logo">
         <img
@@ -124,7 +124,7 @@ export default function Header({ setActiveSub }) {
                 >
                   {/* SUBITEM */}
                   <div
-                    className={`subitem-section ${
+                    className={`subitem-section ssubitems${
                       deptData.menu[sub]?.length > 0 ? "disabled" : ""
                     }`}
                     onClick={() => {

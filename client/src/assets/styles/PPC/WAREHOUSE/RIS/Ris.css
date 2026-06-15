@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+:root {
+  --fc: white;
+}
+
 .curtain-open {
   animation: curtainOpen 1s ease forwards;
 }
@@ -10,9 +14,15 @@
 
 .ris-page {
   width: 100%;
+  min-height: 80vh;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 0 20px 50px 20px;
+
+  background:
+    radial-gradient(circle at top right, #3b82f6 0%, transparent 30%),
+    radial-gradient(circle at bottom left, #1e40af 0%, transparent 30%), #0f172a;
 }
 
 /* SUCCESS MESSAGE MODAL */
@@ -79,13 +89,46 @@
 
 /* RIS LOGIN MODAL */
 .ris-login-modal {
-  background-color: white;
+  /* background-color: white;
   padding: 30px;
   border-radius: 12px;
   min-width: 350px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); */
 
-  animation: modalSlideDown 1s ease;
+  min-width: 350px;
+  padding: 30px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.08);
+
+  border-radius: 18px;
+  padding: 35px;
+
+  animation: pulseBorder 2s ease infinite;
+}
+
+.ris-login-modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.4),
+    rgba(139, 92, 246, 0.4)
+  );
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 /* WHEN RIS LOGIN IS DISABLED */
@@ -166,13 +209,45 @@
 .ris-card {
   width: 100%;
   max-width: 500px;
-  background: #ffffff;
+
+  /*   background: #ffffff;
   border-radius: 18px;
   padding: 25px;
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.8),
     0 2px 6px rgba(0, 0, 0, 0.5);
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e5e7eb; */
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px rgba(255, 255, 255, 0.08);
+  padding: 25px;
+
+  animation:
+    pulseBorder 2s ease infinite,
+    flipSlideDown 1s ease-out forwards;
+}
+
+.ris-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.4),
+    rgba(139, 92, 246, 0.4)
+  );
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 /* HEADER */
@@ -213,13 +288,13 @@
   margin: 0;
   font-size: 20px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--fc);
 }
 
 .ris-header p {
   margin-top: 8px;
   font-size: 12px;
-  color: #64748b;
+  color: var(--fc);
 }
 
 /* BODY */
@@ -249,12 +324,13 @@
 .ris-date-container p {
   font-size: 12px;
   font-weight: 600;
+  color: var(--fc);
 }
 
 .ris-input-group label {
   font-size: 12px;
   font-weight: 600;
-  color: #334155;
+  color: var(--fc);
 }
 
 .ris-input-group input {
@@ -363,5 +439,60 @@
     transform: scaleX(1);
     opacity: 1;
     filter: brightness(1);
+  }
+}
+
+/* PULSE BORDER */
+@keyframes pulseBorder {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 12px rgba(37, 99, 235, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+  }
+}
+
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 5px rgba(37, 99, 235, 0.3);
+  }
+
+  50% {
+    box-shadow:
+      0 0 15px rgba(37, 99, 235, 0.7),
+      0 0 30px rgba(37, 99, 235, 0.5);
+  }
+
+  100% {
+    box-shadow: 0 0 5px rgba(37, 99, 235, 0.3);
+  }
+}
+
+@keyframes flipInFade {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateY(-90deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateY(0deg);
+  }
+}
+
+@keyframes flipSlideDown {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(-90deg) translateY(-50px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0deg) translateY(0);
   }
 }

@@ -376,8 +376,19 @@ export const exportData = async (req, res) => {
     sheet.getCell("F3").value = "CATEGORY";
     sheet.getCell("G3").value = "ISSUED QTY.";
     sheet.getCell("H3").value = "ISSUED BY";
+    sheet.getCell("I3").value = "RIS #";
 
-    const rangeToFormat = ["A3", "B3", "C3", "D3", "E3", "F3", "G3", "H3"];
+    const rangeToFormat = [
+      "A3",
+      "B3",
+      "C3",
+      "D3",
+      "E3",
+      "F3",
+      "G3",
+      "H3",
+      "I3",
+    ];
 
     rangeToFormat.forEach((cRange) => {
       sheet.getCell(cRange).font = {
@@ -416,6 +427,7 @@ export const exportData = async (req, res) => {
         item.cat,
         item.i_qty,
         item.i_by,
+        item.ris_num,
       ]);
 
       row.eachCell((cell) => {

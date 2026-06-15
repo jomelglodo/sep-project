@@ -589,7 +589,8 @@
 
 .con-mgmt-modal {
   position: relative;
-  min-width: 500px;
+  /*  min-width: 500px; */
+  width: min(90vw, 700px);
   background-color: white;
   box-shadow: var(--shadow);
   border-radius: 10px;
@@ -740,6 +741,7 @@
 }
 
 .con-modal-convertion-container {
+  width: 100%;
   margin: 10px 0;
   display: flex;
   align-items: center;
@@ -749,14 +751,7 @@
   border-radius: 8px;
 }
 
-.con-modal-success-container {
-  background-color: rgb(205, 247, 205);
-  color: rgb(3, 57, 3);
-  text-align: center;
-  padding: 5px;
-}
-
-.con-mgmt-convertion-container label:nth-child(2) {
+.con-modal-convertion-conqty {
   flex: 1;
   justify-content: flex-end;
   background-color: #f7fafc;
@@ -766,6 +761,14 @@
   color: #4a5568;
   font-weight: 500;
 }
+
+.con-modal-success-container {
+  background-color: rgb(205, 247, 205);
+  color: rgb(3, 57, 3);
+  text-align: center;
+  padding: 5px;
+}
+
 /* CONTAINER */
 
 .con-mgmt-page {

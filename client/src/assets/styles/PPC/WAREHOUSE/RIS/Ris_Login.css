@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+:root {
+  --fc: white;
+}
+
 /* CONTAINER */
 
 .ris-login-container {
@@ -33,8 +37,8 @@
 /* CLOSE BUTTON */
 .btn-ris-close-login {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -20px;
+  right: -20px;
 
   width: 40px;
   height: 40px;
@@ -50,14 +54,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.2s;
+  transition: all 0.3s ease;
 
   animation: closeBtnOpacity 1.5s forwards;
+  /* animation: pulseBorder 1s infinite;
+  animation-play-state: paused; */
 }
 
 .btn-ris-close-login:hover {
   background: #b91c1c;
   transform: scale(1.05);
+  /* animation-play-state: running; */
 }
 
 .ris-login-header {
@@ -67,13 +74,13 @@
 
 .ris-login-header h2 {
   margin: 0;
-  color: #1e3a8a;
+  color: var(--fc);
   font-size: 26px;
 }
 
 .ris-login-header p {
   margin-top: 8px;
-  color: #6b7280;
+  color: var(--fc);
   font-size: 14px;
 }
 
@@ -92,7 +99,7 @@
 .ris-login-group label {
   font-size: 14px;
   font-weight: 600;
-  color: #374151;
+  color: var(--fc);
 }
 
 .ris-login-group input {
@@ -167,5 +174,19 @@
   100% {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes pulseBorder {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 12px rgba(37, 99, 235, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
   }
 }

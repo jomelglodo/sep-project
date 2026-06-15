@@ -1,0 +1,207 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --fc: white;
+  --fc-header: #0dceec;
+}
+
+/* Ticket Container */
+.ticket-login-page {
+  color: white;
+  min-height: 80vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background:
+    radial-gradient(circle at top right, #3b82f6 0%, transparent 30%),
+    radial-gradient(circle at bottom left, #1e40af 0%, transparent 30%), #0f172a;
+}
+
+.ticket-login-card {
+  width: clamp(320px, 90vw, 420px);
+
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: clamp(24px, 3vw, 40px);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px rgba(255, 255, 255, 0.08);
+
+  animation:
+    pulseBorder 2s ease infinite,
+    flipSlideDown 1s ease-out forwards;
+}
+
+.ticket-login-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.4),
+    rgba(130, 92, 246, 0.4)
+  );
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.ticket-login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.ticket-login-logo {
+  width: 70px;
+  height: 70px;
+
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.ticket-login-header h2 {
+  background: linear-gradient(90deg, #f4f5f7, #02bedb, #7103e6);
+  background-clip: text;
+  color: transparent;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+}
+
+.ticket-login-header p {
+  color: var(--fc);
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.ticket-login-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.ticket-login-group label {
+  margin-bottom: 8px;
+  color: var(--fc);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ticket-login-group input {
+  width: 100%;
+  padding: 14px 16px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+
+  outline: none;
+  transition: 0.25s ease;
+  font-size: 14px;
+}
+
+.ticket-login-signinbtn {
+  width: 100%;
+
+  padding: 14px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #2563eb, #102b84);
+
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.3s;
+
+  margin-top: 10px;
+}
+
+.ticket-login-signinbtn:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+}
+
+.ticket-login-signinbtn:active {
+  transform: translateY(0);
+}
+
+.ticket-login-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* PULSE BORDER */
+@keyframes pulseBorder {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 12px rgba(37, 99, 235, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+  }
+}
+
+@keyframes flipInFade {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateY(-90deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateY(0deg);
+  }
+}
+
+@keyframes flipSlideDown {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(-90deg) translateY(-50px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0deg) translateY(0);
+  }
+}
