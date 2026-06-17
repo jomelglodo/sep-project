@@ -10,7 +10,7 @@ import AddMaterial from "./Con_AddMaterial";
 
 import { CON_IMAGE } from "../../../../assets/images/ppc/consumable_index";
 
-export default function ConManagement() {
+export default function ConManagement({ closeManagement }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -489,6 +489,7 @@ export default function ConManagement() {
           },
           body: JSON.stringify({
             risNum: selRisNum,
+            selDate,
             section: selSection,
             convertedQty: selConvertedQty,
           }),
@@ -642,7 +643,15 @@ export default function ConManagement() {
               </div>
               <div className="con-modal-edit-group">
                 <label>Date :</label>
-                <label>{selDate || "-"}</label>
+                <input
+                  type="date"
+                  className="con-modal-edit-group-date"
+                  value={selDate}
+                  onChange={(e) => {
+                    setSelDate(e.target.value);
+                  }}
+                />
+                {/* <label>{selDate || "-"}</label> */}
               </div>
               <div className="con-modal-edit-group">
                 <label>RIS Control # :</label>
@@ -997,6 +1006,15 @@ export default function ConManagement() {
         <div className="con-mgmt-header-container">
           <div className="con-mgmt-header-group con-mgmt-header-btn">
             <div className="con-mgmt-header-admin-btn">
+              <button
+                className="con-mgmt-header-returntologin"
+                onClick={closeManagement}
+              >
+                <img
+                  src={CON_IMAGE.main_returntologinbtn}
+                  alt="Return to login button"
+                />
+              </button>
               <button
                 onClick={() => {
                   setShowAddmaterialModal(true);

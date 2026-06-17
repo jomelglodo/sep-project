@@ -22,6 +22,8 @@ risPool.on("error", (err) => {
   console.error("Unexpected PostgreSQL Pool Error", err);
 });
 
+//--------------------------------------------------------------------------------------
+
 //CONSUMABLE ISSUANCE
 export const conPool = new Pool({
   host: process.env.DB2_HOST,
@@ -37,4 +39,18 @@ export const conPool = new Pool({
 
 conPool.on("error", (err) => {
   console.error("Unexpected PostgreSQL Pool Error", err);
+});
+
+//--------------------------------------------------------------------------------------
+
+export const ticketPool = new Pool({
+  host: process.env.TICKET_DB_HOST,
+  port: Number(process.env.TICKET_DB_PORT),
+  user: process.env.TICKET_DB_USER,
+  password: process.env.TICKET_DB_PASSWORD,
+  database: process.env.TICKET_DB_NAME,
+
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 5000,
 });

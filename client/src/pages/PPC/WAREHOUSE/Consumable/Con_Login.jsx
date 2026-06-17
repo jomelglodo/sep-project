@@ -21,7 +21,7 @@ export default function ConLogin() {
     if (passwordRef.current) {
       passwordRef.current.focus();
     }
-  }, []);
+  }, [isLoggedin]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -58,8 +58,17 @@ export default function ConLogin() {
     }
   }
   if (isLoggedin) {
-    return <ConManagemet />;
+    return (
+      <ConManagemet
+        closeManagement={() => {
+          setIsLoggedIn(false);
+          setPassword("");
+          setShowStatusMessage(false);
+        }}
+      />
+    );
   }
+
   return (
     <div className="con-login-container">
       <form className="con-login-form" onSubmit={handleSubmit}>

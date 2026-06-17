@@ -295,7 +295,7 @@ export const deleteSelected = async (req, res) => {
 
 export const updateSelected = async (req, res) => {
   const { editId } = req.params;
-  const { risNum, section, convertedQty } = req.body;
+  const { risNum, selDate, section, convertedQty } = req.body;
   try {
     const result = await conPool.query(
       `
@@ -303,10 +303,11 @@ export const updateSelected = async (req, res) => {
       SET 
         ris_num = $1,
         section = $2,
-        i_qty = $3
-      WHERE id = $4
+        i_qty = $3,
+        d_received = $4
+      WHERE id = $5
       `,
-      [risNum, section, convertedQty, editId],
+      [risNum, section, convertedQty, selDate, editId],
     );
 
     if (result.rowCount === 0) {

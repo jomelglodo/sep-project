@@ -6,7 +6,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import { risPool, conPool } from "./db.js";
+import { risPool, conPool, ticketPool } from "./db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,7 +46,13 @@ import Ris_ReceiveRoutes from "./routes/PPC/WAREHOUSE/RIS/Ris_ReceiveRoutes.js";
 
 import Con_LoginRoutes from "./routes/PPC/WAREHOUSE/Consumable/Con_Routes.js";
 
-//------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
+
+//TICKETING ROUTES--------------------------------------------------------------------
+
+import Ticket_LoginRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_LoginRoutes.js";
+
+//-------------------------------------------------------------------------------------
 
 // =========================================================
 // DATABASE CONNECTION TEST
@@ -71,6 +77,15 @@ conPool
     console.error("Consumable Database Connection Error: ", err);
   });
 
+ticketPool
+  .connect()
+  .then((client) => {
+    console.log("Ticketing Database Connected");
+  })
+  .catch((err) => {
+    console.error("Ticketing Database Connection Error : ", err);
+  });
+
 //import "./config.js";
 
 //REGISTER ROUTES
@@ -84,9 +99,12 @@ app.use("/ris/receive", Ris_ReceiveRoutes);
 //PPC - WAREHOUSE - CONSUMABLE
 app.use("/con", Con_LoginRoutes);
 
-app.get("/test", (req, res) => {
-  res.json({ ok: true, time: Date.now() });
-});
+//ADMIN - IT - Ticketing
+app.use("/ticketing/login", Ticket_LoginRoutes);
+
+// app.get("/test", (req, res) => {
+//   res.json({ ok: true, time: Date.now() });
+// });
 
 // save react static files directly inside the client folder
 //app.use(express.static(path.join(__dirname, "../client/build")));
@@ -126,6 +144,9 @@ process.on("SIGINT", async () => {
 
     await conPool.end();
     console.log("Consumable Pool Closed");
+
+    await ticketPool.end();
+    console.log("Ticket Pool Closed");
   } catch (err) {
     console.error("Error Closing Pools:", err);
   } finally {

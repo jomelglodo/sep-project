@@ -11,6 +11,7 @@ import mainSearchDateFilterBtn from "./consumable/Con_Main_SearchDate_FilterBtn.
 import mainExportBtn from "./consumable/Con_Main_ExportBtn.png";
 import mainIssueItemBtn from "./consumable/Con_Main_IssueItemBtn.png";
 import mainAddMaterialBtn from "./consumable/Con_Main_AddMaterialBtn.png";
+import mainReturnBtn from "./consumable/Con_Main_ReturnToLoginBtn.png";
 
 export const CON_IMAGE = {
   home_loginbtn: homeLoginBtn,
@@ -21,4 +22,5 @@ export const CON_IMAGE = {
   main_exportbtn: mainExportBtn,
   main_issueitembtn: mainIssueItemBtn,
   main_addmaterialbtn: mainAddMaterialBtn,
+  main_returntologinbtn: mainReturnBtn,
 };
