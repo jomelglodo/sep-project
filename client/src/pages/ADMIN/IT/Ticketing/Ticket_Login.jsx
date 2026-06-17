@@ -1,15 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "../../../../assets/styles/IT/Ticketing/Ticket_Login.css";
+import "./Ticket_Login.css";
 
 import TicketIcon from "../../../../assets/images/admin/ticketing/Ticketing-Icon.png";
-import TicketSuccess from "../../../../assets/images/admin/ticketing/Ticketing-Success.png";
 
 //MAIN FORM
-import TicketMainUser from "./Ticket_MainUser";
-import TicketMainStaff from "./Ticket_MainStaff";
-import TicketMainAdmin from "./Ticket_MainAdmin";
+import TicketMainUser from "./pages/user/Ticket_MainUser";
+import TicketMainStaff from "./pages/staff/Ticket_MainStaff";
+import TicketMainAdmin from "./pages/admin/Ticket_MainAdmin";
 
 export default function TicketLogin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -37,8 +36,8 @@ export default function TicketLogin() {
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
 
-  //MODAL
-  const [showSuccesModal, setShowSuccessModal] = useState(false);
+  //MESSAGE
+  const [successMessage, setSuccessMessage] = useState(false);
 
   // Check Login status when component loads
   useEffect(() => {
@@ -95,10 +94,10 @@ export default function TicketLogin() {
         if (changeUsernameRef.current) {
           changeUsernameRef.current.focus();
         }
-        setShowSuccessModal(true);
+        setSuccessMessage(true);
 
         setTimeout(() => {
-          setShowSuccessModal(false);
+          setSuccessMessage(false);
         }, 2000);
       } else {
         alert(response.data.message);
@@ -129,7 +128,7 @@ export default function TicketLogin() {
       if (response.data.success) {
         const { d_name, role } = response.data;
 
-        localStorage.setItem(
+        /* localStorage.setItem(
           "ticketingAuth",
           JSON.stringify({
             isLoggedIn: true,
@@ -138,7 +137,7 @@ export default function TicketLogin() {
             username: username,
             lastActivity: Date.now(),
           }),
-        );
+        ); */
         setRole(role);
         setDisplayName(d_name);
 
@@ -187,183 +186,177 @@ export default function TicketLogin() {
   }
 
   return (
-    <>
-      {showSuccesModal && (
-        <div className="ticket-login-success-overlay">
-          <div className="ticket-login-success-modal">
-            <div className="ticket-login-success-group">
-              <img src={TicketSuccess} alt="Success Icon" />
+    <div className="ticket-login-page">
+      <div
+        className={`ticket-login-card ${showChangePassword ? "flip-to-change" : "flip-to-login"}`}
+      >
+        {!showChangePassword ? (
+          <>
+            <div className="ticket-login-header">
+              <div className="ticket-login-logo">
+                <img src={TicketIcon} alt="Ticket Icon" />
+              </div>
+              <h2>Welcome Back</h2>
+              <p>Sign in to continue</p>
             </div>
-            <p>Password Successfully Updated</p>
-          </div>
-        </div>
-      )}
-      <div className="ticket-login-page">
-        <div
-          className={`ticket-login-card ${showChangePassword ? "flip-to-change" : "flip-to-login"}`}
-        >
-          {!showChangePassword ? (
-            <>
-              <div className="ticket-login-header">
-                <div className="ticket-login-logo">
-                  <img src={TicketIcon} alt="Ticket Icon" />
-                </div>
-                <h2>Welcome Back</h2>
-                <p>Sign in to continue</p>
-              </div>
 
-              <form onSubmit={handleSubmit}>
-                <div className="ticket-login-group">
-                  <label>Username</label>
-                  <input
-                    required
-                    type="text"
-                    ref={usernameRef}
-                    value={username}
-                    onChange={(e) => {
-                      setUsername(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="ticket-login-group">
-                  <label>Password</label>
-                  <input
-                    required
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                    }}
-                  />
-                  <span
-                    className="ticket-login-group-password-icon"
-                    onClick={() => {
-                      setShowPassword(!showPassword);
-                    }}
-                  >
-                    {showPassword ? <FaEye /> : <FaEyeSlash />}
-                  </span>
-                </div>
-                <button type="submit" className="ticket-login-signinbtn">
-                  Sign In
-                </button>
-                <button
-                  type="button"
-                  className="ticket-login-changepasswordbtn"
+            <form onSubmit={handleSubmit}>
+              <div className="ticket-login-group">
+                <label>Username</label>
+                <input
+                  required
+                  type="text"
+                  ref={usernameRef}
+                  value={username}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="ticket-login-group">
+                <label>Password</label>
+                <input
+                  required
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+                <span
+                  className="ticket-login-group-password-icon"
                   onClick={() => {
-                    setChangeUsername("");
-                    setChangeCurrentPassword("");
-                    setChangeNewPassword("");
-                    setChangeConfirmPassword("");
-                    setShowChangePassword(true);
+                    setShowPassword(!showPassword);
                   }}
                 >
-                  Change Password
-                </button>
-              </form>
-            </>
-          ) : (
-            <>
-              <div className="ticket-login-header">
-                <div className="ticket-login-logo">
-                  <img src={TicketIcon} alt="Ticket Icon" />
-                </div>
-                <h2>Change Password</h2>
-                <p>Update your account password</p>
+                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </span>
               </div>
+              <button type="submit" className="ticket-login-signinbtn">
+                Sign In
+              </button>
+              <button
+                type="button"
+                className="ticket-login-changepasswordbtn"
+                onClick={() => {
+                  setChangeUsername("");
+                  setChangeCurrentPassword("");
+                  setChangeNewPassword("");
+                  setChangeConfirmPassword("");
+                  setShowChangePassword(true);
+                }}
+              >
+                Change Password
+              </button>
+            </form>
+          </>
+        ) : (
+          <>
+            <div className="ticket-login-header">
+              <div className="ticket-login-logo">
+                <img src={TicketIcon} alt="Ticket Icon" />
+              </div>
+              <h2>Change Password</h2>
+              <p>Update your account password</p>
+            </div>
 
-              <form onSubmit={handleChangePassword}>
-                <div className="ticket-login-group">
-                  <label>Username</label>
-                  <input
-                    required
-                    type="text"
-                    ref={changeUsernameRef}
-                    value={changeUsername}
-                    onChange={(e) => {
-                      setChangeUsername(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="ticket-login-group">
-                  <label>Current Password</label>
-                  <input
-                    required
-                    type={showCurrentPassword ? "text" : "password"}
-                    value={changeCurrentPassword}
-                    onChange={(e) => {
-                      setChangeCurrentPassword(e.target.value);
-                    }}
-                  />
+            <form onSubmit={handleChangePassword}>
+              <div className="ticket-login-group">
+                <label>Username</label>
+                <input
+                  required
+                  type="text"
+                  ref={changeUsernameRef}
+                  value={changeUsername}
+                  onChange={(e) => {
+                    setChangeUsername(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="ticket-login-group">
+                <label>Current Password</label>
+                <input
+                  required
+                  type={showCurrentPassword ? "text" : "password"}
+                  value={changeCurrentPassword}
+                  onChange={(e) => {
+                    setChangeCurrentPassword(e.target.value);
+                  }}
+                />
 
-                  <span
-                    className="ticket-login-group-currentpassword-icon"
-                    onClick={() => {
-                      setShowCurrentPassword(!showCurrentPassword);
-                    }}
-                  >
-                    {showCurrentPassword ? <FaEye /> : <FaEyeSlash />}
-                  </span>
-                </div>
-                <div className="ticket-login-group">
-                  <label>New Password</label>
-                  <input
-                    required
-                    type={showNewPassword ? "text" : "password"}
-                    value={changeNewPassword}
-                    onChange={(e) => {
-                      setChangeNewPassword(e.target.value);
-                    }}
-                  />
-
-                  <span
-                    className="ticket-login-group-newpassword-icon"
-                    onClick={() => {
-                      setShowNewPassword(!showNewPassword);
-                    }}
-                  >
-                    {showNewPassword ? <FaEye /> : <FaEyeSlash />}
-                  </span>
-                </div>
-                <div className="ticket-login-group">
-                  <label>Confirm Password</label>
-                  <input
-                    required
-                    type={showConfirmPassword ? "text" : "password"}
-                    value={changeConfirmPassword}
-                    onChange={(e) => {
-                      setChangeConfirmPassword(e.target.value);
-                    }}
-                  />
-
-                  <span
-                    className="ticket-login-group-confirmpassword-icon"
-                    onClick={() => {
-                      setShowConfirmPassword(!showConfirmPassword);
-                    }}
-                  >
-                    {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
-                  </span>
-                </div>
-                <button type="submit" className="ticket-login-signinbtn">
-                  Save Password
-                </button>
-                <button
-                  type="button"
-                  className="ticket-login-changepasswordbtn"
+                <span
+                  className="ticket-login-group-currentpassword-icon"
                   onClick={() => {
-                    setUsername("");
-                    setPassword("");
-                    setShowChangePassword(false);
+                    setShowCurrentPassword(!showCurrentPassword);
                   }}
                 >
-                  Back to Login
-                </button>
-              </form>
-            </>
-          )}
-        </div>
+                  {showCurrentPassword ? <FaEye /> : <FaEyeSlash />}
+                </span>
+              </div>
+              <div className="ticket-login-group">
+                <label>New Password</label>
+                <input
+                  required
+                  type={showNewPassword ? "text" : "password"}
+                  value={changeNewPassword}
+                  onChange={(e) => {
+                    setChangeNewPassword(e.target.value);
+                  }}
+                />
+
+                <span
+                  className="ticket-login-group-newpassword-icon"
+                  onClick={() => {
+                    setShowNewPassword(!showNewPassword);
+                  }}
+                >
+                  {showNewPassword ? <FaEye /> : <FaEyeSlash />}
+                </span>
+              </div>
+              <div className="ticket-login-group">
+                <label>Confirm Password</label>
+                <input
+                  required
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={changeConfirmPassword}
+                  onChange={(e) => {
+                    setChangeConfirmPassword(e.target.value);
+                  }}
+                />
+
+                <span
+                  className="ticket-login-group-confirmpassword-icon"
+                  onClick={() => {
+                    setShowConfirmPassword(!showConfirmPassword);
+                  }}
+                >
+                  {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
+                </span>
+              </div>
+              {successMessage && (
+                <div className="ticket-login-successmessage">
+                  <p>Password successfully updated</p>
+                </div>
+              )}
+
+              <button type="submit" className="ticket-login-signinbtn">
+                Save Password
+              </button>
+              <button
+                type="button"
+                className="ticket-login-changepasswordbtn"
+                onClick={() => {
+                  setUsername("");
+                  setPassword("");
+                  setShowChangePassword(false);
+                }}
+              >
+                Back to Login
+              </button>
+            </form>
+          </>
+        )}
       </div>
-    </>
+    </div>
   );
 }

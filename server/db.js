@@ -43,6 +43,7 @@ conPool.on("error", (err) => {
 
 //--------------------------------------------------------------------------------------
 
+// IT TICKETING
 export const ticketPool = new Pool({
   host: process.env.TICKET_DB_HOST,
   port: Number(process.env.TICKET_DB_PORT),

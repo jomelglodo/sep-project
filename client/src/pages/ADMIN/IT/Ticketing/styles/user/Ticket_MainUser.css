@@ -1,0 +1,104 @@
+/* .ticket-mainuser-home-container {
+}
+.ticket-mainuser-home-maincontent {
+  position: relative;
+  min-height: 120vh;
+  flex-direction: row;
+}
+
+.ticket-mainuser-home-page-content {
+  margin-left: 200px;
+  background-color: green;
+}
+ */
+
+/* MAIN CONTAINER */
+.ticket-mainuser-home-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.ticket-mainuser-home-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* PAGE CONTENT */
+.ticket-mainuser-home-page-content {
+  flex: 1;
+  background: #f4f6fb;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.ticket-mainuser-home-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #111827;
+}
+
+/* TICKET CONTAINER */
+.ticket-mainuser-home-ticket-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.ticket-mainuser-home-ticketcounter-group {
+  background-color: white;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: 0.2s;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.ticket-mainuser-home-ticketcounter-group:hover {
+  transform: translateY(-5px);
+}
+
+.ticket-mainuser-home-ticketcounter-group.total {
+  border-left: 4px solid #3b82f6;
+}
+
+.ticket-mainuser-home-ticketcounter-group.open {
+  border-left: 4px solid #f59e0b;
+}
+
+.ticket-mainuser-home-ticketcounter-group.inprogress {
+  border-left: 4px solid #8b5cf6;
+}
+
+.ticket-mainuser-home-ticketcounter-group.closed {
+  border-left: 4px solid #10b981;
+}
+
+.ticket-mainuser-home-ticketcounter-group.cancelled {
+  border-left: 4px solid #ef4444;
+}
+/* 
+@media (max-width: 768px) {
+  .ticket-mainuser-home-body {
+    flex-direction: column;
+  }
+
+  .ticket-mainuser-home-sidebar {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .ticket-mainuser-home-menulist {
+    display: flex;
+    gap: 10px;
+  }
+  .ticket-mainuser-home-page-content {
+    padding: 16px;
+  }
+}
+ */

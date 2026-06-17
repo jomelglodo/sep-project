@@ -1,0 +1,40 @@
+/* TICKET CONTAINER */
+.ticket-mainuser-dashboard-ticketcounter-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.ticket-mainuser-home-ticketcounter-group {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  transition: 0.2s;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.ticket-mainuser-home-ticketcounter-group:hover {
+  transform: translateY(-5px);
+}
+
+.ticket-mainuser-home-ticketcounter-group.total {
+  border-left: 4px solid #3b82f6;
+}
+
+.ticket-mainuser-home-ticketcounter-group.open {
+  border-left: 4px solid #f59e0b;
+}
+
+.ticket-mainuser-home-ticketcounter-group.inprogress {
+  border-left: 4px solid #8b5cf6;
+}
+
+.ticket-mainuser-home-ticketcounter-group.closed {
+  border-left: 4px solid #10b981;
+}
+
+.ticket-mainuser-home-ticketcounter-group.cancelled {
+  border-left: 4px solid #ef4444;
+}
