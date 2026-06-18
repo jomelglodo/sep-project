@@ -15,15 +15,19 @@ export default function TicketMainUserHeader({ activePage, setActivePage }) {
             📊 Dashboard
           </li>
           <li
-            className={`ticket-mainuser-home-menu-item ${activePage === "ticket" ? "ticketactive" : ""}`}
+            className={`ticket-mainuser-home-menu-item ${activePage === "ticket" ? "selectactive" : ""}`}
+            onClick={() => {
+              setActivePage("ticket");
+            }}
           >
             📁 Ticket
           </li>
           <li
             className={`ticket-mainuser-home-menu-item ${activePage === "announcement" ? "selectactive" : ""}
+            }`}
             onClick={() => {
               setActivePage("announcement");
-            }`}
+            }}
           >
             📢 Announcement
           </li>

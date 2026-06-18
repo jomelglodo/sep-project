@@ -10,7 +10,7 @@ import AddMaterial from "./Con_AddMaterial";
 
 import { CON_IMAGE } from "../../../../assets/images/ppc/consumable_index";
 
-export default function ConManagement({ closeManagement }) {
+export default function ConManagement() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -233,6 +233,7 @@ export default function ConManagement({ closeManagement }) {
       );
 
       const data = await res.json();
+
       setIssuanceData(data);
     } catch (err) {
       console.error(err);
@@ -489,7 +490,6 @@ export default function ConManagement({ closeManagement }) {
           },
           body: JSON.stringify({
             risNum: selRisNum,
-            selDate,
             section: selSection,
             convertedQty: selConvertedQty,
           }),
@@ -643,15 +643,7 @@ export default function ConManagement({ closeManagement }) {
               </div>
               <div className="con-modal-edit-group">
                 <label>Date :</label>
-                <input
-                  type="date"
-                  className="con-modal-edit-group-date"
-                  value={selDate}
-                  onChange={(e) => {
-                    setSelDate(e.target.value);
-                  }}
-                />
-                {/* <label>{selDate || "-"}</label> */}
+                <label>{selDate || "-"}</label>
               </div>
               <div className="con-modal-edit-group">
                 <label>RIS Control # :</label>
@@ -1007,15 +999,6 @@ export default function ConManagement({ closeManagement }) {
           <div className="con-mgmt-header-group con-mgmt-header-btn">
             <div className="con-mgmt-header-admin-btn">
               <button
-                className="con-mgmt-header-returntologin"
-                onClick={closeManagement}
-              >
-                <img
-                  src={CON_IMAGE.main_returntologinbtn}
-                  alt="Return to login button"
-                />
-              </button>
-              <button
                 onClick={() => {
                   setShowAddmaterialModal(true);
                 }}
@@ -1082,13 +1065,11 @@ export default function ConManagement({ closeManagement }) {
             <TableVirtuoso
               className="con-mgmt-table-virtuoso"
               data={issuanceData}
+              overscan={10}
               components={{
                 Table: (props) => (
                   <table {...props} className="con-mgmt-table" />
                 ),
-                TableHead: (props) => <thead {...props} />,
-                TableRow: (props) => <tr {...props} />,
-                TableBody: (props) => <tbody {...props} />,
               }}
               fixedHeaderContent={() => (
                 <tr>
@@ -1142,40 +1123,6 @@ export default function ConManagement({ closeManagement }) {
                 </>
               )}
             />
-            {/* <table className="con-mgmt-table">
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>ID</th>
-                  <th>Date</th>
-                  <th>Section</th>
-                  <th>Item Code</th>
-                  <th>Material Name</th>
-                  <th>Unit</th>
-                  <th>Issued Quantity</th>
-                  <th>Issued By</th>
-                  <th>Category</th>
-                  <th>RIS #</th>
-                </tr>
-              </thead>
-              <tbody>
-                {issuanceData.map((item, index) => (
-                  <tr key={item.id || index}>
-                    <td>{index + 1}</td>
-                    <td>{item.id}</td>
-                    <td>{item.d_received}</td>
-                    <td>{item.section}</td>
-                    <td>{item.i_code}</td>
-                    <td>{item.m_name}</td>
-                    <td>{item.unit}</td>
-                    <td>{item.i_qty}</td>
-                    <td>{item.i_by}</td>
-                    <td>{item.cat}</td>
-                    <td>{item.ris_num}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table> */}
           </div>
         </div>
       </div>

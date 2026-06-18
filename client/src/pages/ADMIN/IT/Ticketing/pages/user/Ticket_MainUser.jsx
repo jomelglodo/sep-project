@@ -5,6 +5,7 @@ import HeaderSidebar from "../../Ticket_MainUserSidebar";
 
 //SIDEBAR PAGES
 import Dashboard from "./Ticket_MainUser_Dashboard";
+import Ticket from "./Ticket_MainUser_Ticket";
 
 export default function TicketMainUser({ onLogout, displayName }) {
   const [activePage, setActivePage] = useState("dashboard");
@@ -47,6 +48,10 @@ export default function TicketMainUser({ onLogout, displayName }) {
     switch (activePage) {
       case "dashboard":
         return <Dashboard />;
+
+      case "ticket":
+        return <Ticket />;
+
       case "announcement":
       default:
         return null;
@@ -63,8 +68,10 @@ export default function TicketMainUser({ onLogout, displayName }) {
         {/* CONTENT */}
         <main className="ticket-mainuser-home-page-content">
           {/* TITLE */}
-
-          {renderContent()}
+          <div className="user-renderpage-container" key={activePage}>
+            {" "}
+            {renderContent()}
+          </div>
         </main>
       </div>
       {/* <button onClick={onLogout}>LOG OUT</button> */}

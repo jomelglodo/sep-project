@@ -65,9 +65,9 @@
 .ticket-mainuser-profile-dropdown {
   position: absolute;
   /* top: calc(100% - 5px); */
-  top: 40px;
+  top: 35px;
   right: 0;
-  background: rgb(15, 32, 127);
+  background: linear-gradient(135deg, rgb(15, 32, 127), rgb(42, 69, 218));
   color: white;
   border-radius: 8px;
   width: 150px;

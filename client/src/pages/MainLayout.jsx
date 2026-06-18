@@ -32,7 +32,6 @@ export default function MainLayout() {
             </>
           ) : activeSub === "PPC - Warehouse - RIS" ? (
             <>
-              <h2 className="content-title">{activeSub}</h2>
               <Ris />
             </>
           ) : activeSub === "PPC - Warehouse - Consumable Issuance" ? (
@@ -42,7 +41,6 @@ export default function MainLayout() {
             </>
           ) : activeSub === "ADMIN - IT - Ticketing" ? (
             <>
-              <h2 className="content-title">{activeSub}</h2>
               <TicketLogin />
             </>
           ) : activeSub ? (
