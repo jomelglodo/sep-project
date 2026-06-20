@@ -16,7 +16,8 @@
 .ticket-mainuser-home-layout {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  /* height: 100vh; */
+  min-height: 90vh;
   font-family: Arial, sans-serif;
 }
 

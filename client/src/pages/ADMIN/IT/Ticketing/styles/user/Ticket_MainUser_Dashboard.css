@@ -1,3 +1,7 @@
+.ticket-mainuser-dashboard-title {
+  margin-bottom: 10px;
+}
+
 /* TICKET CONTAINER */
 .ticket-mainuser-dashboard-ticketcounter-container {
   display: grid;
@@ -41,7 +45,7 @@
 
 .ticket-mainuser-dashboard-statistics {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: 10px;
 }
 
@@ -83,6 +87,7 @@
 .ticket-mainuser-dashboard-table td {
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 14px;
 }
 
 /* TABLE HEADER STICKY */

@@ -6,7 +6,7 @@ export const accountValidation = async (req, res) => {
   try {
     const result = await ticketPool.query(
       `
-            SELECT username,password,d_name,role
+            SELECT username,password,d_name,role,user_id
             FROM "tbl_userAccounts"
             WHERE username = $1
             AND password = $2
@@ -19,6 +19,7 @@ export const accountValidation = async (req, res) => {
         success: true,
         d_name: result.rows[0].d_name,
         role: result.rows[0].role,
+        user_id: result.rows[0].user_id,
       });
     } else {
       res.json({
@@ -31,6 +32,7 @@ export const accountValidation = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+
 async function ifAccountExist(username, password) {
   try {
     const result = await ticketPool.query(

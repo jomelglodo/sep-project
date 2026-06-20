@@ -56,10 +56,10 @@ export default function UserTicketDashboardChart({ stats }) {
           outerRadius={80}
           paddingAngle={4}
           dataKey="value"
-          label={({ name, value, percent }) =>
+          /*  label={({ name, value, percent }) =>
             `${name}: ${value} (${(percent * 100).toFixed(0)}%)`
-          }
-          /* label={({ percent }) => `${(percent * 100).toFixed(0)}%`} */
+          } */
+          label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
         >
           {data.map((entry, index) => (
             <Cell key={index} fill={COLORS[index]} />

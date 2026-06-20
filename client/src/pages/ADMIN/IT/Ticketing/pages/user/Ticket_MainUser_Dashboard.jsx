@@ -25,7 +25,7 @@ export default function MainUserDashBoard() {
   }, []);
   return (
     <div className="ticket-mainuser-dashboard-container">
-      <h2>Dashbord</h2>
+      <h2 className="ticket-mainuser-dashboard-title">Dashbord</h2>
       {/* TICKET COUNTER */}
       <div className="ticket-mainuser-dashboard-ticketcounter-container">
         <div className="ticket-mainuser-home-ticketcounter-group total">

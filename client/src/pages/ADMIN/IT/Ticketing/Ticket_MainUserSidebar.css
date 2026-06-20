@@ -1,5 +1,5 @@
 .ticket-mainuser-home-sidebar {
-  width: 240px;
+  width: 200px;
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
   color: white;
@@ -22,8 +22,8 @@
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 15px;
   font-weight: 600;
+  font-size: 12px;
 }
 
 .ticket-mainuser-home-menu-item:hover {

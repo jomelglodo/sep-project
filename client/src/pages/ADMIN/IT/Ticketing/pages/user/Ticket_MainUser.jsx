@@ -4,10 +4,14 @@ import HeaderTopbar from "../../Ticket_MainUserTopbar";
 import HeaderSidebar from "../../Ticket_MainUserSidebar";
 
 //SIDEBAR PAGES
-import Dashboard from "./Ticket_MainUser_Dashboard";
-import Ticket from "./Ticket_MainUser_Ticket";
+import MainUserDashBoard from "./Ticket_MainUser_Dashboard";
+import MainUserTicket from "./Ticket_MainUser_Ticket";
 
-export default function TicketMainUser({ onLogout, displayName }) {
+export default function TicketMainUser({
+  onLogout,
+  displayName,
+  loggedinUserId,
+}) {
   const [activePage, setActivePage] = useState("dashboard");
   /* useEffect(() => {
     let timeout;
@@ -47,10 +51,15 @@ export default function TicketMainUser({ onLogout, displayName }) {
   const renderContent = () => {
     switch (activePage) {
       case "dashboard":
-        return <Dashboard />;
+        return <MainUserDashBoard />;
 
       case "ticket":
-        return <Ticket />;
+        return (
+          <MainUserTicket
+            displayName={displayName}
+            loggedinUserId={loggedinUserId}
+          />
+        );
 
       case "announcement":
       default:
@@ -69,7 +78,6 @@ export default function TicketMainUser({ onLogout, displayName }) {
         <main className="ticket-mainuser-home-page-content">
           {/* TITLE */}
           <div className="user-renderpage-container" key={activePage}>
-            {" "}
             {renderContent()}
           </div>
         </main>

@@ -35,20 +35,22 @@ export default function TicketLogin() {
   //RESPONSE API HOOK
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
+  const [userId, setUserId] = useState("");
 
   //MESSAGE
   const [successMessage, setSuccessMessage] = useState(false);
 
   // Check Login status when component loads
-  useEffect(() => {
-    console.log(JSON.parse(localStorage.getItem("ticketingAuth")));
-    const auth = JSON.parse(localStorage.getItem("ticketingAuth"));
-    if (auth?.isLoggedIn) {
-      setIsLoggedIn(true);
-      setRole(auth.role);
-      setDisplayName(auth.d_name);
-    }
-  }, []);
+  // useEffect(() => {
+  //   console.log(JSON.parse(localStorage.getItem("ticketingAuth")));
+  //   const auth = JSON.parse(localStorage.getItem("ticketingAuth"));
+  //   if (auth?.isLoggedIn) {
+  //     setIsLoggedIn(true);
+  //     setRole(auth.role);
+  //     setDisplayName(auth.d_name);
+  //     setUserId(auth.user_id);
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (usernameRef.current) {
@@ -91,9 +93,11 @@ export default function TicketLogin() {
         setChangeCurrentPassword("");
         setChangeNewPassword("");
         setChangeConfirmPassword("");
+
         if (changeUsernameRef.current) {
           changeUsernameRef.current.focus();
         }
+
         setSuccessMessage(true);
 
         setTimeout(() => {
@@ -106,6 +110,7 @@ export default function TicketLogin() {
       console.error(err);
     }
   }
+
   //USER LOG IN
   async function handleSubmit(e) {
     e.preventDefault();
@@ -126,21 +131,22 @@ export default function TicketLogin() {
       );
 
       if (response.data.success) {
-        const { d_name, role } = response.data;
-
+        const { d_name, role, user_id } = response.data;
+        console.log(response.data);
         /* localStorage.setItem(
           "ticketingAuth",
           JSON.stringify({
             isLoggedIn: true,
             role,
             d_name,
+            userId,
             username: username,
             lastActivity: Date.now(),
           }),
         ); */
         setRole(role);
         setDisplayName(d_name);
-
+        setUserId(user_id);
         setIsLoggedIn(true);
       } else {
         alert(response.data.message);
@@ -150,11 +156,12 @@ export default function TicketLogin() {
     }
   }
   const handleLogout = () => {
-    localStorage.removeItem("ticketingAuth");
+    //localStorage.removeItem("ticketingAuth");
 
     setUsername("");
     setPassword("");
     setRole("");
+    setUserId("");
     setDisplayName("");
 
     if (usernameRef.current) {
@@ -166,11 +173,15 @@ export default function TicketLogin() {
 
   if (isLoggedIn) {
     const normalizedRole = role?.toLowerCase().trim();
-
+    console.log("userid1:" + userId);
     switch (normalizedRole) {
       case "user":
         return (
-          <TicketMainUser onLogout={handleLogout} displayName={displayName} />
+          <TicketMainUser
+            onLogout={handleLogout}
+            displayName={displayName}
+            loggedinUserId={userId}
+          />
         );
       case "staff":
         return (

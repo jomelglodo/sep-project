@@ -36,7 +36,6 @@ export default function MainLayout() {
             </>
           ) : activeSub === "PPC - Warehouse - Consumable Issuance" ? (
             <>
-              <h2 className="content-title">{activeSub}</h2>
               <ConLogin />
             </>
           ) : activeSub === "ADMIN - IT - Ticketing" ? (
