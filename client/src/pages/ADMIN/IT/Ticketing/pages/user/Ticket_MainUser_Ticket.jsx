@@ -28,71 +28,24 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
   //USEREF
   const fileInputRef = useRef(null);
 
-  const sampData = [
-    {
-      ticketnum: "#00001",
-      datereceived: "2026-04-22 02:01:12PM",
-      subject: "Sample",
-      status: "Open",
-      incharge: "IT-Jomel",
-      datestart: "2026-04-22 02:10:12PM",
-      datefinish: "2026-04-22 02:31:12PM",
-    },
-    {
-      ticketnum: "#00002",
-      datereceived: "2026-04-22 02:01:12PM",
-      subject: "Sample 2",
-      status: "In Progress",
-      incharge: "IT-Jomel",
-      datestart: "2026-04-22 02:10:12PM",
-      datefinish: "2026-04-22 02:31:12PM",
-    },
-    {
-      ticketnum: "#00003",
-      datereceived: "2026-04-22 02:01:12PM",
-      subject: "Sample 3",
-      status: "Closed",
-      incharge: "IT-Jomel",
-      datestart: "2026-04-22 02:10:12PM",
-      datefinish: "2026-04-22 02:31:12PM",
-    },
-  ];
+  //GET THE CURRENT DATE (FORMATTED : yyyyMM-dd)
 
-  //populate tickets using poll and runs only when the user view Ticket Page
-  useEffect(() => {
-    let interval;
+  function getCurrentDate() {
+    const now = new Date();
+    const year = String(now.getFullYear());
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
 
-    const fetchIfVisible = async () => {
-      if (document.visibilityState === "visible") {
-        await fetchTickets;
-      }
-    };
-    //initial load if visible
-    fetchTickets();
-    interval = setInterval(() => {
-      fetchIfVisible;
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const fetchTickets = async () => {
-    try {
-      const result = await fetch(`
-    ${process.env.REACT_APP_API_URL}/ticketing/user/ticket/gettickets
-    `);
-
-      const data = await result.json();
-      setTicketList(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    return `${year}-${month}-${day}`;
+  }
 
   //reset form and populate assets
   useEffect(() => {
     if (showCreateTicket) {
       resetForm();
+
+      //get the current date
+      setCurDate(getCurrentDate());
     }
 
     //populate asset
@@ -105,6 +58,46 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
         console.error(err);
       });
   }, [showCreateTicket]);
+
+  //populate tickets using poll and runs only when the user view Ticket Page
+  useEffect(() => {
+    let interval;
+
+    const fetchIfVisible = async () => {
+      if (document.visibilityState === "visible") {
+        await fetchTickets();
+      }
+    };
+    //initial load if visible
+    fetchTickets();
+    interval = setInterval(() => {
+      fetchIfVisible();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [search]);
+
+  const fetchTickets = async () => {
+    try {
+      const result = await fetch(
+        `${process.env.REACT_APP_API_URL}/ticketing/user/ticket/gettickets`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            d_name: displayName,
+          }),
+        },
+      );
+
+      const data = await result.json();
+      setTicketList(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   function handleEditButton(item) {
     setSelectedTicketNum(item.ticketnum);
@@ -137,7 +130,6 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
   }
 
   function resetForm() {
-    setCurDate("");
     setAsset("");
     setFaTag("");
     setSubject("");
@@ -187,7 +179,8 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
       const data = await res.json();
 
       if (data.success) {
-        alert("Ticket Created");
+        const ticketNum = data.ticketNum;
+        alert(`${ticketNum} successfully created`);
         resetForm();
         fetchTickets();
       }
@@ -224,7 +217,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
               <button
                 className="ticket-mainuser-ticket-modal-closebtn"
                 onClick={() => {
-                  setShowCreateTicket(false);
+                  closeModal();
                 }}
               >
                 X
@@ -240,7 +233,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                 <div className="ticket-mainuser-ticket-modal-grid">
                   <div className="ticket-mainuser-ticket-modal-group">
                     <label>Date Created</label>
-                    <label var={curDate}>2026-04-28 13:15:54.062427</label>
+                    <label var={curDate}>{curDate}</label>
                   </div>
 
                   <div className="ticket-mainuser-ticket-modal-group">

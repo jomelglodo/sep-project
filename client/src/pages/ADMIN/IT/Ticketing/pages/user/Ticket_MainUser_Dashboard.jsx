@@ -2,58 +2,90 @@ import React, { useState, useEffect, useRef } from "react";
 import "../../styles/user/Ticket_MainUser_Dashboard.css";
 import UserTicketDashboardChart from "./Ticket_User_DashboardChart";
 
-export default function MainUserDashBoard() {
-  const [stats, setStats] = useState({
+export default function MainUserDashBoard({ displayName, loggedinUserId }) {
+  const [ticketList, setTicketList] = useState([]);
+
+  const [counterTicket, setCounterTicket] = useState({
     total: 0,
     open: 0,
     inprogress: 0,
-    closed: 0,
     cancelled: 0,
+    closed: 0,
   });
 
   useEffect(() => {
     // simulate API
+
     setTimeout(() => {
-      setStats({
-        total: 120,
-        open: 30,
-        inprogress: 25,
-        closed: 55,
-        cancelled: 10,
-      });
+      fetch(
+        `${process.env.REACT_APP_API_URL}/ticketing/user/ticket/countticket/${loggedinUserId}`,
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setCounterTicket(data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }, 500);
   }, []);
+
+  useEffect(() => {
+    fetchTickets();
+  }, []);
+
+  const fetchTickets = async () => {
+    try {
+      const result = await fetch(
+        `${process.env.REACT_APP_API_URL}/ticketing/user/ticket/gettickets`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            d_name: displayName,
+          }),
+        },
+      );
+
+      const data = await result.json();
+      setTicketList(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <div className="ticket-mainuser-dashboard-container">
       <h2 className="ticket-mainuser-dashboard-title">Dashbord</h2>
       {/* TICKET COUNTER */}
       <div className="ticket-mainuser-dashboard-ticketcounter-container">
         <div className="ticket-mainuser-home-ticketcounter-group total">
-          <h3>{stats.total}</h3>
+          <h3>{counterTicket.total}</h3>
           <p>Total Tickets</p>
         </div>
         <div className="ticket-mainuser-home-ticketcounter-group open">
-          <h3>{stats.open}</h3>
+          <h3>{counterTicket.open}</h3>
           <p>Open Tickets</p>
         </div>
         <div className="ticket-mainuser-home-ticketcounter-group inprogress">
-          <h3>{stats.inprogress}</h3>
+          <h3>{counterTicket.inprogress}</h3>
           <p>In Progress</p>
         </div>
         <div className="ticket-mainuser-home-ticketcounter-group closed">
-          <h3>{stats.closed}</h3>
+          <h3>{counterTicket.closed}</h3>
           <p>Closed Tickets</p>
         </div>
         <div className="ticket-mainuser-home-ticketcounter-group cancelled">
-          <h3>{stats.cancelled}</h3>
+          <h3>{counterTicket.cancelled}</h3>
           <p>Cancelled</p>
         </div>
       </div>
       <div className="ticket-mainuser-dashboard-statistics">
         {/* RECENT TICKET TABLE */}
         <div className="ticket-mainuser-dashboard-table-wrapper">
+          <h3>Recent Tickets</h3>
           <div className="ticket-mainuser-dashboard-table-container">
-            <h3>Recent Tickets</h3>
             <table className="ticket-mainuser-dashboard-table">
               <thead>
                 <tr>
@@ -66,22 +98,16 @@ export default function MainUserDashBoard() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>#0001</td>
-                  <td>2026-06-10 03:10:12PM</td>
-                  <td>Printer Issue</td>
-                  <td>In Progress</td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>#0002</td>
-                  <td>2026-06-13 02:01:12PM</td>
-                  <td>No Connection</td>
-                  <td>Open</td>
-                  <td>Jomel</td>
-                </tr>
+                {ticketList.map((item, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.ticket_num_ticket}</td>
+                    <td>{item.date_submitted}</td>
+                    <td>{item.subject_title}</td>
+                    <td>{item.status}</td>
+                    <td>{item.staff_name}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -89,7 +115,7 @@ export default function MainUserDashBoard() {
         {/* CHART */}
         <div className="ticket-mainuser-dashboard-chart-wrapper">
           <h3>Ticket Distribution</h3>
-          <UserTicketDashboardChart stats={stats} />
+          <UserTicketDashboardChart ticketStats={counterTicket} />
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  countTicket,
   populateTickets,
   populateAsset,
   createTicket,
@@ -12,14 +13,18 @@ const upload = multer({
   storage: multer.memoryStorage(),
 });
 
+//TICKET TAB
 //POST
 //multiple image attachment
 //router.post("/createticket", upload.array("attachments", 10), createTicket);
 //single image attachment
 router.post("/ticket/createticket", upload.single("attachment"), createTicket);
+router.post("/ticket/gettickets", populateTickets);
 
 //GET
 router.get("/ticket/getassets", populateAsset);
-router.get("/ticket/gettickets", populateTickets);
+
+//DASHBOARD TAB
+router.get("/ticket/countticket/:userId", countTicket);
 
 export default router;

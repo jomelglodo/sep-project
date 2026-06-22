@@ -51,7 +51,12 @@ export default function TicketMainUser({
   const renderContent = () => {
     switch (activePage) {
       case "dashboard":
-        return <MainUserDashBoard />;
+        return (
+          <MainUserDashBoard
+            displayName={displayName}
+            loggedinUserId={loggedinUserId}
+          />
+        );
 
       case "ticket":
         return (

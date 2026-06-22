@@ -132,7 +132,6 @@ export default function TicketLogin() {
 
       if (response.data.success) {
         const { d_name, role, user_id } = response.data;
-        console.log(response.data);
         /* localStorage.setItem(
           "ticketingAuth",
           JSON.stringify({

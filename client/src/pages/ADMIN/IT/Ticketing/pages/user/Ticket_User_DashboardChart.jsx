@@ -8,23 +8,24 @@ import {
   Legend,
 } from "recharts";
 
-export default function UserTicketDashboardChart({ stats }) {
+export default function UserTicketDashboardChart({ ticketStats }) {
+  console.log("again :" + typeof ticketStats.open);
   const data = [
     {
       name: "Open",
-      value: stats.open,
+      value: ticketStats.open,
     },
     {
       name: "In Progress",
-      value: stats.inprogress,
+      value: ticketStats.inprogress,
     },
     {
       name: "Closed",
-      value: stats.closed,
+      value: ticketStats.closed,
     },
     {
       name: "Cancelled",
-      value: stats.cancelled,
+      value: ticketStats.cancelled,
     },
   ];
 
@@ -46,7 +47,7 @@ export default function UserTicketDashboardChart({ stats }) {
           fontSize={26}
           fontWeight="bold"
         >
-          {stats.total}
+          {ticketStats.total}
         </text>
         <Pie
           data={data}
