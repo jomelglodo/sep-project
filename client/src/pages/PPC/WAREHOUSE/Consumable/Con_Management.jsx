@@ -10,7 +10,7 @@ import AddMaterial from "./Con_AddMaterial";
 
 import { CON_IMAGE } from "../../../../assets/images/ppc/consumable_index";
 
-export default function ConManagement() {
+export default function ConManagement({ closeManagement }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -998,6 +998,10 @@ export default function ConManagement() {
         <div className="con-mgmt-header-container">
           <div className="con-mgmt-header-group con-mgmt-header-btn">
             <div className="con-mgmt-header-admin-btn">
+              <button onClick={closeManagement}>
+                <img src={CON_IMAGE.main_returntologinbtn} alt="Return" />
+                Back to login
+              </button>
               <button
                 onClick={() => {
                   setShowAddmaterialModal(true);

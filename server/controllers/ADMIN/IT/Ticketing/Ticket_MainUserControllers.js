@@ -35,8 +35,17 @@ export const populateTickets = async (req, res) => {
         SELECT 
           t.ticket_num AS ticket_num_ticket,
           t.r_name,
-          t.date_submitted,
+          TO_CHAR(t.date_submitted, 'YYYY-MM-DD HH24:MI:SS') as d_submitted,
+          t.asset,
+          t.asset_tag,
           t.subject_title,
+          t.description,
+          CASE 
+            WHEN attachment IS NOT NULL THEN TRUE 
+            ELSE FALSE
+          END as has_attachment,
+          t.attachment_filename,
+          t.attachment_mimetype,
           t.status,
           u.ticket_num,
           u.staff_name,
@@ -55,6 +64,52 @@ export const populateTickets = async (req, res) => {
     res.json(response.rows);
   } catch (err) {
     console.error(err);
+  }
+};
+
+//GET IMAGE OF THE SELECTED TICKET NUM
+export const getTicketImage = async (req, res) => {
+  try {
+    const { selectedTicketNum } = req.params;
+
+    const result = await ticketPool.query(
+      `
+      SELECT 
+      attachment,
+      attachment_filename,
+      attachment_mimetype
+      FROM tbl_tickets
+      WHERE ticket_num = $1
+      `,
+      [selectedTicketNum],
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Ticket not found",
+      });
+    }
+
+    const ticket = result.rows[0];
+
+    if (!ticket.attachment) {
+      return res.status(404).json({
+        success: false,
+        message: "No image attached",
+      });
+    }
+
+    res.setHeader("Content-Type", ticket.attachment_mimetype);
+
+    return res.send(ticket.attachment);
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
   }
 };
 
@@ -122,7 +177,7 @@ export const createTicket = async (req, res) => {
   const client = await ticketPool.connect();
 
   try {
-    /*  console.log("BODY:", req.body);
+    /* console.log("BODY:", req.body);
     console.log("FILE:", req.file); */
     await client.query("BEGIN");
 
@@ -133,7 +188,7 @@ export const createTicket = async (req, res) => {
     //for single image
     const imageBuffer = req.file ? req.file.buffer : null;
     const filename = req.file ? req.file.originalname : null;
-    const mimeType = req.file ? req.file.mimeType : null;
+    const mimeType = req.file ? req.file.mimetype : null;
 
     //const files = req.files || [];
     //for multiple image
@@ -185,5 +240,35 @@ export const createTicket = async (req, res) => {
     });
   } finally {
     client.release();
+  }
+};
+
+// CANCEL TICKET
+
+export const cancelTicket = async (req, res) => {
+  const { selTicketNum } = req.params;
+  try {
+    const result = await ticketPool.query(
+      `UPDATE tbl_tickets SET status='Cancelled' WHERE ticket_num = $1`,
+      [selTicketNum],
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Ticket not found",
+      });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Ticket successfully updated" });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
   }
 };

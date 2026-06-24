@@ -2,8 +2,10 @@ import express from "express";
 import {
   countTicket,
   populateTickets,
+  getTicketImage,
   populateAsset,
   createTicket,
+  cancelTicket,
 } from "../../../../controllers/ADMIN/IT/Ticketing/Ticket_MainUserControllers.js";
 import multer from "multer";
 
@@ -21,8 +23,12 @@ const upload = multer({
 router.post("/ticket/createticket", upload.single("attachment"), createTicket);
 router.post("/ticket/gettickets", populateTickets);
 
+//PUT
+router.put("/ticket/cancelticket/:selTicketNum", cancelTicket);
+
 //GET
 router.get("/ticket/getassets", populateAsset);
+router.get("/ticket/getticketimage/:selectedTicketNum", getTicketImage);
 
 //DASHBOARD TAB
 router.get("/ticket/countticket/:userId", countTicket);
