@@ -1,4 +1,37 @@
 import { ticketPool } from "../../../../db.js";
+//GET PROFILE IMAGE
+export const getProfileImage = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const result = await ticketPool.query(
+      `
+      SELECT 
+        profile_image,
+        profile_image_mimetype
+      FROM "tbl_userAccounts"
+      WHERE user_id = $1
+      `,
+      [userId],
+    );
+    /*     console.log("userId:", userId);
+    console.log("rowCount:", result.rowCount);
+    console.log(result.rows.length); */
+    if (result.rows.length === 0) {
+      return res.status(404).send("Image not Found");
+    }
+
+    const image = result.rows[0].profile_image;
+
+    if (!image) {
+      return res.status(404).send("No profile image");
+    }
+
+    res.set("Content-Type", result.rows[0].profile_image_mimetype);
+    res.send(image);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 //DASHBOARD COUNTER
 export const countTicket = async (req, res) => {
@@ -49,8 +82,8 @@ export const populateTickets = async (req, res) => {
           t.status,
           u.ticket_num,
           u.staff_name,
-          u.time_started,
-          u.time_finished
+          TO_CHAR(u.time_started,'YYYY-MM-DD HH24:MI:SS') as t_started,
+          TO_CHAR(u.time_finished,'YYYY-MM-DD HH24:MI:SS') as t_finished
         FROM tbl_tickets t
         LEFT JOIN tbl_ticket_updates u
           ON t.ticket_num = u.ticket_num
@@ -242,11 +275,79 @@ export const createTicket = async (req, res) => {
     client.release();
   }
 };
+// UPDATE TICKET
+export const updateTicket = async (req, res) => {
+  const { selectedTicketNum } = req.params;
+  const { asset, faTag, subject, description } = req.body;
+
+  //image attachment
+  const imageBuffer = req.file ? req.file.buffer : null;
+  const filename = req.file ? req.file.originalname : null;
+  const mimeType = req.file ? req.file.mimetype : null;
+
+  try {
+    let result;
+    if (!req.file) {
+      result = await ticketPool.query(
+        `
+      UPDATE tbl_tickets
+      SET asset = $1, asset_tag = $2, subject_title = $3, description = $4
+      WHERE ticket_num = $5
+      `,
+        [asset, faTag, subject, description, selectedTicketNum],
+      );
+    } else {
+      result = await ticketPool.query(
+        `
+        UPDATE tbl_tickets
+        SET 
+          asset = $1, 
+          asset_tag = $2,
+          subject_title = $3, 
+          description = $4,
+          attachment =$5,
+          attachment_filename =$6,
+          attachment_mimetype = $7
+        WHERE ticket_num = $8
+        `,
+        [
+          asset,
+          faTag,
+          subject,
+          description,
+          imageBuffer,
+          filename,
+          mimeType,
+          selectedTicketNum,
+        ],
+      );
+    }
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Ticket not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Ticket successfully updated",
+    });
+  } catch (err) {
+    console.err(err);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
 
 // CANCEL TICKET
 
 export const cancelTicket = async (req, res) => {
   const { selTicketNum } = req.params;
+
   try {
     const result = await ticketPool.query(
       `UPDATE tbl_tickets SET status='Cancelled' WHERE ticket_num = $1`,

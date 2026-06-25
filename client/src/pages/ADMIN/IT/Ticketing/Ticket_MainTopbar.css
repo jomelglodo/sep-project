@@ -1,0 +1,164 @@
+:root {
+  --header-fc: white;
+  --header-bc: rgba(54, 72, 112, 0.6);
+}
+
+/* USER OVERLAY */
+.ticket-main-topbar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+}
+
+.ticket-main-topbar-modal {
+  position: fixed;
+
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  animation: openFromProfile 0.5s ease-out forwards;
+}
+
+.ticket-main-topbar-modal-closebtn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+
+  background-color: rgb(242, 104, 104);
+  color: white;
+  height: 30px;
+  width: 30px;
+
+  border: none;
+  border-radius: 50%;
+
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.ticket-main-topbar-modal-closebtn:hover {
+  background-color: red;
+}
+
+.ticket-main-topbar {
+  /* 
+  height: 60px; */
+  /* background: rgba(0, 0, 0, 0.3); */
+  background: linear-gradient(135deg, rgb(34, 34, 150), rgb(11, 17, 25));
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 25px;
+  border-bottom: 1px solid #aaa6a6;
+
+  /*  position: sticky;
+  top: 0;
+  z-index: 9999; */
+}
+
+/* LOGO CONTAINER */
+
+.ticket-main-topbar-logo-container {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  gap: 20px;
+}
+
+.ticket-main-topbar-logo-container p {
+  color: var(--header-fc);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.ticket-main-topbar-logo-container img {
+  height: 30px;
+  width: 30px;
+}
+
+/* PROFILE CONTAINER */
+.ticket-main-profile-topright {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--header-fc);
+}
+
+.ticket-main-profile-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.ticket-main-profile-container img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.ticket-main-profile-wrapper {
+  position: relative;
+  padding: 10px;
+}
+
+.ticket-main-profile-dropdown {
+  position: absolute;
+  overflow: hidden;
+  /* top: calc(100% - 5px); */
+  top: 60px;
+  right: 0;
+  background: linear-gradient(135deg, rgb(15, 32, 127), rgb(42, 69, 218));
+  color: white;
+  border-radius: 8px;
+  width: 150px;
+  z-index: 100;
+  border: 1px solid rgb(217, 16, 16);
+}
+
+.ticket-main-profile-wrapper:hover .ticket-mainuser-profile-dropdown {
+  display: block;
+}
+
+.ticket-main-profile-dropdown p {
+  padding: 15px;
+  margin: 0;
+  cursor: pointer;
+  font-size: 12px;
+  /* 
+  text-align: center; */
+}
+
+.ticket-main-profile-dropdown p:hover {
+  background: #93b3f1;
+}
+
+@keyframes openFromProfile {
+  from {
+    left: var(--start-x);
+    top: var(--start-y);
+
+    transform: translate(-50%, -50%) scale(0.1);
+    opacity: 0;
+  }
+
+  to {
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}

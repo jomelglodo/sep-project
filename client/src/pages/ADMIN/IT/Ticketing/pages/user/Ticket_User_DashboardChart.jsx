@@ -9,7 +9,7 @@ import {
 } from "recharts";
 
 export default function UserTicketDashboardChart({ ticketStats }) {
-  console.log("again :" + typeof ticketStats.open);
+  /*  console.log("again :" + typeof ticketStats.open); */
   const data = [
     {
       name: "Open",

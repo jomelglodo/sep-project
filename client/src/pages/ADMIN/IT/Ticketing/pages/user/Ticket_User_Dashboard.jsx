@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "../../styles/user/Ticket_MainUser_Dashboard.css";
+import "../../styles/user/Ticket_User_Dashboard.css";
 import UserTicketDashboardChart from "./Ticket_User_DashboardChart";
 
 export default function MainUserDashBoard({ displayName, loggedinUserId }) {
@@ -114,7 +114,7 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
         </div>
         {/* CHART */}
         <div className="ticket-mainuser-dashboard-chart-wrapper">
-          <h3>Ticket Distribution</h3>
+          <h3>Ticket Distributions</h3>
           <UserTicketDashboardChart ticketStats={counterTicket} />
         </div>
       </div>

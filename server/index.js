@@ -49,9 +49,9 @@ import Con_LoginRoutes from "./routes/PPC/WAREHOUSE/Consumable/Con_Routes.js";
 //-------------------------------------------------------------------------------------
 
 //TICKETING ROUTES--------------------------------------------------------------------
-
+import Ticket_MainRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_MainRoutes.js";
 import Ticket_LoginRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_LoginRoutes.js";
-import Ticket_MainUserRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_MainUserRoutes.js";
+import Ticket_UserRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_UserRoutes.js";
 
 //-------------------------------------------------------------------------------------
 
@@ -101,8 +101,9 @@ app.use("/ris/receive", Ris_ReceiveRoutes);
 app.use("/con", Con_LoginRoutes);
 
 //ADMIN - IT - Ticketing
+app.use("/ticketing/main", Ticket_MainRoutes);
 app.use("/ticketing/login", Ticket_LoginRoutes);
-app.use("/ticketing/user", Ticket_MainUserRoutes);
+app.use("/ticketing/user", Ticket_UserRoutes);
 
 // app.get("/test", (req, res) => {
 //   res.json({ ok: true, time: Date.now() });

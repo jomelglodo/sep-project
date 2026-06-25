@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../../styles/user/Ticket_MainUser.css";
-import HeaderTopbar from "../../Ticket_MainUserTopbar";
-import HeaderSidebar from "../../Ticket_MainUserSidebar";
+import HeaderTopbar from "../../Ticket_MainTopbar";
+import HeaderSidebar from "../../Ticket_MainSidebar";
 
 //SIDEBAR PAGES
-import MainUserDashBoard from "./Ticket_MainUser_Dashboard";
-import MainUserTicket from "./Ticket_MainUser_Ticket";
+import MainUserDashBoard from "./Ticket_User_Dashboard";
+import MainUserTicket from "./Ticket_User_Ticket";
 
 export default function TicketMainUser({
   onLogout,
@@ -71,10 +71,15 @@ export default function TicketMainUser({
         return null;
     }
   };
+
   return (
     <div className="ticket-mainuser-home-layout">
       {/* TOPBAR */}
-      <HeaderTopbar displayName={displayName} onLogout={onLogout} />
+      <HeaderTopbar
+        displayName={displayName}
+        onLogout={onLogout}
+        loggedinUserId={loggedinUserId}
+      />
 
       <div className="ticket-mainuser-home-body">
         {/* SIDEBAR */}

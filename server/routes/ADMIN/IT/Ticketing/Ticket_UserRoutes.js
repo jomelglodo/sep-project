@@ -1,12 +1,14 @@
 import express from "express";
 import {
+  getProfileImage,
   countTicket,
   populateTickets,
   getTicketImage,
   populateAsset,
   createTicket,
   cancelTicket,
-} from "../../../../controllers/ADMIN/IT/Ticketing/Ticket_MainUserControllers.js";
+  updateTicket,
+} from "../../../../controllers/ADMIN/IT/Ticketing/Ticket_UserControllers.js";
 import multer from "multer";
 
 const router = express.Router();
@@ -14,6 +16,9 @@ const router = express.Router();
 const upload = multer({
   storage: multer.memoryStorage(),
 });
+
+//MAIN
+router.get("/ticket/profileimage/:userId", getProfileImage);
 
 //TICKET TAB
 //POST
@@ -25,6 +30,11 @@ router.post("/ticket/gettickets", populateTickets);
 
 //PUT
 router.put("/ticket/cancelticket/:selTicketNum", cancelTicket);
+router.put(
+  "/ticket/updateticket/:selectedTicketNum",
+  upload.single("attachment"),
+  updateTicket,
+);
 
 //GET
 router.get("/ticket/getassets", populateAsset);

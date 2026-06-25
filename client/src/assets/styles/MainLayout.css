@@ -7,9 +7,6 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  /* background: #1c2125; */
-  /*  background: linear-gradient(135deg, #feca57, #48dbfb, #5f27cd); */
-  /* overflow: hidden; */
 
   background:
     radial-gradient(circle at top, rgba(59, 130, 246, 0.15), transparent 30%),
@@ -19,9 +16,13 @@
       transparent 35%
     ),
     #0f172a;
+
+  /* background: #1c2125; */
+  /*  background: linear-gradient(135deg, #feca57, #48dbfb, #5f27cd); */
+  /* overflow: hidden; */
 }
 
-.app-container::before,
+/* .app-container::before,
 .app-container::after {
   content: "";
   position: fixed;
@@ -29,19 +30,19 @@
   height: 300px;
   border-radius: 50%;
   filter: blur(100px);
-}
+} */
 
-.app-container::before {
+/* .app-container::before {
   background: #3b82f6;
   top: 300px;
   left: -100px;
-}
+} */
 
-.app-container::after {
+/* .app-container::after {
   background: #8b5cf6;
   bottom: -100px;
   right: -100px;
-}
+} */
 
 .header {
   position: sticky;
@@ -58,7 +59,8 @@
   flex-wrap: wrap; /* allows wrapping on small screens */
   padding: 2px 16px;
   gap: 12px;
-  z-index: 999;
+
+  z-index: 10;
 }
 /* HEADER LOGO */
 
@@ -73,6 +75,7 @@
   height: 25px;
   object-fit: contain;
 }
+
 /* LOGO */
 .logo {
   font-weight: bold;
@@ -121,8 +124,13 @@
   /* overflow-y: auto; */
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  z-index: 1000;
+  z-index: 100;
   animation: fadeIn 0.15s ease-in-out;
+}
+
+.submenu-dropdown {
+  position: absolute;
+  z-index: 100;
 }
 
 /* DROPDOWN SECTION */
@@ -147,12 +155,11 @@
 
 .content-box {
   position: relative;
-  z-index: 2;
+  z-index: auto;
 
   background: rgba(15, 23, 42, 0.65);
 
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  /* backdrop-filter: blur(20px); */
 
   border-radius: 20px;
 
@@ -164,6 +171,7 @@
 
   padding: 20px;
 }
+
 .content-box::before {
   content: "";
 
@@ -185,7 +193,6 @@
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
 
-  -webkit-mask-composite: xor;
   mask-composite: exclude;
 
   pointer-events: none;

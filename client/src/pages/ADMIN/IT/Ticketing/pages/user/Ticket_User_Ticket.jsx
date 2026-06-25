@@ -3,10 +3,12 @@ import { TableVirtuoso } from "react-virtuoso";
 import { FaEdit } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 
-import "../../styles/user/Ticket_MainUser_Ticket.css";
+import "../../styles/user/Ticket_User_Ticket.css";
 
 export default function MainUserTicket({ displayName, loggedinUserId }) {
+  // 2. STATES
   const [search, setSearch] = useState("");
+
   //list variables
   const [assetList, setAssetList] = useState([]);
   const [ticketList, setTicketList] = useState([]);
@@ -32,12 +34,13 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
 
   const [editAttachment, setEditAttachment] = useState(null);
   const [editPreviewUrl, setEditPreviewUrl] = useState();
-  const [editPreviewUrlEdit, setEditPreviewUrlEdit] = useState("");
+  /* const [editPreviewUrlEdit, setEditPreviewUrlEdit] = useState(""); */
+  const [showImageViewer, setShowImageViewer] = useState(false);
+  const [viewImage, setViewImage] = useState("");
 
   const [editHasAttachment, setEditHasAttachment] = useState(false);
   const [editAttachmentFilename, setEditAttachmentFilename] = useState("");
-
-  const [selectedTicketNum, setSelectedTicketNum] = useState("");
+  const [editNewAttachment, setNewAttachment] = useState(false);
 
   //MODAL
   const [showCreateTicket, setShowCreateTicket] = useState(false);
@@ -49,21 +52,13 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
 
   //MODAL VARIABLE
   const [selCancelTicketNum, setSelCancelTicketNum] = useState("");
+  const [selectedTicketNum, setSelectedTicketNum] = useState("");
 
-  //USEREF
+  // 3. REFS
   const fileInputRef = useRef(null);
   const editFileInputRef = useRef(null);
 
-  //GET THE CURRENT DATE (FORMATTED : yyyyMM-dd)
-
-  function getCurrentDate() {
-    const now = new Date();
-    const year = String(now.getFullYear());
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
-  }
+  // 4. EFFECTS
 
   //reset form and populate assets
   useEffect(() => {
@@ -103,9 +98,19 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
     return () => clearInterval(interval);
   }, [search]);
 
+  //debounce for searching data
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      fetchTickets();
+    }, 300);
+    return clearTimeout(delay);
+  }, [search]);
+
+  // 5. API FUNCTIONS
+
   const fetchTickets = async () => {
     try {
-      const result = await fetch(
+      const response = await fetch(
         `${process.env.REACT_APP_API_URL}/ticketing/user/ticket/gettickets`,
         {
           method: "POST",
@@ -118,12 +123,14 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
         },
       );
 
-      const data = await result.json();
+      const data = await response.json();
       setTicketList(data);
     } catch (err) {
       console.error(err);
     }
   };
+
+  // 6. EVENT HANDLERS
 
   function handleCancelledTicket(item) {
     if (item.status !== "Open") {
@@ -184,6 +191,11 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
     if (!file) return;
 
     if (showEditTicket) {
+      if (editHasAttachment) {
+        setEditHasAttachment(false);
+      }
+
+      setNewAttachment(true);
       setEditAttachment(file);
 
       const imageUrl = URL.createObjectURL(file);
@@ -209,72 +221,50 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
     // setPreviewUrl(previews);
   }
 
-  /* EDIT TICKET */
-
-  function closeEditModal() {
-    resetForm();
-    setShowEditTicket(false);
-  }
-  /* CREATE TICKET */
-  function closeModal() {
-    resetForm();
-    setShowCreateTicket(false);
-  }
-
-  function resetForm() {
-    if (showCreateTicket) {
-      setAsset("");
-      setFaTag("");
-      setSubject("");
-      setDescription("");
-
-      setAttachment(null);
-
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-
-      setPreviewUrl("");
-
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
-      return;
-    }
-
-    if (showEditTicket) {
-      setEditDateSubmitted("");
-      setEditAsset("");
-      setEditFaTag("");
-      setEditSubject("");
-      setEditDescription("");
-
-      setEditAttachment(null);
-      setEditHasAttachment(false);
-      setEditAttachmentFilename("");
-
-      if (editPreviewUrl) {
-        URL.revokeObjectURL(editPreviewUrl);
-      }
-
-      if (editFileInputRef.current) {
-        editFileInputRef.current.value = "";
-      }
-    }
-  }
-
   async function handleEditSubmit(e) {
     e.preventDefault();
     setShowEditConfirm(true);
   }
 
-  function handleEditConfirm() {
-    alert("submitted");
+  async function handleEditConfirm() {
+    const formData = new FormData();
+
+    formData.append("asset", editAsset);
+    formData.append("faTag", editFaTag);
+    formData.append("subject", editSubject);
+    formData.append("description", editDescription);
+
+    if (editAttachment) {
+      formData.append("attachment", editAttachment);
+    }
+
+    try {
+      const response = await fetch(
+        `
+        ${process.env.REACT_APP_API_URL}/ticketing/user/ticket/updateticket/${selectedTicketNum}
+        `,
+        {
+          method: "PUT",
+          body: formData,
+        },
+      );
+      const data = await response.json();
+
+      if (!data.success) {
+        return alert(data.message);
+      }
+
+      setShowEditConfirm(false);
+      setShowEditTicket(false);
+      resetForm();
+      return alert("Ticket successfully updated");
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async function handleSubmitTicket(e) {
     e.preventDefault();
-
     const formData = new FormData();
 
     formData.append("curDate", curDate);
@@ -313,13 +303,82 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
     }
   }
 
-  //debounce for searching data
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      fetchTickets();
-    }, 300);
-    return clearTimeout(delay);
-  }, [search]);
+  // 7. HELPER FUNCTIONS
+
+  /* EDIT TICKET */
+  function closeEditModal() {
+    resetForm();
+    setShowEditTicket(false);
+  }
+
+  /* CREATE TICKET */
+  function closeModal() {
+    resetForm();
+    setShowCreateTicket(false);
+  }
+
+  function resetForm() {
+    if (showCreateTicket) {
+      setAsset("");
+      setFaTag("");
+      setSubject("");
+      setDescription("");
+
+      setAttachment(null);
+
+      setViewImage("");
+      setShowImageViewer(false);
+
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+
+      setPreviewUrl("");
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      return;
+    }
+
+    if (showEditTicket) {
+      setSelectedTicketNum("");
+
+      setEditDateSubmitted("");
+      setEditAsset("");
+      setEditFaTag("");
+      setEditSubject("");
+      setEditDescription("");
+
+      setEditAttachment(null);
+      setEditHasAttachment(false);
+      setEditAttachmentFilename("");
+
+      setNewAttachment(false);
+
+      setViewImage("");
+      setShowImageViewer(false);
+
+      if (editPreviewUrl) {
+        URL.revokeObjectURL(editPreviewUrl);
+      }
+
+      setEditPreviewUrl("");
+
+      if (editFileInputRef.current) {
+        editFileInputRef.current.value = "";
+      }
+    }
+  }
+  //GET THE CURRENT DATE (FORMATTED : yyyyMM-dd)
+  function getCurrentDate() {
+    const now = new Date();
+    const year = String(now.getFullYear());
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
 
   //filter data when searching
   const filteredTickets = ticketList.filter((item) => {
@@ -432,8 +491,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                       ))}
                     </datalist> */}
                     <select
-                      name=""
-                      id=""
+                      required
                       value={asset}
                       onChange={(e) => {
                         setAsset(e.target.value);
@@ -451,6 +509,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                   <div className="ticket-mainuser-ticket-modal-group">
                     <label>FA-Tag</label>
                     <input
+                      required
                       type="text"
                       value={faTag}
                       onChange={(e) => {
@@ -467,6 +526,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                 <div className="ticket-mainuser-ticket-modal-group">
                   <label>Subject</label>
                   <input
+                    required
                     type="text"
                     value={subject}
                     onChange={(e) => {
@@ -478,6 +538,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                 <div className="ticket-mainuser-ticket-modal-group">
                   <label>Description</label>
                   <textarea
+                    required
                     value={description}
                     onChange={(e) => {
                       setDescription(e.target.value);
@@ -496,14 +557,14 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                 <div className="ticket-mainuser-ticket-modal-group">
                   <label>Attachment</label>
                   <input
-                    ref={editFileInputRef}
+                    ref={fileInputRef}
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
                   />
-                  {editPreviewUrl && (
+                  {previewUrl && (
                     <div className="ticket-mainuser-ticket-modal-gallery">
-                      <img src={editPreviewUrl} alt={"Preview"} />
+                      <img src={previewUrl} alt={"Preview"} />
                     </div>
                   )}
                 </div>
@@ -571,8 +632,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                     <label>Asset Type</label>
 
                     <select
-                      name=""
-                      id=""
+                      required
                       value={editAsset}
                       onChange={(e) => {
                         setEditAsset(e.target.value);
@@ -590,6 +650,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                   <div className="ticket-mainuser-edit-modal-group">
                     <label>FA-Tag</label>
                     <input
+                      required
                       type="text"
                       value={editFaTag}
                       onChange={(e) => {
@@ -606,6 +667,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                 <div className="ticket-mainuser-edit-modal-group">
                   <label>Subject</label>
                   <input
+                    required
                     type="text"
                     value={editSubject}
                     onChange={(e) => {
@@ -617,6 +679,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                 <div className="ticket-mainuser-edit-modal-group">
                   <label>Description</label>
                   <textarea
+                    required
                     value={editDescription}
                     onChange={(e) => {
                       setEditDescription(e.target.value);
@@ -635,26 +698,42 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                 <div className="ticket-mainuser-edit-modal-group">
                   <label>Attachment</label>
                   <input
-                    ref={fileInputRef}
+                    ref={editFileInputRef}
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
                   />
-                  {editHasAttachment && (
+                  {editHasAttachment ? (
                     <div className="ticket-mainuser-edit-modal-gallery">
                       <img
                         src={`${process.env.REACT_APP_API_URL}/ticketing/user/ticket/getticketimage/${selectedTicketNum}`}
                         alt={editAttachmentFilename}
                         onClick={() => {
-                          window.open(
+                          /* window.open(
                             `${process.env.REACT_APP_API_URL}/ticketing/user/ticket/getticketimage/${selectedTicketNum}`,
                             "_blank",
+                          ); */
+                          setViewImage(
+                            `${process.env.REACT_APP_API_URL}/ticketing/user/ticket/getticketimage/${selectedTicketNum}`,
                           );
+
+                          setShowImageViewer(true);
                         }}
                       />
-                      <p>{editAttachmentFilename}</p>
                     </div>
-                  )}
+                  ) : editNewAttachment ? (
+                    <div className="ticket-mainuser-edit-modal-gallery">
+                      <img
+                        src={editPreviewUrl}
+                        alt="Preview"
+                        onClick={() => {
+                          setViewImage(editPreviewUrl);
+
+                          setShowImageViewer(true);
+                        }}
+                      />
+                    </div>
+                  ) : null}
                 </div>
               </div>
 
@@ -668,6 +747,28 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {/* SHOW IMAGE */}
+      {showImageViewer && (
+        <div
+          className="ticket-mainuser-edit-imageviewer-overlay"
+          onClick={() => setShowImageViewer(false)}
+        >
+          <img
+            src={viewImage}
+            alt="Attachment"
+            className="ticket-mainuser-edit-imageviewer-image"
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          <button
+            className="ticket-mainuser-edit-imageviewer-close"
+            onClick={() => setShowImageViewer(false)}
+          >
+            X
+          </button>
         </div>
       )}
       <h2 className="ticket-mainuser-ticket-title">Ticket</h2>
@@ -730,8 +831,8 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                   <td>{item.subject_title}</td>
                   <td>{item.status}</td>
                   <td>{item.staff_name}</td>
-                  <td>{item.time_started}</td>
-                  <td>{item.time_finished}</td>
+                  <td>{item.t_started}</td>
+                  <td>{item.t_finished}</td>
                   <td>
                     <div className="ticket-mainuser-ticket-table-actionbtn">
                       <button

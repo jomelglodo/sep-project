@@ -1,0 +1,177 @@
+/* CONFIRMATION MODAL */
+.ticket-main-updateprofile-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+}
+
+.ticket-main-updateprofile-modal {
+  background-color: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.ticket-main-updateprofile-modal-header {
+  margin-bottom: 30px;
+}
+
+.ticket-main-updateprofile-modal h2 {
+  text-align: center;
+  width: 100%;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgb(187, 183, 183);
+}
+
+.ticket-main-updateprofile-modal p {
+  color: rgb(114, 114, 110);
+}
+
+.ticket-main-updateprofile-modal-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.ticket-main-updateprofile-modal-buttons button {
+  position: relative;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  flex: 1;
+  border-radius: 10px;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.ticket-main-updateprofile-modal-buttons button:first-child::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgb(136, 232, 136);
+
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+  z-index: -1;
+}
+
+.ticket-main-updateprofile-modal-buttons button:first-child:hover::before {
+  transform: scaleY(1);
+}
+
+.ticket-main-updateprofile-modal-buttons button:last-child::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgb(77, 74, 74);
+
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+  z-index: -1;
+}
+
+.ticket-main-updateprofile-modal-buttons button:last-child:hover::before {
+  transform: scaleY(1);
+}
+
+.ticket-main-updateprofile-modal-buttons button:last-child:hover {
+  color: white;
+}
+
+/* MODAL */
+.ticket-main-updateprofile-container {
+  width: min(650px, 90vw);
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.ticket-main-updateprofile-header {
+  margin-bottom: 20px;
+}
+
+.ticket-main-updateprofile-header h2 {
+  margin: 0;
+}
+
+.ticket-main-updateprofile-body {
+  display: flex;
+  gap: 25px;
+}
+
+.ticket-main-updateprofile-image-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.ticket-main-updateprofile-image {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  border: 3px solid #ddd;
+}
+
+.ticket-main-updateprofile-form {
+  flex: 1;
+  display: grid;
+  gap: 12px;
+}
+
+.ticket-main-updateprofile-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket-main-updateprofile-form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.ticket-main-updateprofile-form-group input,
+.ticket-main-updateprofile-form-group select {
+  padding: 10px;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+  outline: none;
+}
+
+.ticket-main-updateprofile-form-group input:focus,
+.ticket-main-updateprofile-form-group select:focus {
+  border-color: #007bff;
+}
+
+/* BUTTON CONTAINER */
+
+.ticket-main-updateprofile-button-container {
+  margin-top: 25px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.ticket-main-updateprofile-applybtn {
+  padding: 10px 20px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ticket-main-updateprofile-applybtn:hover {
+  opacity: 0.9;
+}

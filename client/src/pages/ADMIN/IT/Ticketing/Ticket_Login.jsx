@@ -172,7 +172,6 @@ export default function TicketLogin() {
 
   if (isLoggedIn) {
     const normalizedRole = role?.toLowerCase().trim();
-    console.log("userid1:" + userId);
     switch (normalizedRole) {
       case "user":
         return (

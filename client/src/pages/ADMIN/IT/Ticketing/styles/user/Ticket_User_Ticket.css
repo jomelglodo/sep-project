@@ -220,7 +220,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -100px;
 
   z-index: 999;
   padding: 20px;
@@ -376,6 +375,35 @@
   background: #1d4ed8;
 }
 
+/* IMAGE VIEWER */
+.ticket-mainuser-edit-imageviewer-overlay {
+  z-index: 9999;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ticket-mainuser-edit-imageviewer-image {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.ticket-mainuser-edit-imageviewer-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  width: 40px;
+  height: 40px;
+
+  cursor: pointer;
+}
+
 /* CREATE TICKET MODAL */
 .ticket-mainuser-ticket-overlay {
   position: fixed;
@@ -385,7 +413,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -100px;
 
   z-index: 999;
   padding: 20px;
@@ -676,17 +703,18 @@
   padding: 0.5rem;
   text-align: left;
   position: sticky;
+  font-size: 0.9rem;
   top: 0;
   z-index: 2;
 }
 
 .ticket-mainuser-ticket-table td {
   padding: 8px;
-  font-size: 14px;
+  font-size: 0.8rem;
   border: 1px solid #e5e5e5;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  /* text-overflow: ellipsis; */
 }
 
 /* ACTION BUTTONS */
