@@ -60,23 +60,23 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
       <h2 className="ticket-mainuser-dashboard-title">Dashbord</h2>
       {/* TICKET COUNTER */}
       <div className="ticket-mainuser-dashboard-ticketcounter-container">
-        <div className="ticket-mainuser-home-ticketcounter-group total">
+        <div className="ticket-mainuser-dashboard-ticketcounter-group total">
           <h3>{counterTicket.total}</h3>
           <p>Total Tickets</p>
         </div>
-        <div className="ticket-mainuser-home-ticketcounter-group open">
+        <div className="ticket-mainuser-dashboard-ticketcounter-group open">
           <h3>{counterTicket.open}</h3>
           <p>Open Tickets</p>
         </div>
-        <div className="ticket-mainuser-home-ticketcounter-group inprogress">
+        <div className="ticket-mainuser-dashboard-ticketcounter-group inprogress">
           <h3>{counterTicket.inprogress}</h3>
           <p>In Progress</p>
         </div>
-        <div className="ticket-mainuser-home-ticketcounter-group closed">
+        <div className="ticket-mainuser-dashboard-ticketcounter-group closed">
           <h3>{counterTicket.closed}</h3>
           <p>Closed Tickets</p>
         </div>
-        <div className="ticket-mainuser-home-ticketcounter-group cancelled">
+        <div className="ticket-mainuser-dashboard-ticketcounter-group cancelled">
           <h3>{counterTicket.cancelled}</h3>
           <p>Cancelled</p>
         </div>

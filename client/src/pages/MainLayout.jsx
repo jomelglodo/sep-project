@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Header from "../components/MainHeader";
 import "../assets/styles/MainLayout.css";
+import { ToastContainer, Bounce, Slide, Zoom, Flip } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Header from "../components/MainHeader";
 import Convertion from "./FINANCE/CONVERTION/Convertion";
 import Ris from "../pages/PPC/WAREHOUSE/RIS/Ris";
 import ConLogin from "../pages/PPC/WAREHOUSE/Consumable/Con_Login";
@@ -40,6 +42,18 @@ export default function MainLayout() {
             </>
           ) : activeSub === "ADMIN - IT - Ticketing" ? (
             <>
+              <ToastContainer
+                transition={Slide}
+                position="top-right"
+                autoClose={2000}
+                newestOnTop
+                closeOnClick
+                pauseOnHover
+                theme="colored"
+                /*  hideProgressBar={true} */
+                limit={5} //3 toast will be visible at a time
+                style={{ zIndex: 99999 }}
+              />
               <TicketLogin />
             </>
           ) : activeSub ? (

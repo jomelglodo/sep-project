@@ -1,15 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Profiler, useEffect, useRef, useState } from "react";
 import "./Ticket_MainTopbar.css";
 import TicketIcon from "../../../../assets/images/admin/ticketing/Ticketing-Icon.png";
 
 import UpdateProfile from "./Ticket_UpdateProfile";
+import ChangePassword from "./Ticket_ChangePassword";
 
 export default function TicketMainUserTopbar({
   displayName,
+  setDisplayName,
   onLogout,
   loggedinUserId,
 }) {
   // States
+
+  //Profile image version
+  const [profileImageVersion, setProfileImageVersion] = useState(Date.now());
+
   const [open, setOpen] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
   const [activePage, setActivePage] = useState("");
@@ -26,8 +32,22 @@ export default function TicketMainUserTopbar({
   const renderPage = () => {
     switch (activePage) {
       case "updateprofile":
-        return <UpdateProfile loggedinUserId={loggedinUserId} />;
+        return (
+          <UpdateProfile
+            loggedinUserId={loggedinUserId}
+            onDisplayNameChange={setDisplayName}
+            onProfileImageChange={() => setProfileImageVersion(Date.now())}
+            closeModal={closeModal}
+          />
+        );
       case "changepassword":
+        return (
+          <ChangePassword
+            displayName={displayName}
+            closeModal={closeModal}
+            loggedinUserId={loggedinUserId}
+          />
+        );
       default:
         return null;
     }
@@ -76,7 +96,7 @@ export default function TicketMainUserTopbar({
         >
           <div className="ticket-main-profile-container">
             <img
-              src={`${process.env.REACT_APP_API_URL}/ticketing/main/profileimage/${loggedinUserId}`}
+              src={`${process.env.REACT_APP_API_URL}/ticketing/main/profileimage/${loggedinUserId}?v=${profileImageVersion}`}
               alt="Profile Image"
             />
             <span>{displayName || "User"}</span>
@@ -97,7 +117,21 @@ export default function TicketMainUserTopbar({
               >
                 Profile
               </p>
-              <p>Change Password</p>
+              <p
+                onClick={() => {
+                  const rect = profileRef.current.getBoundingClientRect();
+
+                  setModalPosition({
+                    x: rect.left + rect.width / 2,
+                    y: rect.top + rect.height / 2,
+                  });
+
+                  setShowUserModal(true);
+                  setActivePage("changepassword");
+                }}
+              >
+                Change Password
+              </p>
               <p onClick={onLogout}>Logout</p>
             </div>
           )}

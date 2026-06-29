@@ -1,7 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./Ticket_UpdateProfile.css";
+import { toast } from "react-toastify";
 
-export default function mainUpdateProfile({ loggedinUserId }) {
+export default function MainUpdateProfile({
+  loggedinUserId,
+  closeModal,
+  onDisplayNameChange,
+  onProfileImageChange,
+}) {
   const [departmentList, setDepartmentList] = useState([]);
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -12,11 +18,17 @@ export default function mainUpdateProfile({ loggedinUserId }) {
   const [attachmentFilename, setAttachmentFilename] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
 
+  //REFS
+  const displayNameRef = useRef(null);
+
   //CONFIRMATION MODAL
   const [showChangesConfirmation, setShowChangesConfirmation] = useState(false);
 
   //EFFECTS
   useEffect(() => {
+    if (displayNameRef.current) {
+      displayNameRef.current.focus();
+    }
     fetchProfileData();
     fetchDepartment();
   }, []);
@@ -71,12 +83,38 @@ export default function mainUpdateProfile({ loggedinUserId }) {
     setShowChangesConfirmation(true);
   }
 
-  function handleConfirmChanges() {
+  async function handleConfirmChanges() {
     const formData = new FormData();
+    formData.append("displayname", displayName);
+    formData.append("email", email);
+    formData.append("department", department);
+
+    if (attachment) {
+      formData.append("attachment", attachment);
+    }
     try {
-      formData.append("displayname", displayName);
-      formData.append("email", email);
-      formData.append("deparment", department);
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/ticketing/main/applychanges/${loggedinUserId}`,
+        {
+          method: "PUT",
+          body: formData,
+        },
+      );
+
+      const data = await response.json();
+      console.log(data);
+      if (data.success) {
+        onDisplayNameChange(displayName);
+        setShowChangesConfirmation(false);
+        closeModal();
+
+        //update the profile image display on the topbar
+        onProfileImageChange();
+
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -87,6 +125,7 @@ export default function mainUpdateProfile({ loggedinUserId }) {
     const file = e.target.files[0];
 
     if (!file) return;
+
     setAttachment(file);
 
     const imageUrl = URL.createObjectURL(file);
@@ -103,7 +142,7 @@ export default function mainUpdateProfile({ loggedinUserId }) {
               <p>Are you sure you want to apply the changes?</p>
             </div>
             <div className="ticket-main-updateprofile-modal-buttons">
-              <button>Yes</button>
+              <button onClick={handleConfirmChanges}>Yes</button>
               <button
                 onClick={() => {
                   setShowChangesConfirmation(false);
@@ -154,6 +193,7 @@ export default function mainUpdateProfile({ loggedinUserId }) {
           <div className="ticket-main-updateprofile-form-group">
             <label>Display Name</label>
             <input
+              ref={displayNameRef}
               required
               type="text"
               value={displayName}
@@ -185,7 +225,7 @@ export default function mainUpdateProfile({ loggedinUserId }) {
                 setDepartment(e.target.value);
               }}
             >
-              <option value="" disabled selected>
+              <option value="" disabled>
                 --Select Department--
               </option>
               {departmentList.map((item, index) => (

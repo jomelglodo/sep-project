@@ -178,12 +178,20 @@ export default function TicketLogin() {
           <TicketMainUser
             onLogout={handleLogout}
             displayName={displayName}
+            setDisplayName={setDisplayName}
             loggedinUserId={userId}
+            userRole={normalizedRole}
           />
         );
       case "staff":
         return (
-          <TicketMainStaff onLogout={handleLogout} displayName={displayName} />
+          <TicketMainStaff
+            onLogout={handleLogout}
+            displayName={displayName}
+            setDisplayName={setDisplayName}
+            loggedinUserId={userId}
+            userRole={normalizedRole}
+          />
         );
       case "admin":
         return (

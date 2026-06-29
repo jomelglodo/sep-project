@@ -489,6 +489,7 @@ export default function ConManagement({ closeManagement }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            selDate: selDate,
             risNum: selRisNum,
             section: selSection,
             convertedQty: selConvertedQty,
@@ -643,7 +644,14 @@ export default function ConManagement({ closeManagement }) {
               </div>
               <div className="con-modal-edit-group">
                 <label>Date :</label>
-                <label>{selDate || "-"}</label>
+                {/* <label>{selDate || "-"}</label> */}
+                <input
+                  type="date"
+                  value={selDate}
+                  onChange={(e) => {
+                    setSelDate(e.target.value);
+                  }}
+                />
               </div>
               <div className="con-modal-edit-group">
                 <label>RIS Control # :</label>

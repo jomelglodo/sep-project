@@ -295,7 +295,7 @@ export const deleteSelected = async (req, res) => {
 
 export const updateSelected = async (req, res) => {
   const { editId } = req.params;
-  const { risNum, selDate, section, convertedQty } = req.body;
+  const { risNum, section, convertedQty, selDate } = req.body;
   try {
     const result = await conPool.query(
       `

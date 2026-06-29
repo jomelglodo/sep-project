@@ -9,7 +9,7 @@
   gap: 16px;
 }
 
-.ticket-mainuser-home-ticketcounter-group {
+.ticket-mainuser-dashboard-ticketcounter-group {
   background-color: white;
   padding: 1.3rem;
   border-radius: 16px;
@@ -18,28 +18,28 @@
   font-weight: 500;
 }
 
-.ticket-mainuser-home-ticketcounter-group h3 {
+.ticket-mainuser-dashboard-ticketcounter-group h3 {
   font-size: 2rem;
   margin-bottom: 10px;
 }
 
-.ticket-mainuser-home-ticketcounter-group.total {
+.ticket-mainuser-dashboard-ticketcounter-group.total {
   border-left: 4px solid #3b82f6;
 }
 
-.ticket-mainuser-home-ticketcounter-group.open {
+.ticket-mainuser-dashboard-ticketcounter-group.open {
   border-left: 4px solid #f59e0b;
 }
 
-.ticket-mainuser-home-ticketcounter-group.inprogress {
+.ticket-mainuser-dashboard-ticketcounter-group.inprogress {
   border-left: 4px solid #8b5cf6;
 }
 
-.ticket-mainuser-home-ticketcounter-group.closed {
+.ticket-mainuser-dashboard-ticketcounter-group.closed {
   border-left: 4px solid #10b981;
 }
 
-.ticket-mainuser-home-ticketcounter-group.cancelled {
+.ticket-mainuser-dashboard-ticketcounter-group.cancelled {
   border-left: 4px solid #ef4444;
 }
 

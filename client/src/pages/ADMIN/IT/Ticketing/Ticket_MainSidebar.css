@@ -1,4 +1,4 @@
-.ticket-mainuser-home-sidebar {
+.ticket-main-home-sidebar {
   width: 200px;
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
@@ -10,13 +10,13 @@
   box-sizing: border-box;
 }
 
-.ticket-mainuser-home-menulist {
+.ticket-main-home-menulist {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.ticket-mainuser-home-menu-item {
+.ticket-main-home-menu-item {
   padding: 14px 18px;
   margin-bottom: 8px;
   border-radius: 10px;
@@ -24,19 +24,35 @@
   transition: all 0.3s ease;
   font-weight: 600;
   font-size: 12px;
+
+  display: flex;
+  align-items: center;
 }
 
-.ticket-mainuser-home-menu-item:hover {
+.ticket-main-home-menu-item:hover {
   background-color: rgba(68, 131, 246, 0.8);
   transform: translateX(20px);
 }
 
-.ticket-mainuser-home-menu-item.selectactive {
+.ticket-main-home-menu-item.selectactive {
   background: linear-gradient(135deg, #2563eb, #3b82f6);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
   transform: translateX(20px);
 }
 
-.menu-item.active:hover {
+.ticket-main-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 30px;
+}
+
+.ticket-main-icon svg {
+  font-size: 17px;
+}
+
+/* .ticket-main-home-menu-item.selectactive:hover {
   transform: translateX(5px);
 }
+ */

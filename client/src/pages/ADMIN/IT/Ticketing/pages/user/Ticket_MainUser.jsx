@@ -10,7 +10,9 @@ import MainUserTicket from "./Ticket_User_Ticket";
 export default function TicketMainUser({
   onLogout,
   displayName,
+  setDisplayName,
   loggedinUserId,
+  userRole,
 }) {
   const [activePage, setActivePage] = useState("dashboard");
   /* useEffect(() => {
@@ -77,13 +79,18 @@ export default function TicketMainUser({
       {/* TOPBAR */}
       <HeaderTopbar
         displayName={displayName}
+        setDisplayName={setDisplayName}
         onLogout={onLogout}
         loggedinUserId={loggedinUserId}
       />
 
       <div className="ticket-mainuser-home-body">
         {/* SIDEBAR */}
-        <HeaderSidebar activePage={activePage} setActivePage={setActivePage} />
+        <HeaderSidebar
+          activePage={activePage}
+          setActivePage={setActivePage}
+          userRole={userRole}
+        />
         {/* CONTENT */}
         <main className="ticket-mainuser-home-page-content">
           {/* TITLE */}

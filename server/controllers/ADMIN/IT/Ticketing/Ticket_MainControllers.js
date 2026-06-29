@@ -1,6 +1,67 @@
 import { ticketPool } from "../../../../db.js";
 
-//POPULATE DEPARTMENTS
+//CHANGE PASSWORD------------------------------------------------------------
+
+//PASSWORD VALIDATION
+export const passValidation = async (req, res) => {
+  const { userId, curPass } = req.body;
+
+  try {
+    const result = await ticketPool.query(
+      `
+      SELECT 1
+      FROM "tbl_userAccounts"
+      WHERE user_id=$1
+        AND password=$2
+      `,
+      [userId, curPass],
+    );
+
+    if (result.rowCount === 0) {
+      return res.json({ success: false, message: "Incorrect Password" });
+    }
+
+    return res.json({ success: true, message: "Correct password" });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+//UPDATE PASSWORD
+
+export const updatePassword = async (req, res) => {
+  const { userId } = req.params;
+  const { newPass } = req.body;
+
+  try {
+    const result = await ticketPool.query(
+      `
+      UPDATE "tbl_userAccounts"
+      SET password = $1
+      WHERE user_id = $2
+      `,
+      [newPass, userId],
+    );
+
+    if (result.rowCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Account does not exists" });
+    }
+
+    return res.json({
+      success: true,
+      message: "Password successfully changed",
+    });
+  } catch (err) {
+    console.error(err);
+    return res.json({ success: false, message: "Server Error" });
+  }
+};
+
+//UPDATE PROFILE DATA
+
+//POPULATE DEPARTMENTS--------------------------------------------------------
 export const getDeparments = async (req, res) => {
   try {
     const result = await ticketPool.query(`
@@ -87,7 +148,38 @@ export const getProfileImage = async (req, res) => {
 // SAVE CHANGES
 export const applyChanges = async (req, res) => {
   const { userId } = req.params;
+  const { displayname, email, department } = req.body;
+  console.log("File: ", req.file);
+
+  const imageBuffer = req.file ? req.file.buffer : null;
+  const filename = req.file ? req.file.originalname : null;
+  const mimeType = req.file ? req.file.mimetype : null;
+
+  /*   console.log(req.body);
+  console.log(req.headers["content-type"]); */
   try {
+    const result = await ticketPool.query(
+      `
+      UPDATE "tbl_userAccounts"
+      SET
+        d_name = $1,
+        email = $2,
+        department = $3,
+        profile_image = $4,
+        profile_image_filename = $5,
+        profile_image_mimetype = $6
+      WHERE user_id = $7
+      `,
+      [displayname, email, department, imageBuffer, filename, mimeType, userId],
+    );
+
+    if (result.rowCount == 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No record found" });
+    }
+
+    return res.json({ success: true, message: "Record successfully updated" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: "false", message: "Server Error" });

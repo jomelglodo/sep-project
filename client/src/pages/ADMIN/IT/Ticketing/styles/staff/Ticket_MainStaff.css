@@ -1,0 +1,38 @@
+.ticket-mainstaff-home-layout {
+  display: flex;
+  flex-direction: column;
+  /* height: 100vh; */
+  min-height: 90vh;
+  font-family: Arial, sans-serif;
+}
+
+.ticket-mainstaff-home-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* PAGE CONTENT */
+
+.ticket-mainstaff-home-page-content {
+  flex: 1;
+  background-color: #f4f6fb;
+  padding: 24px;
+}
+
+.staff-renderpage-container {
+  animation: curtainOpen 1s ease-out;
+  transform-origin: left;
+}
+
+@keyframes curtainOpen {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}

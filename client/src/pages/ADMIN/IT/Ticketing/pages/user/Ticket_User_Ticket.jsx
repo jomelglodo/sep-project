@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import { TableVirtuoso } from "react-virtuoso";
 import { FaEdit } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
@@ -134,7 +135,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
 
   function handleCancelledTicket(item) {
     if (item.status !== "Open") {
-      alert(`Only ticket with status "OPEN" can be cancelled!`);
+      toast.warning(`Only tickets with an "OPEN" status can be cancelled!`);
       return;
     }
     setSelCancelTicketNum(item.ticket_num_ticket);
@@ -157,15 +158,17 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
         setSelCancelTicketNum("");
         setShowCancelTicket(false);
         fetchTickets();
+
+        toast.success("Ticket successfully cancelled");
       }
     } catch (err) {
-      console.error(err);
+      toast.error(err);
     }
   }
 
   function handleEditButton(item) {
     if (item.status !== "Open") {
-      alert(`Only ticket with "OPEN" status can be edit`);
+      toast.warning(`Only tickets with an "OPEN" status can be editted`);
       return;
     }
 
@@ -251,13 +254,14 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
       const data = await response.json();
 
       if (!data.success) {
-        return alert(data.message);
+        return toast.error(data.message);
       }
 
       setShowEditConfirm(false);
       setShowEditTicket(false);
       resetForm();
-      return alert("Ticket successfully updated");
+
+      return toast.success("Ticket successfully updated");
     } catch (err) {
       console.error(err);
     }
@@ -294,7 +298,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
 
       if (data.success) {
         const ticketNum = data.ticketNum;
-        alert(`${ticketNum} successfully created`);
+        toast.success(`${ticketNum} successfully created`);
         resetForm();
         fetchTickets();
       }
