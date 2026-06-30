@@ -52,6 +52,7 @@ import Con_LoginRoutes from "./routes/PPC/WAREHOUSE/Consumable/Con_Routes.js";
 import Ticket_MainRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_MainRoutes.js";
 import Ticket_LoginRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_LoginRoutes.js";
 import Ticket_UserRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_UserRoutes.js";
+import Ticket_StaffRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_StaffRoutes.js";
 
 //-------------------------------------------------------------------------------------
 
@@ -104,6 +105,7 @@ app.use("/con", Con_LoginRoutes);
 app.use("/ticketing/main", Ticket_MainRoutes);
 app.use("/ticketing/login", Ticket_LoginRoutes);
 app.use("/ticketing/user", Ticket_UserRoutes);
+app.use("/ticketing/staff", Ticket_StaffRoutes);
 
 // app.get("/test", (req, res) => {
 //   res.json({ ok: true, time: Date.now() });

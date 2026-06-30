@@ -1,3 +1,11 @@
+:root {
+  --body-title-fc: rgb(92, 92, 98);
+}
+
+.ticket-mainstaff-dashboard-container {
+  width: 100%;
+}
+
 .ticket-mainstaff-dashboard-title {
   margin-bottom: 10px;
 }
@@ -18,14 +26,15 @@
 }
 
 .ticket-mainstaff-dashboard-ticketcounter-group,
-.ticket-mainstaff-dashboard-performance-metric,
-.ticket-mainstaff-dashboard-performance-activity {
+.ticket-mainstaff-dashboard-performancemetric,
+.ticket-mainstaff-dashboard-performanceactivity-container {
   background-color: white;
   padding: 1.3rem;
   border-radius: 16px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   transition: 0.2s;
   font-weight: 500;
+  max-height: 50vh;
 }
 
 .ticket-mainstaff-dashboard-ticketcounter-group h3 {
@@ -146,6 +155,17 @@
   gap: 10px;
 }
 
+/* BODY */
+
+.ticket-mainstaff-dashboard-table-title,
+.ticket-mainstaff-dashboard-chart-title,
+.ticket-mainstaff-dashboard-performancemetric-title,
+.ticket-mainstaff-dashboard-performanceactivity-title {
+  margin-bottom: 10px;
+  width: 100%;
+  color: var(--body-title-fc);
+}
+
 /* TABLE */
 
 .ticket-mainstaff-dashboard-table-wrapper {
@@ -161,10 +181,9 @@
   border: 1px solid #e5e7eb;
 }
 
-.ticket-mainstaff-dashboard-table-wrapper h3 {
-  margin-bottom: 10px;
-  width: 100%;
-  color: rgb(92, 92, 98);
+.ticket-mainstaff-dashboard-table-container {
+  overflow: auto;
+  max-height: 35vh;
 }
 
 .ticket-mainstaff-dashboard-table {
@@ -186,6 +205,26 @@
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 0.8rem;
+}
+
+.mainstaff-status-inprogress {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  background: #dcfce7;
+
+  color: #15803d;
+}
+
+.ticket-mainstaff-dashboard-table tr {
+  border-bottom: 1px solid rgb(210, 204, 204);
+}
+.ticket-mainstaff-dashboard-table tr:nth-child(even) {
+  background-color: rgb(188, 226, 248);
 }
 
 /* STICKHY TABLE HEADER */
@@ -213,6 +252,59 @@
 
 .ticket-mainstaff-dashboard-chart-wrapper h3 {
   color: rgb(92, 92, 98);
+}
+
+/* PERFORMANCE METRIC */
+.ticket-mainstaff-dashboard-performancemetric {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ticket-mainstaff-dashboard-performancemetric-breakdown {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 30vh;
+  gap: 20px;
+  padding: 20px;
+}
+
+.mainstaff-performancemetric-group {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid rgb(169, 164, 164);
+  padding-bottom: 10px;
+}
+
+.mainstaff-performancemetric-group p,
+.mainstaff-performancemetric-group h3 {
+  flex: 1;
+}
+
+.mainstaff-performancemetric-group p {
+  font-size: 0.9rem;
+}
+
+/* PERFORMANCE ACTIVITY */
+
+.ticket-mainstaff-dashboard-performanceactivity-body {
+  padding: 10px;
+  border: 1px solid rgb(169, 164, 164);
+  width: 100%;
+  height: 40vh;
+  overflow: auto;
+}
+
+.ticket-mainstaff-dashboard-performanceactivity-body p {
+  padding: 5px;
+  border-bottom: 1px solid rgb(152, 151, 151);
+  font-size: 0.9rem;
+}
+
+.ticket-mainstaff-dashboard-performanceactivity-body p:nth-child(even) {
+  background-color: rgb(188, 226, 248);
 }
 
 @media (max-width: 1024px) {

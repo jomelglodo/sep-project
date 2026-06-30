@@ -717,6 +717,23 @@
   /* text-overflow: ellipsis; */
 }
 
+.ticket-mainuser-ticket-table th.ticket-mainuser-ticket-status-columnheader {
+  text-align: center;
+}
+
+.ticket-mainuser-ticket-status-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+}
+.ticket-mainuser-ticket-status-column.inprogress {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
 /* ACTION BUTTONS */
 .ticket-mainuser-ticket-table-actionbtn {
   display: flex;

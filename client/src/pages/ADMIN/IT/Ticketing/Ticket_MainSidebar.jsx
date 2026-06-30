@@ -70,7 +70,7 @@ export default function TicketMainUserHeader({
               <span className="menu-text">Dashboard</span>
             </li>
             <li
-              className={`ticket-main-home-menu-item ${activePage === "ticketmangement" ? "selectactive" : ""}`}
+              className={`ticket-main-home-menu-item ${activePage === "ticketmanagement" ? "selectactive" : ""}`}
               onClick={() => {
                 setActivePage("ticketmanagement");
               }}

@@ -820,7 +820,9 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                   <th>Ticket #</th>
                   <th>Date Created</th>
                   <th>Subject</th>
-                  <th>Status</th>
+                  <th className="ticket-mainuser-ticket-status-columnheader">
+                    Status
+                  </th>
                   <th>IT In-charge</th>
                   <th>Date Started</th>
                   <th>Date Finished</th>
@@ -833,7 +835,13 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                   <td>{item.ticket_num_ticket}</td>
                   <td>{item.d_submitted}</td>
                   <td>{item.subject_title}</td>
-                  <td>{item.status}</td>
+                  <td>
+                    <span
+                      className={`ticket-mainuser-ticket-status-column ${item.status === "In Progress" ? "inprogress" : ""}`}
+                    >
+                      {item.status}
+                    </span>
+                  </td>
                   <td>{item.staff_name}</td>
                   <td>{item.t_started}</td>
                   <td>{item.t_finished}</td>

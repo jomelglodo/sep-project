@@ -2,6 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import "../../styles/user/Ticket_User_Dashboard.css";
 import UserTicketDashboardChart from "./Ticket_User_DashboardChart";
 
+//ICONS
+import { BsFillTicketPerforatedFill } from "react-icons/bs";
+import { FaFolderOpen } from "react-icons/fa";
+import { FaClock } from "react-icons/fa";
+import { FaCheckSquare } from "react-icons/fa";
+import { TbTicketOff } from "react-icons/tb";
+
 export default function MainUserDashBoard({ displayName, loggedinUserId }) {
   const [ticketList, setTicketList] = useState([]);
 
@@ -61,24 +68,44 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
       {/* TICKET COUNTER */}
       <div className="ticket-mainuser-dashboard-ticketcounter-container">
         <div className="ticket-mainuser-dashboard-ticketcounter-group total">
-          <h3>{counterTicket.total}</h3>
-          <p>Total Tickets</p>
+          <div className="ticket-mainuser-dashboard-count">
+            <h3>{counterTicket.total}</h3>
+            <p>Total Tickets</p>
+          </div>
+
+          <BsFillTicketPerforatedFill />
         </div>
         <div className="ticket-mainuser-dashboard-ticketcounter-group open">
-          <h3>{counterTicket.open}</h3>
-          <p>Open Tickets</p>
+          <div className="ticket-mainuser-dashboard-count">
+            <h3>{counterTicket.open}</h3>
+            <p>Open Tickets</p>
+          </div>
+
+          <FaFolderOpen />
         </div>
         <div className="ticket-mainuser-dashboard-ticketcounter-group inprogress">
-          <h3>{counterTicket.inprogress}</h3>
-          <p>In Progress</p>
+          <div className="ticket-mainuser-dashboard-count">
+            <h3>{counterTicket.inprogress}</h3>
+            <p>In Progress</p>
+          </div>
+
+          <FaClock />
         </div>
         <div className="ticket-mainuser-dashboard-ticketcounter-group closed">
-          <h3>{counterTicket.closed}</h3>
-          <p>Closed Tickets</p>
+          <div className="ticket-mainuser-dashboard-count">
+            <h3>{counterTicket.closed}</h3>
+            <p>Closed</p>
+          </div>
+
+          <FaCheckSquare />
         </div>
         <div className="ticket-mainuser-dashboard-ticketcounter-group cancelled">
-          <h3>{counterTicket.cancelled}</h3>
-          <p>Cancelled</p>
+          <div className="ticket-mainuser-dashboard-count">
+            <h3>{counterTicket.cancelled}</h3>
+            <p>Cancelled</p>
+          </div>
+
+          <TbTicketOff />
         </div>
       </div>
       <div className="ticket-mainuser-dashboard-statistics">
@@ -93,7 +120,9 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
                   <th>Ticket No.</th>
                   <th>Date Created</th>
                   <th>Subject</th>
-                  <th>Status</th>
+                  <th className="ticket-mainuser-dashboard-status-columnheader">
+                    Status
+                  </th>
                   <th>IT In-charge</th>
                 </tr>
               </thead>
@@ -104,7 +133,13 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
                     <td>{item.ticket_num_ticket}</td>
                     <td>{item.date_submitted}</td>
                     <td>{item.subject_title}</td>
-                    <td>{item.status}</td>
+                    <td>
+                      <span
+                        className={`ticket-mainuser-dashboard-status-column ${item.status === "In Progress" ? "inprogress" : ""}`}
+                      >
+                        {item.status}
+                      </span>
+                    </td>
                     <td>{item.staff_name}</td>
                   </tr>
                 ))}

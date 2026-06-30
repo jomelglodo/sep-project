@@ -149,11 +149,16 @@ export const getProfileImage = async (req, res) => {
 export const applyChanges = async (req, res) => {
   const { userId } = req.params;
   const { displayname, email, department } = req.body;
-  console.log("File: ", req.file);
 
-  const imageBuffer = req.file ? req.file.buffer : null;
-  const filename = req.file ? req.file.originalname : null;
-  const mimeType = req.file ? req.file.mimetype : null;
+  let imageBuffer;
+  let filename;
+  let mimeType;
+
+  if (req.file) {
+    imageBuffer = req.file.buffer;
+    filename = req.file.originalname;
+    mimeType = req.file.mimetype;
+  }
 
   /*   console.log(req.body);
   console.log(req.headers["content-type"]); */
@@ -165,12 +170,20 @@ export const applyChanges = async (req, res) => {
         d_name = $1,
         email = $2,
         department = $3,
-        profile_image = $4,
-        profile_image_filename = $5,
-        profile_image_mimetype = $6
+        profile_image = COALESCE($4,profile_image),
+        profile_image_filename = COALESCE($5,profile_image_filename),
+        profile_image_mimetype = COALESCE($6, profile_image_mimetype)
       WHERE user_id = $7
       `,
-      [displayname, email, department, imageBuffer, filename, mimeType, userId],
+      [
+        displayname,
+        email,
+        department,
+        imageBuffer ?? null,
+        filename ?? null,
+        mimeType ?? null,
+        userId,
+      ],
     );
 
     if (result.rowCount == 0) {

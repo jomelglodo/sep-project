@@ -88,7 +88,15 @@ export const populateTickets = async (req, res) => {
         LEFT JOIN tbl_ticket_updates u
           ON t.ticket_num = u.ticket_num
         WHERE t.r_name = $1
-        ORDER BY t.ticket_num DESC
+        ORDER BY 
+          CASE t.status
+            WHEN 'In Progress' THEN 1
+            WHEN 'Open' THEN 2
+            WHEN 'Closed' THEN 3
+            WHEN 'Cancelled' THEN 4
+            ELSE 5
+          END,
+          t.ticket_num DESC
 
       `,
       [d_name],
@@ -218,6 +226,7 @@ export const createTicket = async (req, res) => {
       req.body;
 
     const ticketNum = await getTicketNum(client);
+
     //for single image
     const imageBuffer = req.file ? req.file.buffer : null;
     const filename = req.file ? req.file.originalname : null;

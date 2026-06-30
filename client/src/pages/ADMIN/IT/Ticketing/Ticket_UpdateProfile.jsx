@@ -92,6 +92,7 @@ export default function MainUpdateProfile({
     if (attachment) {
       formData.append("attachment", attachment);
     }
+
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/ticketing/main/applychanges/${loggedinUserId}`,

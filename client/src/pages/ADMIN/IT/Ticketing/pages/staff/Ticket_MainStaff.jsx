@@ -6,6 +6,7 @@ import "../../styles/staff/Ticket_MainStaff.css";
 
 //pages
 import MainStaffDashBoard from "./Ticket_Staff_Dashboard";
+import MainStaffTicketManagement from "./Ticket_Staff_Ticket";
 
 export default function TicketMainStaff({
   onLogout,
@@ -54,10 +55,10 @@ export default function TicketMainStaff({
   const renderPage = () => {
     switch (activePage) {
       case "dashboard":
-        return <MainStaffDashBoard />;
-
+        return <MainStaffDashBoard displayName={displayName} />;
         break;
-
+      case "ticketmanagement":
+        return <MainStaffTicketManagement />;
       default:
         break;
     }
