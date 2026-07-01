@@ -252,7 +252,7 @@ export const insertData = async (req, res) => {
       .json({ success: true, message: `${iCode} successfully submitted` });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, error: "Server Error" });
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 

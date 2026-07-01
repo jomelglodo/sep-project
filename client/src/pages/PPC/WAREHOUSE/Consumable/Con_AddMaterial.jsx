@@ -80,7 +80,7 @@ export default function AddMaterial({ closeAddMaterial }) {
       alert(data.message);
     } catch (err) {
       console.error(err);
-      alert(err);
+      alert(err.message);
     }
   }
 

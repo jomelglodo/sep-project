@@ -5,15 +5,18 @@ import "../../styles/staff/Ticket_Staff_Ticket.css";
 import { FaListAlt, FaUserCheck, FaStickyNote } from "react-icons/fa";
 //pages
 import AllTickets from "./Ticket_Staff_TicketAll";
-export default function StaffTicketManagement() {
+import AssignedTickets from "./Ticket_Staff_TicketAssigned";
+
+export default function StaffTicketManagement({ displayName }) {
   const [activeTab, setActiveTab] = useState("all");
 
   const renderContent = () => {
     switch (activeTab) {
       case "all":
-        return <AllTickets />;
+        return <AllTickets displayName={displayName} />;
         break;
       case "assigned":
+        return <AssignedTickets displayName={displayName} />;
         break;
       case "noted":
         break;
