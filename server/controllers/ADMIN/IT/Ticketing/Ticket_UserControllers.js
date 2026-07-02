@@ -1,4 +1,6 @@
 import { ticketPool } from "../../../../db.js";
+import { getIO } from "../../../../socket/socket.js";
+
 //GET PROFILE IMAGE
 export const getProfileImage = async (req, res) => {
   const { userId } = req.params;
@@ -217,6 +219,8 @@ async function getTicketNum(client) {
 export const createTicket = async (req, res) => {
   const client = await ticketPool.connect();
 
+  let committed = false;
+
   try {
     /* console.log("BODY:", req.body);
     console.log("FILE:", req.file); */
@@ -237,7 +241,7 @@ export const createTicket = async (req, res) => {
     // const imageBuffer = files.length > 0 ? files[0].buffer : null;
     // const filename = files.length > 0 ? files[0].originalname : "null";
 
-    await ticketPool.query(
+    const result = await ticketPool.query(
       `
         INSERT INTO tbl_tickets(
         ticket_num,
@@ -252,6 +256,7 @@ export const createTicket = async (req, res) => {
         attachment_mimetype
         )
         VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+        RETURNING user_id
         `,
       [
         ticketNum,
@@ -266,7 +271,21 @@ export const createTicket = async (req, res) => {
         mimeType,
       ],
     );
+
     await client.query("COMMIT");
+
+    committed = true;
+
+    //  {#220,9}
+    try {
+      getIO().to(`user:${userId}`).emit("ticket-created");
+      getIO().to("staff").emit("ticket-created", {
+        ticketNum,
+        displayname,
+      });
+    } catch (socketErr) {
+      console.log("Socket.IO emit failed: ", socketErr);
+    }
 
     res.json({
       success: true,
@@ -274,8 +293,12 @@ export const createTicket = async (req, res) => {
       message: "Ticket successfully created",
     });
   } catch (err) {
-    await client.query("ROLLBACK");
     console.error(err);
+
+    if (!committed) {
+      await client.query("ROLLBACK");
+    }
+
     res.status(500).json({
       success: false,
       message: "Server Error",

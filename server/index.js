@@ -6,12 +6,20 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 
+//  {#fe8,2}
+import http from "http";
+import { initializeSocket } from "./socket/socket.js";
+
 import { risPool, conPool, ticketPool } from "./db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
+// {#fe8,3}
+const server = http.createServer(app);
+initializeSocket(server);
 
 /* ========================
    MIDDLEWARE
@@ -160,6 +168,11 @@ process.on("SIGINT", async () => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, "0.0.0.0", () => {
-  console.log("Server is running on port 5000");
+
+//  {#fe8,3}
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+/* app.listen(PORT, "0.0.0.0", () => {
+  console.log("Server is running on port 5000");
+}); */

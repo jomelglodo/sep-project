@@ -1,11 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../../styles/staff/Ticket_Staff_TicketAll.css";
+import socket from "../../../../../../services/socket";
 import { toast } from "react-toastify";
 
 //ICONS
 import { FaListAlt, FaUserCheck, FaStickyNote } from "react-icons/fa";
 import { GrTroubleshoot } from "react-icons/gr";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
+
+//AUDIO
+import toastSuccessSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastSuccess.mp3";
+import toastWarningSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastWarning.mp3";
 
 export default function StaffAllTickets({ displayName }) {
   const [ticketList, setTicketList] = useState([]);
@@ -33,8 +38,14 @@ export default function StaffAllTickets({ displayName }) {
   const [modalConfirmTroubleshoot, setModalConfirmTroubleshoot] =
     useState(false);
 
+  //AUDIO
+  const toastSuccessAudio = new Audio(toastSuccessSound);
+  const toastWarningAudio = new Audio(toastWarningSound);
+
   //REFS
   const firstRender = useRef(true);
+  const isStarting = useRef(false);
+
   //EFFECTS
   useEffect(() => {
     getAllTickets("", "all");
@@ -53,6 +64,19 @@ export default function StaffAllTickets({ displayName }) {
 
     return () => clearTimeout(timeout);
   }, [search, statusFilter]);
+
+  /* SOCKET IO */
+  //  {#9a8,11}
+  useEffect(() => {
+    const refresh = () => {
+      getAllTickets(search, statusFilter);
+    };
+
+    socket.on("ticket-created", refresh);
+    return () => {
+      socket.off("ticket-created");
+    };
+  }, []);
 
   //API
   const getAllTickets = async (searchText = "", status = "all") => {
@@ -84,6 +108,7 @@ export default function StaffAllTickets({ displayName }) {
   function handleTroubleshoot(item) {
     if (item.status.toLowerCase().trim() !== "open") {
       toast.warning("Only ticket with status OPEN can troubleshoot!");
+      toastWarningAudio.play();
       return;
     }
 
@@ -93,6 +118,12 @@ export default function StaffAllTickets({ displayName }) {
   }
 
   async function handleConfirmTroubleshoot() {
+    console.log(isStarting.current);
+
+    if (isStarting.current) return;
+
+    isStarting.current = true;
+
     try {
       const response = await fetch(
         `
@@ -117,10 +148,13 @@ export default function StaffAllTickets({ displayName }) {
         setModalConfirmTroubleshoot(false);
         getAllTickets();
         toast.success("Ticket is now In Progress");
+        toastSuccessAudio.play();
       }
     } catch (err) {
       console.error(err);
       toast.error(err);
+    } finally {
+      isStarting.current = false;
     }
   }
   //HELPER FUNCTIONS

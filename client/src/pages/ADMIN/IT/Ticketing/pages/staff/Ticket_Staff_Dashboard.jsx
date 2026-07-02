@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../../styles/staff/Ticket_Staff_Dashboard.css";
+import { toast } from "react-toastify";
+import socket from "../../../../../../services/socket";
 
 //chart
 import DashboardChart from "./Ticket_Staff_DashboardChart";
@@ -75,6 +77,20 @@ export default function MainStaffDashBoard({ displayName }) {
     fetchDashboardCounter();
     fetchTableTickets();
   }, [staffName]);
+
+  //  {#e34,12}
+  //notification once new ticket is created
+  useEffect(() => {
+    socket.on("ticket-created", (data) => {
+      toast.info(
+        `A new ticket has been created by ${displayName} with Ticket No. : ${data.ticketNum}`,
+      );
+    });
+
+    return () => {
+      socket.off("ticket-created");
+    };
+  }, []);
 
   //API
 

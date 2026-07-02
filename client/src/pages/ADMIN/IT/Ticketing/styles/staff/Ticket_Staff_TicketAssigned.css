@@ -5,6 +5,169 @@
   min-height: 70vh;
 }
 
+/* VIEW TICKET OVERLAY */
+.ticket-mainstaff-assigned-viewticket-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999;
+}
+
+.ticket-mainstaff-assigned-viewticket-modal {
+  width: min(900px, 95%);
+  max-height: 90vh;
+
+  background: white;
+  border-radius: 14px;
+
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  animation: modalOpen 0.5s ease-in-out;
+}
+
+.ticket-mainstaff-assigned-viewticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 25px 30px;
+  border-bottom: 1px solid #ececec;
+}
+
+.ticket-mainstaff-assigned-viewticket-header h2 {
+  margin: 0;
+}
+
+.ticket-mainstaff-assigned-viewticket-header p {
+  color: gray;
+  margin-top: 5px;
+}
+
+.ticket-mainstaff-assigned-viewticket-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+
+  padding: 30px;
+}
+
+.ticket-mainstaff-assigned-viewticket-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket-mainstaff-assigned-viewticket-field label {
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 8px;
+}
+
+.ticket-mainstaff-assigned-viewticket-field span {
+  font-weight: 500;
+  color: #222;
+}
+
+.ticket-mainstaff-assigned-viewticket-field.full {
+  grid-column: 1 / -1;
+}
+
+.ticket-mainstaff-assigned-viewticket-field textarea {
+  resize: none;
+  min-height: 140px;
+
+  padding: 15px;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  background: #fafafa;
+
+  font-family: inherit;
+}
+
+.ticket-mainstaff-assigned-viewticket-attachment {
+  border: 2px dashed #d8d8d8;
+  border-radius: 10px;
+
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ticket-mainstaff-assigned-viewticket-attachment img {
+  max-width: 100%;
+  max-height: 250px;
+
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.ticket-mainsaff-assigned-viewticket-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 30px;
+
+  padding: 20px 30px;
+
+  border-top: 1px solid #ececec;
+}
+
+.ticket-mainstaff-assigned-viewticket-closetbtn,
+.ticket-mainstaff-assigned-viewticket-startbtn {
+  padding: 10px 24px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #374151;
+  color: white;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.ticket-mainstaff-assigned-viewticket-startbtn {
+  background-color: rgb(142, 233, 142);
+  color: rgb(4, 52, 11);
+}
+
+.ticket-mainsaff-assigned-viewticket-footer button:hover {
+  opacity: 0.7;
+  transform: translateY(-5px);
+}
+
+.ticket-mainstaff-assigned-viewticket-status {
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-weight: 600;
+}
+
+.ticket-mainstaff-assigned-viewticket-status.open {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.ticket-mainstaff-assigned-viewticket-status.inprogress {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.ticket-mainstaff-assigned-viewticket-status.closed {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.ticket-mainstaff-assigned-viewticket-status.cancelled {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
 /* HEADER CONTAINER */
 .ticket-mainstaff-assigned-search-container {
   display: flex;
@@ -163,4 +326,15 @@
   color: #fff;
   opacity: 1;
   transform: translateY(-4px);
+}
+
+@keyframes modalOpen {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
 }

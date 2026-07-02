@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import socket from "../../../../services/socket";
+
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Ticket_Login.css";
 
@@ -111,6 +113,43 @@ export default function TicketLogin() {
     }
   }
 
+  //JOINING TO SOCKET ROOM
+
+  //  {#e76,33}
+  useEffect(() => {
+    if (!isLoggedIn || !userId) return;
+
+    //Reconnect if the socket was disconnected
+    if (!socket.connected) {
+      socket.connect();
+    }
+
+    //join the appropriate room once connected
+    const joinRoom = () => {
+      switch (role.toLowerCase()) {
+        case "user":
+          socket.emit("join-user", userId);
+          break;
+        case "staff":
+          socket.emit("join-staff", userId);
+          break;
+        case "admin":
+          socket.emit("join-admin", userId);
+        default:
+          break;
+      }
+    };
+    if (socket.connected) {
+      joinRoom();
+    } else {
+      socket.once("connect", joinRoom);
+    }
+
+    return () => {
+      socket.off("connect", joinRoom);
+    };
+  }, [isLoggedIn, userId, role]);
+
   //USER LOG IN
   async function handleSubmit(e) {
     e.preventDefault();
@@ -143,6 +182,7 @@ export default function TicketLogin() {
             lastActivity: Date.now(),
           }),
         ); */
+
         setRole(role);
         setDisplayName(d_name);
         setUserId(user_id);
@@ -168,6 +208,10 @@ export default function TicketLogin() {
     }
 
     setIsLoggedIn(false);
+
+    //  {#6ed,2}
+    //DISCONNECT THE SOCKET ROOM CONNECTION
+    socket.disconnect();
   };
 
   if (isLoggedIn) {

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../styles/user/Ticket_User_Dashboard.css";
+import { toast } from "react-toastify";
 import UserTicketDashboardChart from "./Ticket_User_DashboardChart";
+import socket from "../../../../../../services/socket";
 
 //ICONS
 import { BsFillTicketPerforatedFill } from "react-icons/bs";
@@ -22,8 +24,7 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
 
   useEffect(() => {
     // simulate API
-
-    setTimeout(() => {
+    const fetchTicketCount = () => {
       fetch(
         `${process.env.REACT_APP_API_URL}/ticketing/user/ticket/countticket/${loggedinUserId}`,
       )
@@ -34,11 +35,44 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
         .catch((err) => {
           console.error(err);
         });
-    }, 500);
-  }, []);
+    };
+
+    fetchTicketCount();
+
+    socket.on("ticket-created", fetchTicketCount);
+    socket.on("ticket-starttroubleshoot", fetchTicketCount);
+
+    return () => {
+      socket.off("ticket-created");
+      socket.off("ticket-starttroubleshoot");
+    };
+  }, [loggedinUserId]);
 
   useEffect(() => {
     fetchTickets();
+  }, []);
+
+  //  {#705,22}
+  //socket.io
+
+  useEffect(() => {
+    const fetchCreatedTicket = () => {
+      fetchTickets();
+    };
+    const fetchStarttroubleshoot = (data) => {
+      fetchTickets();
+      //show a notification
+      toast.info(
+        `${data.ticketNum} is now In Progress, Assigned IT: ${data.staffName}`,
+      );
+    };
+    socket.on("ticket-created", fetchCreatedTicket);
+    socket.on("ticket-starttroubleshoot", fetchStarttroubleshoot);
+
+    return () => {
+      socket.off("ticket-created", fetchCreatedTicket);
+      socket.off("ticket-starttroubleshoot", fetchStarttroubleshoot);
+    };
   }, []);
 
   const fetchTickets = async () => {

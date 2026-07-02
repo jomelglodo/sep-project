@@ -1,6 +1,6 @@
 import { response } from "express";
 import { ticketPool } from "../../../../db.js";
-
+import { getIO } from "../../../../socket/socket.js";
 //DASHBOARD ---------------------------------------------------------------------------
 
 //DASHBOARD COUNTER
@@ -206,18 +206,23 @@ export const startTroubleshoot = async (req, res) => {
   const { ticketId, staffName } = req.body;
   const client = await ticketPool.connect();
 
+  let committed = false;
+
   try {
     await client.query("BEGIN");
 
     //UPDATE tbl_tickets
-    await client.query(
+    const result = await client.query(
       `
       UPDATE tbl_tickets
       SET status = 'In Progress'
       WHERE ticket_num = $1
+      RETURNING user_id
       `,
       [ticketNum],
     );
+
+    const userId = result.rows[0].user_id;
 
     //INSERT DATA TO THE tbl_ticket_updates
     await client.query(
@@ -226,11 +231,27 @@ export const startTroubleshoot = async (req, res) => {
     );
 
     await client.query("COMMIT");
+    committed = true;
+
+    //  {#e4f,8}
+    try {
+      getIO().to(`user:${userId}`).emit("ticket-starttroubleshoot", {
+        ticketNum,
+        staffName,
+      });
+    } catch (socketErr) {
+      console.log("Socket.IO emit failed: ", socketErr);
+    }
 
     res.json({ success: true, message: "Ticket successfully updated." });
   } catch (err) {
     console.error(err);
-    await client.query("ROLLBACK");
+
+    // Only rollback if the transaction wasn't committed
+    if (!committed) {
+      await client.query("ROLLBACK");
+    }
+
     res.status(500).json({
       success: false,
       message: err.message,
@@ -251,6 +272,7 @@ export const getAllAssignedTickets = async (req, res) => {
         t.ticket_num AS t_ticket_num,
         TO_CHAR(t.date_submitted, 'YYYY-MM-DD HH24:MI:SS') AS d_submitted,
         t.subject_title,
+        t.description,
         t.r_name,
         t.asset_tag,
         t.status,

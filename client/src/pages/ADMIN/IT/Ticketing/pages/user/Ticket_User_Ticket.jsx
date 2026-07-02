@@ -5,7 +5,9 @@ import { FaEdit } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 
 import "../../styles/user/Ticket_User_Ticket.css";
+import socket from "../../../../../../services/socket";
 
+import toastSuccessSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastSuccess.mp3";
 export default function MainUserTicket({ displayName, loggedinUserId }) {
   // 2. STATES
   const [search, setSearch] = useState("");
@@ -55,9 +57,13 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
   const [selCancelTicketNum, setSelCancelTicketNum] = useState("");
   const [selectedTicketNum, setSelectedTicketNum] = useState("");
 
+  //audio
+  const toastSuccessAudio = new Audio(toastSuccessSound);
+
   // 3. REFS
   const fileInputRef = useRef(null);
   const editFileInputRef = useRef(null);
+  const isCreating = useRef(false);
 
   // 4. EFFECTS
 
@@ -81,8 +87,36 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
       });
   }, [showCreateTicket]);
 
-  //populate tickets using poll and runs only when the user view Ticket Page
+  //populate tickets using socket.io and runs only when the user view Ticket Page
+  //  {#f8c,27}
   useEffect(() => {
+    //initial fetch when component mounts
+    fetchTickets();
+
+    const handleCreatedTicket = () => {
+      fetchTickets();
+    };
+
+    const handleStartTroubleshoot = (data) => {
+      fetchTickets();
+
+      //show a notification
+      toast.info(
+        `${data.ticketNum} is now In Progress, Assigned IT: ${data.staffName}`,
+      );
+    };
+    //listen for update from the server
+    socket.on("ticket-created", handleCreatedTicket);
+
+    socket.on("ticket-starttroubleshoot", handleStartTroubleshoot);
+
+    //cleanup
+    return () => {
+      socket.off("ticket-created", handleCreatedTicket);
+      socket.off("ticket-starttroubleshoot", handleStartTroubleshoot);
+    };
+  }, []);
+  /*   useEffect(() => {
     let interval;
 
     const fetchIfVisible = async () => {
@@ -98,7 +132,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
 
     return () => clearInterval(interval);
   }, [search]);
-
+ */
   //debounce for searching data
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -284,6 +318,10 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
     }
 
     try {
+      if (isCreating.current) return;
+
+      isCreating.current = true;
+
       const res = await fetch(
         `
       ${process.env.REACT_APP_API_URL}/ticketing/user/ticket/createticket
@@ -299,11 +337,14 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
       if (data.success) {
         const ticketNum = data.ticketNum;
         toast.success(`${ticketNum} successfully created`);
+        toastSuccessAudio.play();
         resetForm();
         fetchTickets();
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      isCreating.current = false;
     }
   }
 

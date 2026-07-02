@@ -52,7 +52,7 @@ export default function MainLayout() {
                 theme="colored"
                 /*  hideProgressBar={true} */
                 limit={5} //3 toast will be visible at a time
-                style={{ zIndex: 99999 }}
+                style={{ zIndex: 99999, fontSize: "0.8rem" }}
               />
               <TicketLogin />
             </>
