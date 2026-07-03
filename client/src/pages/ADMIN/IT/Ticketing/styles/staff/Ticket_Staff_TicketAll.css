@@ -105,6 +105,7 @@
   width: 40px;
   height: 40px;
 
+  border: none;
   border-radius: 50%;
   color: white;
   font-weight: 600;
@@ -349,6 +350,7 @@
   min-width: 1000px;
   border-collapse: separate;
   border-spacing: 0;
+  table-layout: fixed;
 }
 
 /* TABLE HEADER */
@@ -366,7 +368,7 @@
 
   text-align: left;
 
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 
   color: #475569;
 
@@ -389,10 +391,17 @@
 /* TABLE BODY */
 .ticket-mainstaff-allticket-table td {
   padding: 15px 18px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #334155;
   border-bottom: 1px solid #d4d5d6;
   white-space: nowrap;
+}
+
+.mainstaff-allticket-subject-column {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 250px;
 }
 
 .ticket-mainstaff-allticket-table tbody tr:hover {

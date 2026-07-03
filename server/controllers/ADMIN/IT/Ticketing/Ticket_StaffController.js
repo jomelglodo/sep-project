@@ -170,7 +170,6 @@ export const getAllTickets = async (req, res) => {
 //get attachment image
 export const getAttachment = async (req, res) => {
   const { ticketNum } = req.params;
-  console.log(ticketNum);
   try {
     const result = await ticketPool.query(
       `
@@ -182,7 +181,7 @@ export const getAttachment = async (req, res) => {
       `,
       [ticketNum],
     );
-    console.log("again");
+
     if (result.rows.length === 0) {
       return res.status(404).send("Image not Found");
     }
@@ -277,6 +276,11 @@ export const getAllAssignedTickets = async (req, res) => {
         t.asset_tag,
         t.status,
         u.ticket_num AS u_ticket_num,
+        u.update_comment,
+        CASE 
+          WHEN u.update_attachment IS NOT NULL THEN TRUE
+          ELSE FALSE
+        END AS has_updateattachment,
         TO_CHAR(u.time_started, 'YYYY-MM-DD HH24:MI:SS') AS u_time_started,
         TO_CHAR(u.time_finished, 'YYYY-MM-DD HH24:MI:SS') AS u_time_finished
         FROM tbl_tickets t
@@ -293,8 +297,174 @@ export const getAllAssignedTickets = async (req, res) => {
     if (result.rows.length === 0) {
       return res.json({ success: false, message: "No data found" });
     }
+
     return res.json(result.rows);
   } catch (err) {
     console.error(err);
+  }
+};
+
+//UPDATE TROUBLESHOOT TICKET
+export const finishTicket = async (req, res) => {
+  const client = await ticketPool.connect();
+
+  const { ticketNum } = req.params;
+  const { reason, attachment } = req.body;
+
+  const imageBuffer = req.file ? req.file.buffer : null;
+  const fileName = req.file ? req.file.originalname : null;
+  const mimeType = req.file ? req.file.mimetype : null;
+
+  let committed;
+
+  try {
+    client.query("BEGIN");
+
+    //update tickets
+    const result = await client.query(
+      `
+        UPDATE tbl_tickets
+        SET status='Closed'
+        WHERE ticket_num = $1
+        RETURNING user_id
+      `,
+      [ticketNum],
+    );
+
+    const userId = result.rows[0].user_id;
+
+    //update tbl_ticket_updates
+    let updateTicketsQuery;
+    if (!req.file) {
+      updateTicketsQuery = await client.query(
+        `
+        UPDATE tbl_ticket_updates
+        SET update_comment = $1,
+          time_finished = NOW()
+        WHERE ticket_num=$2
+        `,
+        [reason, ticketNum],
+      );
+    } else {
+      updateTicketsQuery = await client.query(
+        `
+        UPDATE tbl_ticket_updates
+        SET update_comment = $1,
+          update_attachment = $2,
+          update_attachment_filename = $3,
+          update_attachment_mimetype = $4,
+          time_finished = NOW()
+        WHERE ticket_num=$5
+        `,
+        [reason, imageBuffer, fileName, mimeType, ticketNum],
+      );
+    }
+
+    await client.query("COMMIT");
+
+    committed = true;
+
+    //  {#483,11}
+    try {
+      getIO().to(`user:${userId}`).emit("ticket-finished", {
+        ticketNum,
+      });
+      getIO().to("staff").emit("ticket-finished", {
+        ticketNum,
+      });
+    } catch (socketErr) {
+      console.log("Socket.IO emit failed: ", socketErr);
+    }
+
+    res.json({ success: true, message: `Ticket: ${ticketNum} is now closed` });
+  } catch (err) {
+    console.error(err);
+    if (!committed) {
+      await client.query("ROLLBACK");
+    }
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  } finally {
+    client.release();
+  }
+};
+
+//get update attachment image
+export const getUpdateAttachment = async (req, res) => {
+  const { ticketNum } = req.params;
+  try {
+    const result = await ticketPool.query(
+      `
+      SELECT 
+        update_attachment,
+        update_attachment_mimetype
+      FROM tbl_ticket_updates
+      WHERE ticket_num = $1
+      `,
+      [ticketNum],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).send("Image not Found");
+    }
+
+    const image = result.rows[0].update_attachment;
+
+    if (!image) {
+      return res.status(404).send("No attached image");
+    }
+
+    res.set("Content-Type", result.rows[0].update_attachment_mimetype);
+    res.send(image);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+//edit TICKET
+export const saveUpdateChanges = async (req, res) => {
+  const { ticketNum } = req.params;
+  const { reason, attachment } = req.body;
+
+  const imageBuffer = req.file ? req.file.buffer : null;
+  const fileName = req.file ? req.file.originalname : null;
+  const mimeType = req.file ? req.file.mimetype : null;
+
+  try {
+    let query;
+    if (req.file) {
+      query = await ticketPool.query(
+        `
+        UPDATE tbl_ticket_updates
+        SET update_comment = $1,
+          update_attachment = $2,
+          update_attachment_filename = $3,
+          update_attachment_mimetype = $4
+        WHERE ticket_num = $5
+      `,
+        [reason, imageBuffer, fileName, mimeType, ticketNum],
+      );
+    } else {
+      query = await ticketPool.query(
+        `
+        UPDATE tbl_ticket_updates
+        SET update_comment = $1
+        WHERE ticket_num = $2
+      `,
+        [reason, ticketNum],
+      );
+    }
+
+    if (query.rowCount > 0) {
+      res.json({
+        success: true,
+        message: `Ticket ${ticketNum} changes has been successfully saved`,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server Error" });
   }
 };

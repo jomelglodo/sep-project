@@ -118,8 +118,6 @@ export default function StaffAllTickets({ displayName }) {
   }
 
   async function handleConfirmTroubleshoot() {
-    console.log(isStarting.current);
-
     if (isStarting.current) return;
 
     isStarting.current = true;
@@ -322,12 +320,28 @@ export default function StaffAllTickets({ displayName }) {
       <div className="ticket-mainstaff-allticket-content-body">
         <div className="ticket-mainstaff-allticket-content-wrapper">
           <table className="ticket-mainstaff-allticket-table">
+            <colgroup>
+              <col style={{ width: "60px" }} /> {/* No. */}
+              <col style={{ width: "120px" }} />
+              {/* Ticket no. */}
+              <col style={{ width: "150px" }} />
+              {/* Date submitted */}
+              <col style={{ width: "120px" }} />
+              {/* Requestor */}
+              <col /> {/* Subject expands based on the css*/}
+              <col style={{ width: "130px" }} />
+              {/* Asset tag. */}
+              <col style={{ width: "120px" }} />
+              {/* status */}
+              <col style={{ width: "100px" }} />
+              {/* action */}
+            </colgroup>
             <thead>
               <tr>
                 <th>No.</th>
                 <th>Ticket No.</th>
                 <th>Date Submitted</th>
-                <th>Section</th>
+                <th>Requestor</th>
                 <th>Subject</th>
                 <th>Asset Tag</th>
                 <th className="mainstaff-allticket-status-columnheader">
@@ -343,7 +357,9 @@ export default function StaffAllTickets({ displayName }) {
                   <td>{item.ticket_num}</td>
                   <td>{item.d_submitted}</td>
                   <td>{item.r_name}</td>
-                  <td>{item.subject_title}</td>
+                  <td className="mainstaff-allticket-subject-column">
+                    {item.subject_title}
+                  </td>
                   <td>{item.asset_tag}</td>
                   <td className="mainstaff-allticket-status-column">
                     <span
