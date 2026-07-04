@@ -16,6 +16,7 @@ export default function AssignedTicketEdit({
   const [showImageViewer, setShowImageViewer] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [hasAttachment, setHasAttachment] = useState(false);
+  const [isRemoveAttachment, setIsRemoveAttachment] = useState(false);
 
   const [attachmentFile, setAttachmentFile] = useState(null);
   const [attachmentPreview, setAttachmentPreview] = useState("");
@@ -53,10 +54,11 @@ export default function AssignedTicketEdit({
     setSubject(item.subject_title);
     setStatus(item.status);
     setStaffReason(item.update_comment);
+    setHasAttachment(item.has_updateattachment);
 
     if (item.has_updateattachment) {
       setAttachmentPreview(
-        `${process.env.REACT_APP_API_URL}/ticketing/staff/getupdateattachment/${item.t_ticket_num}`,
+        `${process.env.REACT_APP_API_URL}/ticketing/staff/getupdateattachment/${item.t_ticket_num}?t=${Date.now()}`,
       );
     }
   }, []);
@@ -81,6 +83,10 @@ export default function AssignedTicketEdit({
         formData.append("attachment", attachmentFile);
       }
 
+      if (isRemoveAttachment) {
+        formData.append("isremove", isRemoveAttachment.toString());
+      }
+
       const response = await fetch(
         `
             ${process.env.REACT_APP_API_URL}/ticketing/staff/saveeditdetails/${ticketNum}
@@ -94,7 +100,8 @@ export default function AssignedTicketEdit({
       const data = await response.json();
 
       if (data.success) {
-        refreshTicketList();
+        await refreshTicketList();
+        resetSelection();
         setModalConfirmSave(false);
         onClose();
 
@@ -123,6 +130,7 @@ export default function AssignedTicketEdit({
       return;
     }
 
+    setIsRemoveAttachment(false);
     setAttachmentFile(file);
     setAttachmentPreview(URL.createObjectURL(file));
   }
@@ -157,6 +165,10 @@ export default function AssignedTicketEdit({
 
     setAttachmentPreview("");
 
+    if (hasAttachment) {
+      setIsRemoveAttachment(true);
+    }
+
     if (attachmentInputRef.current) {
       attachmentInputRef.current.value = "";
     }
@@ -183,6 +195,7 @@ export default function AssignedTicketEdit({
     setStatus("");
     setStaffReason("");
     setHasAttachment(false);
+    setIsRemoveAttachment(false);
   };
 
   return (

@@ -239,7 +239,13 @@ export default function TicketLogin() {
         );
       case "admin":
         return (
-          <TicketMainAdmin onLogout={handleLogout} displayName={displayName} />
+          <TicketMainAdmin
+            onLogout={handleLogout}
+            displayName={displayName}
+            setDisplayName={setDisplayName}
+            loggedinUserId={userId}
+            userRole={normalizedRole}
+          />
         );
       default:
         return <div>Invalid Role: {role}</div>;

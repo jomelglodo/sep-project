@@ -426,7 +426,9 @@ export const getUpdateAttachment = async (req, res) => {
 //edit TICKET
 export const saveUpdateChanges = async (req, res) => {
   const { ticketNum } = req.params;
-  const { reason, attachment } = req.body;
+  const { reason, isremove } = req.body;
+
+  const isRemoveAttachment = isremove === "true";
 
   const imageBuffer = req.file ? req.file.buffer : null;
   const fileName = req.file ? req.file.originalname : null;
@@ -447,22 +449,40 @@ export const saveUpdateChanges = async (req, res) => {
         [reason, imageBuffer, fileName, mimeType, ticketNum],
       );
     } else {
-      query = await ticketPool.query(
-        `
+      if (isRemoveAttachment) {
+        query = await ticketPool.query(
+          `
+        UPDATE tbl_ticket_updates
+        SET update_comment = $1,
+          update_attachment = NULL,
+          update_attachment_filename = NULL,
+          update_attachment_mimetype = NULL
+        WHERE ticket_num = $2
+      `,
+          [reason, ticketNum],
+        );
+      } else {
+        query = await ticketPool.query(
+          `
         UPDATE tbl_ticket_updates
         SET update_comment = $1
         WHERE ticket_num = $2
       `,
-        [reason, ticketNum],
-      );
+          [reason, ticketNum],
+        );
+      }
     }
 
-    if (query.rowCount > 0) {
-      res.json({
-        success: true,
-        message: `Ticket ${ticketNum} changes has been successfully saved`,
+    if (query.rowCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Ticket not found",
       });
     }
+    res.json({
+      success: true,
+      message: `Ticket ${ticketNum} changes has been successfully saved`,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: "Server Error" });

@@ -3,10 +3,13 @@ import "./Ticket_MainSidebar.css";
 
 //ICONS
 
-import { MdOutlineMessage } from "react-icons/md";
-import { LuTicket } from "react-icons/lu";
-import { MdOutlineDashboard } from "react-icons/md";
-import { TfiAnnouncement } from "react-icons/tfi";
+import { MdOutlineMessage } from "react-icons/md"; //message
+import { LuTicket } from "react-icons/lu"; //ticket management
+import { MdOutlineDashboard } from "react-icons/md"; //dashboard
+import { TfiAnnouncement } from "react-icons/tfi"; //announcement
+import { MdManageAccounts } from "react-icons/md"; // user management
+import { TbCategoryPlus } from "react-icons/tb"; //category
+import { HiOutlineDocumentReport } from "react-icons/hi"; //report module
 
 export default function TicketMainUserHeader({
   activePage,
@@ -108,6 +111,68 @@ export default function TicketMainUserHeader({
         );
         break;
       case "admin":
+        return (
+          <ul className="ticket-main-home-menulist">
+            <li
+              className={`ticket-main-home-menu-item ${activePage === "dashboard" ? "selectactive" : ""}`}
+              onClick={() => {
+                setActivePage("dashboard");
+              }}
+            >
+              <span className="ticket-main-icon">
+                <MdOutlineDashboard />
+              </span>
+              <span className="menu-text">Dashboard</span>
+            </li>
+            <li
+              className={`ticket-main-home-menu-item ${activePage === "usermanagement" ? "selectactive" : ""}`}
+              onClick={() => {
+                setActivePage("usermanagement");
+              }}
+            >
+              <span className="ticket-main-icon">
+                <MdManageAccounts />
+              </span>
+              <span className="menu-text">User Management</span>
+            </li>
+            <li
+              className={`ticket-main-home-menu-item ${activePage === "category" ? "selectactive" : ""}
+            }`}
+              onClick={() => {
+                setActivePage("category");
+              }}
+            >
+              <span className="ticket-main-icon">
+                <TbCategoryPlus />
+              </span>
+              <span className="menu-text">Category</span>
+            </li>
+            <li
+              className={`ticket-main-home-menu-item ${activePage === "announcement" ? "selectactive" : ""}
+            }`}
+              onClick={() => {
+                setActivePage("announcement");
+              }}
+            >
+              <span className="ticket-main-icon">
+                <TfiAnnouncement />
+              </span>
+              <span className="menu-text">Announcement</span>
+            </li>
+            <li
+              className={`ticket-main-home-menu-item ${activePage === "report" ? "selectactive" : ""}
+            }`}
+              onClick={() => {
+                setActivePage("report");
+              }}
+            >
+              <span className="ticket-main-icon">
+                <HiOutlineDocumentReport />
+              </span>
+              <span className="menu-text">Report Module</span>
+            </li>
+          </ul>
+        );
         break;
       default:
         return;

@@ -138,7 +138,7 @@ export default function MainStaffDashBoard({ displayName }) {
 
   return (
     <div className="ticket-mainstaff-dashboard-container">
-      <h2 className="ticket-mainstaff-dashboard-title">Dashbord</h2>
+      <h2 className="ticket-mainstaff-dashboard-title">Dashboard</h2>
       {/* TICKET COUNTER */}
 
       <div className="ticket-mainstaff-dashboard-ticketcounter-container">
@@ -266,18 +266,6 @@ export default function MainStaffDashBoard({ displayName }) {
               Recent Activity
             </h3>
             <div className="ticket-mainstaff-dashboard-performanceactivity-body">
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
               <p>dasdasd</p>
               <p>dasdasd</p>
               <p>dasdasd</p>

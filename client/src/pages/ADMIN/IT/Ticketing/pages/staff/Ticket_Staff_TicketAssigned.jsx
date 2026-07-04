@@ -156,7 +156,7 @@ export default function StaffAssignedTicket({ displayName }) {
     //show image if the status is closed
     if (item.status === "Closed") {
       setAttachmentPreview(
-        `${process.env.REACT_APP_API_URL}/ticketing/staff/getupdateattachment/${item.t_ticket_num}`,
+        `${process.env.REACT_APP_API_URL}/ticketing/staff/getupdateattachment/${item.t_ticket_num}?t=${Date.now()}`,
       );
     }
 
@@ -165,6 +165,7 @@ export default function StaffAssignedTicket({ displayName }) {
 
   async function handleFinishTicket() {
     if (!staffReason) {
+      toastWarningAudio.play();
       toast.info(`Please provide a "Reason/Comment" to finish`);
       if (reasonFocus.current) {
         reasonFocus.current?.focus();

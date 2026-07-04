@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.usermanagement_container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.usermanagement_header {
+  margin-bottom: 10px;
+}
+
+.usermanagement_header p {
+  margin-top: 0.5rem;
+  color: #6b7280;
+}
