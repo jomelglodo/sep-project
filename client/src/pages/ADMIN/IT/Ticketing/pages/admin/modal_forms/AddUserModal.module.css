@@ -1,0 +1,25 @@
+.primary_btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.primary_btn:hover {
+  background: #1d4ed8;
+}
+
+.secondary_btn {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 12px 20px;
+
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.secondary_btn:hover {
+  background: rgb(246, 242, 242);
+}

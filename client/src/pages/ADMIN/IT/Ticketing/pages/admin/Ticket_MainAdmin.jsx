@@ -8,7 +8,6 @@ import HeaderSidebar from "../../Ticket_MainSidebar";
 //PAGES
 import Dashboard from "./Ticket_Admin_Dashboard";
 import UserManagement from "./usermanagement/User_Management";
-import Statistics from "./usermanagement/Statistics";
 
 export default function TicketMainAdmin({
   onLogout,

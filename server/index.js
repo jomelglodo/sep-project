@@ -57,10 +57,13 @@ import Con_LoginRoutes from "./routes/PPC/WAREHOUSE/Consumable/Con_Routes.js";
 //-------------------------------------------------------------------------------------
 
 //TICKETING ROUTES--------------------------------------------------------------------
+import MockData from "./routes/ADMIN/IT/Ticketing/mock/databaseData.js";
+
 import Ticket_MainRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_MainRoutes.js";
 import Ticket_LoginRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_LoginRoutes.js";
 import Ticket_UserRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_UserRoutes.js";
 import Ticket_StaffRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_StaffRoutes.js";
+import Ticket_AdminRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_AdminRoutes.js";
 
 //-------------------------------------------------------------------------------------
 
@@ -110,10 +113,14 @@ app.use("/ris/receive", Ris_ReceiveRoutes);
 app.use("/con", Con_LoginRoutes);
 
 //ADMIN - IT - Ticketing
+//mock data
+app.use("/ticketing/mockdata", MockData);
+
 app.use("/ticketing/main", Ticket_MainRoutes);
 app.use("/ticketing/login", Ticket_LoginRoutes);
 app.use("/ticketing/user", Ticket_UserRoutes);
 app.use("/ticketing/staff", Ticket_StaffRoutes);
+app.use("/ticketing/admin", Ticket_AdminRoutes);
 
 // app.get("/test", (req, res) => {
 //   res.json({ ok: true, time: Date.now() });

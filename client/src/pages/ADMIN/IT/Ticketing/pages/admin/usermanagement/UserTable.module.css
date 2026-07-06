@@ -1,0 +1,150 @@
+.table_container {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+}
+
+.table_wrapper {
+  max-height: 550px;
+  overflow: auto;
+}
+
+.user_table {
+  width: 100%;
+  min-width: 1200px;
+  border-collapse: collapse;
+}
+
+.table_wrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table_wrapper::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+
+  border-radius: 10px;
+}
+
+.table_wrapper::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.user_table thead {
+  background: #f3f4f6;
+}
+
+.user_table th {
+  padding: 18px;
+  text-align: left;
+  font-size: 0.9rem;
+  color: #374151;
+  position: sticky;
+  top: 0;
+  background: #f3f4f6;
+
+  z-index: 1;
+}
+
+.user_table td {
+  padding: 16px 18px;
+  border-top: 1px solid #eee;
+  white-space: nowrap;
+  font-size: 0.8rem;
+}
+
+.user_table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.empty_table {
+  text-align: center;
+  padding: 60px;
+  color: #6b7280;
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+/* ROLE BADGE */
+.role_badge {
+  padding: 5px 14px;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.role_badge.admin {
+  background: #2563eb;
+}
+
+.role_badge.staff {
+  background: #10b981;
+}
+
+.role_badge.user {
+  background: #8b5cf6;
+}
+
+/* STATUS BADGE */
+
+.status_badge {
+  padding: 5px 14px;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.8rem;
+}
+
+.status_badge.active {
+  background: #16a34a;
+}
+
+.status_badge.inactive {
+  background: #dc2626;
+}
+
+/* ACTION BUTTON */
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.action_btn {
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-inline-start: 8px;
+  color: white;
+  transition: 0.25s ease;
+  background-color: yellow;
+}
+
+.action_btn.view {
+  background: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action_btn.delete {
+  background-color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action_btn.edit {
+  background: #f59e0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action_btn:hover {
+  transform: scale(1.1);
+}
