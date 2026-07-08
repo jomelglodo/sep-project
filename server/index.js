@@ -58,6 +58,7 @@ import Con_LoginRoutes from "./routes/PPC/WAREHOUSE/Consumable/Con_Routes.js";
 
 //TICKETING ROUTES--------------------------------------------------------------------
 import MockData from "./routes/ADMIN/IT/Ticketing/mock/databaseData.js";
+import MockCategory from "./routes/ADMIN/IT/Ticketing/mock/categoryData.js";
 
 import Ticket_MainRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_MainRoutes.js";
 import Ticket_LoginRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_LoginRoutes.js";
@@ -115,6 +116,7 @@ app.use("/con", Con_LoginRoutes);
 //ADMIN - IT - Ticketing
 //mock data
 app.use("/ticketing/mockdata", MockData);
+app.use("/ticketing/mockcategory", MockCategory);
 
 app.use("/ticketing/main", Ticket_MainRoutes);
 app.use("/ticketing/login", Ticket_LoginRoutes);

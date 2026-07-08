@@ -5,6 +5,12 @@ import styles from "./DeleteUserModal.module.css";
 
 export default function MainAdminDeleteUser({ open, user, onClose, onDelete }) {
   if (!user) return null;
+
+  const handleDelete = () => {
+    onDelete(user.user_id);
+    onClose();
+  };
+
   return (
     <Modal
       open={open}
@@ -16,7 +22,9 @@ export default function MainAdminDeleteUser({ open, user, onClose, onDelete }) {
           <button className={styles.secondary_btn} onClick={onClose}>
             Cancel
           </button>
-          <button className={styles.danger_btn}>Delete User</button>
+          <button className={styles.danger_btn} onClick={handleDelete}>
+            Delete User
+          </button>
         </>
       }
     >
@@ -24,7 +32,7 @@ export default function MainAdminDeleteUser({ open, user, onClose, onDelete }) {
         <div className={styles.warning_icon}>
           <FaExclamation />
         </div>
-        <h2>Delete "{user.displayname}"</h2>
+        <h2>Delete "{user.d_name}"</h2>
         <p>This action cannot be undone</p>
         <div className={styles.delete_summary}>
           <div>

@@ -1,0 +1,101 @@
+.table_container {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25x rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.table_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid #ececec;
+}
+
+.table_header h3 {
+  font-size: 1.1rem;
+}
+
+.table_wrapper {
+  overflow-x: auto;
+  max-height: 50vh;
+}
+
+.table_wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table_wrapper thead {
+  background: #f8fafc;
+}
+
+.table_wrapper thead th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+}
+
+.table_wrapper tbody td {
+  padding: 1rem;
+  border-top: 1px solid #f3f4f6;
+  font-size: 0.8rem;
+}
+
+.table_wrapper tbody tr:hover {
+  background: #f9fafb;
+}
+
+.actions_header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.action_btn {
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.action_btn.view {
+  background: #3b82f6;
+  color: white;
+}
+
+.action_btn.edit {
+  background: #f59e0b;
+  color: white;
+}
+
+.action_btn.delete {
+  background: #ef4444;
+  color: white;
+}
+
+.action_btn:hover {
+  transform: translateY(-2px);
+}
+
+.empty_table {
+  text-align: center;
+  padding: 3rem;
+  color: #6b7280;
+}

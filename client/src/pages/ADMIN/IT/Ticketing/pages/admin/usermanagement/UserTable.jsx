@@ -15,10 +15,12 @@ export default function MainStaffUserTable({
       <div className={styles.table_wrapper}>
         <table className={styles.user_table}>
           <colgroup>
+            <col style={{ width: "90px" }} /> {/* ID */}
             <col />
-            <col />
-            <col />
-            <col />
+            {/* Display Name */}
+            <col style={{ width: "50px" }} />
+            {/* Username */}
+            <col style={{ width: "100px" }} />
             <col />
             <col />
             <col />
@@ -27,7 +29,7 @@ export default function MainStaffUserTable({
           </colgroup>
           <thead>
             <tr>
-              <th>ID</th>
+              <th>User ID</th>
               <th>Display Name</th>
               <th>Username</th>
               <th>Email</th>
@@ -53,9 +55,9 @@ export default function MainStaffUserTable({
               </tr>
             ) : (
               users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td>{user.displayname}</td>
+                <tr key={user.user_id}>
+                  <td>{user.user_id}</td>
+                  <td>{user.d_name}</td>
                   <td>{user.username}</td>
                   <td>{user.email}</td>
                   <td>{user.department}</td>
@@ -73,26 +75,32 @@ export default function MainStaffUserTable({
                       {user.status}
                     </span>
                   </td>
-                  <td>{user.lastLogin}</td>
+                  <td>{user.last_login}</td>
                   <td className={styles.actions}>
-                    <button
-                      className={`${styles.action_btn} ${styles.view}`}
-                      onClick={() => onView(user)}
-                    >
-                      <FaEye />
-                    </button>
-                    <button
-                      className={`${styles.action_btn} ${styles.edit}`}
-                      onClick={() => onEdit(user)}
-                    >
-                      <FaEdit />
-                    </button>
-                    <button
-                      className={`${styles.action_btn} ${styles.delete}`}
-                      onClick={() => onDelete(user)}
-                    >
-                      <FaTrash />
-                    </button>
+                    {user.role === "admin" ? (
+                      <></>
+                    ) : (
+                      <>
+                        <button
+                          className={`${styles.action_btn} ${styles.view}`}
+                          onClick={() => onView(user)}
+                        >
+                          <FaEye />
+                        </button>
+                        <button
+                          className={`${styles.action_btn} ${styles.edit}`}
+                          onClick={() => onEdit(user)}
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className={`${styles.action_btn} ${styles.delete}`}
+                          onClick={() => onDelete(user)}
+                        >
+                          <FaTrash />
+                        </button>
+                      </>
+                    )}
                   </td>
                 </tr>
               ))

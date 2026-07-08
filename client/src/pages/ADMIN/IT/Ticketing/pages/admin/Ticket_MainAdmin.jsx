@@ -8,6 +8,7 @@ import HeaderSidebar from "../../Ticket_MainSidebar";
 //PAGES
 import Dashboard from "./Ticket_Admin_Dashboard";
 import UserManagement from "./usermanagement/User_Management";
+import Category from "./categorymanagement/Category";
 
 export default function TicketMainAdmin({
   onLogout,
@@ -57,9 +58,10 @@ export default function TicketMainAdmin({
         return <Dashboard />;
         break;
       case "usermanagement":
-        return <UserManagement />;
+        return <UserManagement displayName={displayName} />;
         break;
       case "category":
+        return <Category displayName={displayName} />;
         break;
       case "announcement":
         break;

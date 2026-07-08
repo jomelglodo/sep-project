@@ -18,14 +18,14 @@ export default function MainAdminViewUserModal({ open, user, onClose }) {
       <div className={styles.view_user}>
         <div className={styles.profile_header}>
           <div className={styles.avatar}>
-            {user.displayname
+            {user.d_name
               .split(" ")
               .map((name) => name[0])
               .join("")
               .toUpperCase()}
           </div>
 
-          <h2>{user.fullname}</h2>
+          <h2>{user.d_name}</h2>
 
           <p>{user.role}</p>
         </div>
@@ -34,9 +34,9 @@ export default function MainAdminViewUserModal({ open, user, onClose }) {
           <h3>Personal Information</h3>
           <div className={styles.info_grid}>
             <div>
-              <label>Full Name</label>
+              <label>Display Name</label>
 
-              <p>{user.displayname}</p>
+              <p>{user.d_name}</p>
             </div>
 
             <div>
@@ -81,7 +81,7 @@ export default function MainAdminViewUserModal({ open, user, onClose }) {
             <div>
               <label>Last Login</label>
 
-              <p>{user.lastLogin}</p>
+              <p>{user.last_login}</p>
             </div>
           </div>
         </div>

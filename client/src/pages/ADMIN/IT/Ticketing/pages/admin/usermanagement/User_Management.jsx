@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./User_Management.module.css";
+import { toast } from "react-toastify";
 
 //COMPONENTS
 import Statistics from "./Statistics";
@@ -13,68 +14,67 @@ import EditUserModal from "../modal_forms/EditUserModal";
 import ViewUserModal from "../modal_forms/ViewUserModal";
 import DeleteUserModal from "../modal_forms/DeleteUserModal";
 
-export default function MainStaffUserManagement() {
+//LOADER
+import Loader from "../../../../../../../components/common/loader/Loader";
+
+//AUDIO
+import toastSuccessSound from "../../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastSuccess.mp3";
+import toastWarningSound from "../../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastWarning.mp3";
+
+export default function MainAdminUserManagement({ displayName }) {
+  const API = process.env.REACT_APP_API_URL;
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  //AUDIO
+  const toastSuccessAudio = new Audio(toastSuccessSound);
+  const toastWarningAudio = new Audio(toastWarningSound);
+
+  const [userCounterList, setCounterList] = useState([]);
+  const [userList, setUserList] = useState([]);
   const [showModal, setShowModal] = useState(false);
   //modals
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   //list
   const [departmentList, setDepartmentList] = useState([]);
   const [roleList, setRoleList] = useState([]);
   const [statusList, setStatusList] = useState([]);
 
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      displayname: "John Doe",
-      username: "jdoe",
-      email: "john@email.com",
-      department: "IT",
-      role: "Admin",
-      status: "Active",
-      lastLogin: "Today 10:30 AM",
-    },
-
-    {
-      id: 2,
-      displayname: "Jane Smith",
-      username: "jsmith",
-      email: "jane@email.com",
-      department: "HR",
-      role: "User",
-      status: "Active",
-      lastLogin: "Yesterday",
-    },
-
-    {
-      id: 3,
-      displayname: "Michael Cruz",
-      username: "mcruz",
-      email: "michael@email.com",
-      department: "Accounting",
-      role: "Staff",
-      status: "Inactive",
-      lastLogin: "2 weeks ago",
-    },
-  ]);
+  //search filters
+  const [filters, setFilters] = useState({
+    search: "",
+    role: "",
+    department: "",
+    status: "",
+  });
 
   //EFFECT
+
   useEffect(() => {
-    fetchList();
+    const loadData = async () => {
+      try {
+        setIsLoading(true);
+        await Promise.all([fetchUserCounter(), fetchList(), fetchUserList()]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadData();
   }, []);
 
   //API
-
+  //populate lists(department,role,statuses)
   const fetchList = async () => {
     try {
       const [departmentRes, roleRes, statusRes] = await Promise.all([
-        fetch(`${process.env.REACT_APP_API_URL}/ticketing/mockdata/department`),
-        fetch(`${process.env.REACT_APP_API_URL}/ticketing/mockdata/role`),
-        fetch(`${process.env.REACT_APP_API_URL}/ticketing/mockdata/status`),
+        fetch(`${API}/ticketing/mockdata/department`),
+        fetch(`${API}/ticketing/mockdata/role`),
+        fetch(`${API}/ticketing/mockdata/status`),
       ]);
 
       const [department, role, status] = await Promise.all([
@@ -88,6 +88,41 @@ export default function MainStaffUserManagement() {
       setStatusList(status);
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  //populate fetch user counter
+  const fetchUserCounter = async () => {
+    try {
+      const response = await fetch(`${API}/ticketing/admin/usercounter`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      setCounterList(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  //populate userlist
+  const fetchUserList = async () => {
+    try {
+      const response = await fetch(`${API}/ticketing/admin/userlist`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setUserList(data);
+    } catch (err) {
+      console.error(err);
+      toastWarningAudio.play();
+      toast.error(err);
     }
   };
 
@@ -108,20 +143,121 @@ export default function MainStaffUserManagement() {
   };
 
   //HANDLER
-  const handleSaveUser = (newUser) => {
-    const user = { id: users.length + 1, ...newUser, lastLogin: "Never" };
-    setUsers((prev) => [user, ...prev]);
+  const handleSaveUser = async (newUser) => {
+    const user = { ...newUser, created_by: displayName };
+
+    try {
+      const result = await fetch(`${API}/ticketing/admin/adduser`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+
+      const data = await result.json();
+
+      if (!data.success) {
+        toastWarningAudio.play();
+        return toast.warning(data.message);
+      }
+
+      fetchUserList();
+      fetchUserCounter();
+      toastSuccessAudio.play();
+      toast.success(`Username: ${data.user.username} successfully added`);
+    } catch (err) {
+      console.error(err);
+      toastWarningAudio.play();
+      toast.error(`Server Error`);
+    }
+
+    /*     const user = { id: users.length + 1, ...newUser, lastLogin: "Never" };
+    setUsers((prev) => [user, ...prev]); */
   };
 
-  const handleUpdateUser = (updatedUser) => {
-    setUsers((prev) =>
-      prev.map((user) => (user.id === updatedUser.id ? updatedUser : user)),
-    );
+  const handleUpdateUser = async (updatedUser) => {
+    try {
+      const response = await fetch(`${API}/ticketing/admin/updateuser`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedUser),
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        toastWarningAudio.play();
+        return toast.error(data.message);
+      }
+
+      setUserList((prev) =>
+        prev.map((user) =>
+          user.user_id === updatedUser.user_id ? updatedUser : user,
+        ),
+      );
+      fetchUserCounter();
+      fetchUserList();
+      toastSuccessAudio.play();
+      toast.success(`User id: ${data.user.user_id} successfully updated`);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleDeleteUser = (userId) => {
-    setUsers((prev) => prev.filter((user) => user.id !== userId));
+  const handleDeleteUser = async (userId) => {
+    try {
+      const response = await fetch(
+        `${API}/ticketing/admin/deleteuser/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      const data = await response.json();
+
+      if (!data.success) {
+        toastWarningAudio.play();
+        return toast.error(data.message);
+      }
+
+      fetchUserCounter();
+      fetchUserList();
+      toastSuccessAudio.play();
+      toast.success(`User id: ${data.userid.user_id} successfully deleted`);
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  //search filter
+  const filteredUsers = userList.filter((user) => {
+    const search = filters.search.toLowerCase();
+
+    const matchesSearch =
+      (user.d_name ?? "").toLowerCase().includes(search) ||
+      user.username.toLowerCase().includes(search) ||
+      (user.email ?? "").toLowerCase().includes(search);
+
+    const matchesRole = filters.role === "" || user.role === filters.role;
+
+    const matchesDepartment =
+      filters.department === "" || user.department === filters.department;
+
+    const matchesStatus =
+      filters.status === "" || user.status === filters.status;
+
+    return matchesSearch && matchesRole && matchesDepartment && matchesStatus;
+  });
+
+  if (isLoading) {
+    return <Loader message="Loading users...." />;
+  }
 
   return (
     <div className={styles.usermanagement_container}>
@@ -130,15 +266,17 @@ export default function MainStaffUserManagement() {
         <p>Manage system users, roles and access permissions</p>
       </div>
       {/* STATISTICS */}
-      <Statistics />
+      <Statistics userCount={userCounterList} />
       <SearchFilter
         onAdd={() => setShowAddModal(true)}
         department={departmentList}
         role={roleList}
         status={statusList}
+        filters={filters}
+        setFilters={setFilters}
       />
       <UserTable
-        users={users}
+        users={filteredUsers}
         onView={handleView}
         onEdit={handleEdit}
         onDelete={handleDelete}
@@ -150,12 +288,18 @@ export default function MainStaffUserManagement() {
         open={showAddModal}
         onClose={() => setShowAddModal(false)}
         onSave={handleSaveUser}
+        status={statusList}
+        role={roleList}
+        department={departmentList}
       />
 
       {/* Edit User Modal */}
       <EditUserModal
         open={showEditModal}
-        user={selectUser}
+        user={selectedUser}
+        role={roleList}
+        department={departmentList}
+        status={statusList}
         onClose={() => setShowEditModal(false)}
         onSave={handleUpdateUser}
       />
@@ -163,15 +307,16 @@ export default function MainStaffUserManagement() {
       {/* View User Modal */}
       <ViewUserModal
         open={showViewModal}
-        user={selectUser}
+        user={selectedUser}
         onClose={() => setShowViewModal(false)}
       />
 
       {/* Delete User Modal */}
       <DeleteUserModal
         open={showDeleteModal}
-        user={selectUser}
+        user={selectedUser}
         onClose={() => setShowDeleteModal(false)}
+        onDelete={handleDeleteUser}
       />
     </div>
   );

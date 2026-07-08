@@ -6,6 +6,9 @@ export default function MainAdminUserForm({
   formData,
   setFormData,
   errors,
+  role,
+  status,
+  department,
 }) {
   //HANDLER
   const handleChange = (e) => {
@@ -17,19 +20,18 @@ export default function MainAdminUserForm({
       [name]: value,
     }));
   };
+
   return (
     <form className={styles.user_form}>
       <div className={styles.form_group}>
         <label>Display Name *</label>
         <input
           type="text"
-          name="displayname"
-          value={formData.displayname}
+          name="d_name"
+          value={formData.d_name}
           onChange={handleChange}
         />
-        {errors.displayname && (
-          <p className={styles.error}>{errors.displayname}</p>
-        )}
+        {errors.d_name && <p className={styles.error}>{errors.d_name}</p>}
       </div>
       <div className={styles.form_group}>
         <label>Username *</label>
@@ -59,25 +61,41 @@ export default function MainAdminUserForm({
             value={formData.department}
             onChange={handleChange}
           >
-            <option value="">Select Department</option>
+            <option value="" disabled>
+              Select Department
+            </option>
+            {department.map((item, index) => (
+              <option key={index} value={item.department}>
+                {item.department}
+              </option>
+            ))}
           </select>
         </div>
         <div className={styles.form_group}>
           <label>Role *</label>
           <select name="role" value={formData.role} onChange={handleChange}>
-            <option value="">Select Role</option>
-            <option value="">Admin</option>
-            <option value="">Staff</option>
-            <option value="">User</option>
+            <option value="" disabled>
+              Select Role
+            </option>
+            {role.map((item, index) => (
+              <option key={index} value={item.role}>
+                {item.role}
+              </option>
+            ))}
           </select>
         </div>
       </div>
       <div className={styles.form_group}>
         <label>Status *</label>
         <select name="status" value={formData.status} onChange={handleChange}>
-          <option>Active</option>
-
-          <option>Inactive</option>
+          <option value="" disabled>
+            Select Status
+          </option>
+          {status.map((item, index) => (
+            <option key={index} value={item.status}>
+              {item.status}
+            </option>
+          ))}
         </select>
       </div>
       {mode === "add" && (

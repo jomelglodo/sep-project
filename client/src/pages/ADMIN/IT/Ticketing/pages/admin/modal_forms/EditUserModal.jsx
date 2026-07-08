@@ -3,9 +3,17 @@ import styles from "./EditUserModal.module.css";
 import Modal from "../modal/Modal";
 import UserForm from "./UserForm";
 
-export default function MainAdminEditUser({ open, user, onClose, onSave }) {
+export default function MainAdminEditUser({
+  open,
+  user,
+  onClose,
+  onSave,
+  role,
+  department,
+  status,
+}) {
   const initialForm = {
-    displayname: "",
+    d_name: "",
     username: "",
     email: "",
     department: "",
@@ -21,7 +29,7 @@ export default function MainAdminEditUser({ open, user, onClose, onSave }) {
   useEffect(() => {
     if (user) {
       setFormData({
-        displayname: user.displayname,
+        d_name: user.d_name,
         username: user.username,
         email: user.email,
         department: user.department,
@@ -30,6 +38,7 @@ export default function MainAdminEditUser({ open, user, onClose, onSave }) {
       });
     }
   }, [user]);
+
   //HANDLER
   const handleSubmit = () => {
     if (!validate()) return;
@@ -42,15 +51,21 @@ export default function MainAdminEditUser({ open, user, onClose, onSave }) {
 
     onClose();
   };
+
   //HELPER
   const validate = () => {
     const newErrors = {};
 
-    if (!formData.displayname.trim()) newErrors.displayname = "Required";
+    if (!formData.d_name.trim()) newErrors.d_name = "Required";
 
     if (!formData.username.trim()) newErrors.username = "Required";
 
-    if (!formData.email.trim()) newErrors.email = "Required";
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (formData.email) {
+      if (!emailPattern.test(formData.email))
+        newErrors.email = "Invalid email address.";
+    }
 
     if (!formData.department) newErrors.department = "Required";
 
@@ -82,6 +97,9 @@ export default function MainAdminEditUser({ open, user, onClose, onSave }) {
         formData={formData}
         setFormData={setFormData}
         errors={errors}
+        status={status}
+        role={role}
+        department={department}
       />
     </Modal>
   );
