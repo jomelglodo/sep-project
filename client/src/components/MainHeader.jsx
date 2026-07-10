@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../assets/styles/MainLayout.css";
-import SemitecLogo from "../assets/images/Semitec_Logo.png";
+import SemitecLogo from "../assets/images/SEP.png";
 
 //import header images
 import { HEADER_IMAGE } from "../assets/images/header_index";

@@ -9,10 +9,10 @@ import UserTable from "./UserTable";
 import Pagination from "./Pagination";
 
 // ==> MODALS
-import AddUserModal from "../modal_forms/AddUserModal";
-import EditUserModal from "../modal_forms/EditUserModal";
-import ViewUserModal from "../modal_forms/ViewUserModal";
-import DeleteUserModal from "../modal_forms/DeleteUserModal";
+import AddUserModal from "./modal_forms/AddUserModal";
+import EditUserModal from "./modal_forms/EditUserModal";
+import ViewUserModal from "./modal_forms/ViewUserModal";
+import DeleteUserModal from "./modal_forms/DeleteUserModal";
 
 //LOADER
 import Loader from "../../../../../../../components/common/loader/Loader";

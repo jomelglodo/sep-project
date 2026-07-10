@@ -203,13 +203,62 @@
   color: rgb(230, 230, 230);
 }
 .empty-space {
-  text-align: center;
   color: #777;
+  height: 85vh;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-space img {
+  height: 300px;
+  width: 500px;
+  /*  animation: float 4s ease-in-out infinite; */
+  /* animation: pulse 3s infinite; */
+  opacity: 0;
+  filter: blur(10px);
+  animation:
+    reveal 4s ease forwards,
+    pulse 5s ease-in-out infinite;
 }
 
 /*===================
     ANIMATION
 =====================*/
+@keyframes reveal {
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+/* @keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+} */
 
 @keyframes fadeIn {
   from {

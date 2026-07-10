@@ -2,21 +2,14 @@ import styles from "./DataTable.module.css";
 import { tableColumns } from "../../utils/columns";
 
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
-export default function DataTable({
-  activeTab,
-  dataList,
-  onView,
-  onEdit,
-  onDelete,
-}) {
-  const data = dataList[activeTab];
 
-  const columns = tableColumns[activeTab];
+export default function DataTable({ config, data, onView, onEdit, onDelete }) {
+  const columns = tableColumns[config.nameField];
 
   return (
     <div className={styles.table_container}>
       <div className={styles.table_header}>
-        <h3>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} List</h3>
+        <h3>{config.title} List</h3>
 
         <span>{data.length} Records</span>
       </div>

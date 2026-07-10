@@ -1,5 +1,6 @@
 const categoryConfig = {
   asset: {
+    key: "asset",
     title: "Assets",
     singular: "Asset",
 
@@ -41,6 +42,7 @@ const categoryConfig = {
   },
 
   department: {
+    key: "department",
     title: "Departments",
     singular: "Department",
 
@@ -81,7 +83,8 @@ const categoryConfig = {
   },
 
   section: {
-    title: "Sections",
+    key: "section",
+    title: "Section",
     singular: "Section",
 
     idField: "section_id",

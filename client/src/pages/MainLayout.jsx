@@ -63,7 +63,7 @@ export default function MainLayout() {
             </>
           ) : (
             <div className="empty-space">
-              <img src="" alt="" />
+              <img src={"/SEP.png"} alt="" />
             </div>
           )}
         </div>

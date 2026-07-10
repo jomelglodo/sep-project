@@ -30,7 +30,7 @@ export default function useCategoryModal() {
   //close the modal
   const closeModal = useCallback(() => {
     setModalState(initialModalState);
-  });
+  }, []);
 
   //update the selected row while keeping the modal open
   const updateModalData = useCallback((data) => {

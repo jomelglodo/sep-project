@@ -1,0 +1,67 @@
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  padding: 18px 24px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.footer button {
+  min-width: 110px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancelButton {
+  background: white;
+  border: 1px solid #d1d5db;
+}
+
+.cancelButton:hover {
+  background-color: #f3f4f6;
+}
+
+.saveButton {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+
+.saveButton:hover {
+  background: #1d4ed8;
+}
+
+.updateButton {
+  background: #f59e0b;
+  color: white;
+  border: none;
+}
+
+.updateButton:hover {
+  background: #d97706;
+}
+
+.deleteButton {
+  background: #dc2626;
+  color: white;
+  border: none;
+}
+
+.deleteButton:hover {
+  background: #b91c1c;
+}
+
+.closePrimaryButton {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+
+.closePrimaryButton:hover {
+  background: #1d4ed8;
+}

@@ -9,8 +9,6 @@ export default function Modal({
   children,
   footer,
 }) {
-  if (!open) return null;
-
   //EFFETS
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -25,7 +23,7 @@ export default function Modal({
   }, [onClose]);
 
   //Prevent page behind the modal to scroll
-  /*   useEffect(() => {
+  useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
     } else {
@@ -35,7 +33,10 @@ export default function Modal({
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [open]); */
+  }, [open]);
+
+  if (!open) return null;
+
   return (
     <div className={styles.modal_overlay} onClick={onClose}>
       <div
