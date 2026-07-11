@@ -22,34 +22,42 @@ async function request(endpoint, options = {}) {
   return data;
 }
 
+function callApi(endpoint, { id, body } = {}) {
+  let url = endpoint.url;
+
+  if (id !== undefined && url.includes(":id")) {
+    url = url.replace(":id", id);
+  }
+
+  return request(url, {
+    method: endpoint.method,
+    ...(body && {
+      body: JSON.stringify(body),
+    }),
+  });
+}
+
 export const categoryService = {
   getAll(config) {
-    return request(config.api.getAll.url, {
-      method: config.api.getAll.method,
-    });
+    return callApi(config.api.getAll);
   },
 
   create(config, body) {
-    return request(config.api.create.url, {
-      method: config.api.create.method,
-      body: JSON.stringify(body),
+    return callApi(config.api.create, {
+      body,
     });
   },
 
   update(config, id, body) {
-    const url = config.api.update.url.replace(":id", id);
-
-    return request(url, {
-      method: config.api.update.method,
-      body: JSON.stringify(body),
+    return callApi(config.api.update, {
+      id,
+      body,
     });
   },
 
   delete(config, id) {
-    const url = config.api.delete.url.replace(":id", id);
-
-    return request(url, {
-      method: config.api.delete.method,
+    return callApi(config.api.delete, {
+      id,
     });
   },
 };

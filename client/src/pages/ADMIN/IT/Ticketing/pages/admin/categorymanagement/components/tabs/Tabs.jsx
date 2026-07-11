@@ -1,27 +1,15 @@
 import styles from "./Tabs.module.css";
 
-const tabs = [
-  {
-    key: "asset",
-    label: "Assets",
-  },
-
-  {
-    key: "department",
-    label: "Departments",
-  },
-];
-
-export default function Tabs({ activeTab, setActiveTab }) {
+export default function Tabs({ activeTab, setActiveTab, categoryConfig }) {
   return (
     <div className={styles.tabs}>
-      {tabs.map((tab) => (
+      {Object.entries(categoryConfig).map(([key, config]) => (
         <button
-          key={tab.key}
-          onClick={() => setActiveTab(tab.key)}
-          className={activeTab === tab.key ? styles.active : ""}
+          key={key}
+          onClick={() => setActiveTab(key)}
+          className={activeTab === key ? styles.active : ""}
         >
-          {tab.label}
+          {config.plural}
         </button>
       ))}
     </div>

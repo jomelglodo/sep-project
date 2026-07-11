@@ -8,7 +8,7 @@
   overflow-y: auto;
 
   /* Adjust based on your layout */
-  height: calc(100vh - 80px);
+  min-height: calc(100vh - 80px);
 
   /* Firefox */
   scrollbar-width: none;

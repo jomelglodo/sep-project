@@ -1,0 +1,44 @@
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 20px;
+}
+
+.pageNumbers {
+  display: flex;
+  gap: 8px;
+}
+
+.pageButton,
+.navButton {
+  border: none;
+  background: white;
+  border: 1px solid #dcdcdc;
+
+  min-width: 38px;
+  height: 38px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.pageButton:hover,
+.navButton:hover:not(:disabled) {
+  background: #f5f5f5;
+}
+
+.active {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.navButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

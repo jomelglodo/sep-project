@@ -1,11 +1,11 @@
 import styles from "./DataTable.module.css";
-import { tableColumns } from "../../utils/columns";
+/* import { tableColumns } from "../../utils/columns"; */
 
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
 export default function DataTable({ config, data, onView, onEdit, onDelete }) {
-  const columns = tableColumns[config.nameField];
-
+  /* const columns = tableColumns[config.nameField]; */
+  const columns = config.columns;
   return (
     <div className={styles.table_container}>
       <div className={styles.table_header}>
@@ -30,12 +30,12 @@ export default function DataTable({ config, data, onView, onEdit, onDelete }) {
             {data.length === 0 ? (
               <tr>
                 <td className={styles.empty} colSpan={columns.length + 1}>
-                  No Records Found
+                  No {config.plural} Found
                 </td>
               </tr>
             ) : (
               data.map((item) => (
-                <tr key={Object.values(item)[0]}>
+                <tr key={item[config.idField]}>
                   {columns.map((column) => (
                     <td key={column.key}>{item[column.key]}</td>
                   ))}

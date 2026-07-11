@@ -9,29 +9,36 @@ import DataTable from "./components/dataTable/DataTable";
 import Pagination from "./components/pagination/Pagination";
 import CategoryModal from "./modal/CategoryModal";
 
+//hooks
 import useCategoryData from "./hooks/useCategoryData";
 import useCategoryCRUD from "./hooks/useCategoryCRUD";
 import useCategoryModal from "./hooks/useCategoryModal";
+import useCategoryTable from "./hooks/useCategoryTable";
+import usePagination from "./hooks/usePagination";
 
+//utils
 import categoryConfig from "./utils/categoryConfig";
+import buildStatistics from "./utils/buildStatistics";
+import { categoryService } from "./services/categoryService";
 
 export default function MainAdminCategoryManagement({ displayName }) {
   const [activeTab, setActiveTab] = useState("asset");
-  const [search, setSearch] = useState("");
+  /*  const [search, setSearch] = useState(""); */
+
   const { categoryData, loading, error, refreshData } =
     useCategoryData(categoryConfig);
 
-  /*   const currentData = categoryData[activeTab] || []; */
-  const currentData = categoryData[activeTab] ?? [];
+  const assets = categoryData.asset ?? [];
+  const departments = categoryData.department ?? [];
+
+  const statistics = buildStatistics(categoryConfig, categoryData);
+
   const config = categoryConfig[activeTab];
+  const rawData = categoryData[activeTab] ?? [];
 
-  const statistics = {
-    assets: categoryData.asset?.length ?? 0,
-
-    departments: categoryData.department?.length ?? 0,
-
-    sections: categoryData.section?.length ?? 0,
-  };
+  const { search, setSearch, filteredData } = useCategoryTable(rawData, config);
+  const { currentPage, totalPages, paginatedData, setCurrentPage } =
+    usePagination(filteredData);
 
   const {
     createCategory,
@@ -59,22 +66,30 @@ export default function MainAdminCategoryManagement({ displayName }) {
         <SearchFilter
           search={search}
           setSearch={setSearch}
-          activeTab={activeTab}
+          config={config}
           onAdd={() => {
             openModal("add", activeTab);
           }}
         />
         {/*  <AssetTable assets={assetList} />
       <DepartmentTable departments={departmentList} /> */}
-        <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Tabs
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          categoryConfig={categoryConfig}
+        />
         <DataTable
           config={config}
-          data={currentData}
-          onView={openModal}
-          onEdit={openModal}
-          onDelete={openModal}
+          data={paginatedData}
+          onView={(item) => openModal("view", activeTab, item)}
+          onEdit={(item) => openModal("edit", activeTab, item)}
+          onDelete={(item) => openModal("delete", activeTab, item)}
         />
-        {/* <Pagination /> */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
 
       <CategoryModal

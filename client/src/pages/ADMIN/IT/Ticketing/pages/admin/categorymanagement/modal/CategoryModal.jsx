@@ -1,7 +1,5 @@
 import styles from "./CategoryModal.module.css";
 
-import categoryConfig from "../utils/categoryConfig";
-
 import ModalHeader from "./ModalHeader";
 import ModalFooter from "./ModalFooter";
 import CategoryForm from "./CategoryForm";
@@ -56,28 +54,14 @@ export default function CategoryModal({
   const { singular } = config;
 
   //HANDLER
-  /*   const handleSubmit = () => {
-    console.log(formData);
-  }; */
-  const handleCreate = () => {
-    console.log("CREATE", formData);
-  };
-
-  const handleUpdate = () => {
-    console.log("UPDATE", formData);
-  };
-
-  const handleDelete = () => {
-    console.log("DELETE", formData);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const submitHandlers = {
       add: () => createCategory(config, formData),
-      edit: () => updateCategory(config, data.id, formData),
-      delete: () => deleteCategory(config, data.id),
+      edit: () => updateCategory(config, data[config.idField], formData),
+      delete: () => deleteCategory(config, data[config.idField]),
     };
 
     const success = await submitHandlers[mode]?.();
