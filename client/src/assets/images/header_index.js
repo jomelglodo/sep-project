@@ -4,6 +4,7 @@ import headerMaintenance from "./Header_Maintenance.png";
 import headerPpc from "./Header_Ppc.png";
 import headerQaQc from "./Header_QaQc.png";
 import headerProduction from "./Header_Production.png";
+import headerOthers from "./Header_Others.png";
 
 export const HEADER_IMAGE = {
   header_admin: headerAdmin,
@@ -12,4 +13,5 @@ export const HEADER_IMAGE = {
   header_ppc: headerPpc,
   header_qaqc: headerQaQc,
   header_production: headerProduction,
+  header_others: headerOthers,
 };

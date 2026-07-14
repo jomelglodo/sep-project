@@ -1,0 +1,18 @@
+.formGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 10px;
+}
+
+.formGroup input {
+  border: 1px solid gray;
+  border-radius: 7px;
+  padding: 10px 20px;
+  outline: none;
+}
+
+.formGroup input:focus {
+  box-shadow: 0 0px 2px 1px rgba(5, 84, 231, 0.8);
+}

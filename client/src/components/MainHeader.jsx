@@ -72,6 +72,12 @@ const department = {
       Monitoring: [],
     },
   },
+  OTHERS: {
+    image: HEADER_IMAGE.header_others,
+    menu: {
+      "Generate QR Code": [],
+    },
+  },
 };
 
 export default function Header({ setActiveSub }) {
@@ -102,9 +108,8 @@ export default function Header({ setActiveSub }) {
           }}
         >
           <button className="btn-dept">
-            {" "}
             <img src={deptData.image} alt={dept} className="dept-icon" />
-            {dept}
+            {dept === "OTHERS" ? "" : dept}
           </button>
 
           {/* First Dropdown */}

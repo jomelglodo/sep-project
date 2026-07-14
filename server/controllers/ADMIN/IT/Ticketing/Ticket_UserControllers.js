@@ -1,5 +1,6 @@
 import { ticketPool } from "../../../../db.js";
 import { getIO } from "../../../../socket/socket.js";
+import { createNotification } from "../../../../services/notificationService.js";
 
 //GET PROFILE IMAGE
 export const getProfileImage = async (req, res) => {
@@ -241,7 +242,7 @@ export const createTicket = async (req, res) => {
     // const imageBuffer = files.length > 0 ? files[0].buffer : null;
     // const filename = files.length > 0 ? files[0].originalname : "null";
 
-    const result = await ticketPool.query(
+    const result = await client.query(
       `
         INSERT INTO tbl_tickets(
         ticket_num,
@@ -256,7 +257,7 @@ export const createTicket = async (req, res) => {
         attachment_mimetype
         )
         VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
-        RETURNING user_id
+        RETURNING user_id, ticket_id
         `,
       [
         ticketNum,
@@ -271,6 +272,31 @@ export const createTicket = async (req, res) => {
         mimeType,
       ],
     );
+
+    const ticket = result.rows[0];
+
+    //get all staff and admin users
+    const admins = await client.query(`
+      SELECT user_id,role,status
+      FROM "tbl_userAccounts"
+      WHERE role IN ('staff','admin')
+      AND status='Active'
+      `);
+
+    for (const admin of admins.rows) {
+      await createNotification({
+        client,
+        recipientId: admin.user_id,
+        senderId: userId,
+        type: "ticket-created",
+        title: "New Ticket",
+        message: `${displayname} created Ticket # ${ticketNum}`,
+        referenceId: ticket.ticket_id,
+        referenceType: "ticket",
+      });
+    }
+
+    //create notification
 
     await client.query("COMMIT");
 

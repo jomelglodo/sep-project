@@ -25,19 +25,19 @@ const categoryConfig = {
 
       create: {
         method: "POST",
-        url: "/ticketing/category/assets",
+        url: "/ticketing/mockcategory/assets",
         successMessage: "Asset created successfully.",
       },
 
       update: {
         method: "PUT",
-        url: "/ticketing/category/assets/:id",
+        url: "/ticketing/mockcategory/assets/:id",
         successMessage: "Asset updated successfully.",
       },
 
       delete: {
         method: "DELETE",
-        url: "/ticketing/category/assets/:id",
+        url: "/ticketing/mockcategory/assets/:id",
         successMessage: "Asset deleted successfully.",
       },
     },
@@ -89,19 +89,19 @@ const categoryConfig = {
 
       create: {
         method: "POST",
-        url: "/ticketing/category/departments",
+        url: "/ticketing/mockcategory/departments",
         successMessage: "Department created successfully.",
       },
 
       update: {
         method: "PUT",
-        url: "/ticketing/category/departments/:id",
+        url: "/ticketing/mockcategory/departments/:id",
         successMessage: "Department updated successfully.",
       },
 
       delete: {
         method: "DELETE",
-        url: "/ticketing/category/departments/:id",
+        url: "/ticketing/mockcategory/departments/:id",
         successMessage: "Department deleted successfully.",
       },
     },
@@ -127,6 +127,7 @@ const categoryConfig = {
         type: "text",
         placeholder: "Enter department name",
         required: true,
+        autoFocus: true,
       },
     ],
   },

@@ -5,6 +5,9 @@ import TicketIcon from "../../../../assets/images/admin/ticketing/Ticketing-Icon
 import UpdateProfile from "./Ticket_UpdateProfile";
 import ChangePassword from "./Ticket_ChangePassword";
 
+//notification bell
+import NotificationBell from "../../../../components/notification/ADMIN/IT/Ticketing/NotificationBell";
+
 export default function TicketMainUserTopbar({
   displayName,
   setDisplayName,
@@ -13,6 +16,8 @@ export default function TicketMainUserTopbar({
 }) {
   // States
 
+  //notification
+  const [openNotifications, setOpenNotifications] = useState(false);
   //Profile image version
   const [profileImageVersion, setProfileImageVersion] = useState(Date.now());
 
@@ -87,7 +92,13 @@ export default function TicketMainUserTopbar({
       </div>
 
       <div className="ticket-main-profile-topright">
-        <div className="ticket-main-openspace">🔔</div>
+        {/* NOTIFICATIONS */}
+        <div className="ticket-main-notification">
+          <NotificationBell
+            onClick={() => setOpenNotifications((prev) => !prev)}
+          />
+          {openNotifications && <div></div>}
+        </div>
         <div
           ref={profileRef}
           className="ticket-main-profile-wrapper"

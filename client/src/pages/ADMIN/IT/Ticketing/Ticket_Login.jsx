@@ -12,6 +12,8 @@ import TicketMainUser from "./pages/user/Ticket_MainUser";
 import TicketMainStaff from "./pages/staff/Ticket_MainStaff";
 import TicketMainAdmin from "./pages/admin/Ticket_MainAdmin";
 
+import { NotificationProvider } from "../../../../context/ADMIN/IT/Ticketing/NotificationContext";
+
 export default function TicketLogin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   //LOG IN UI
@@ -215,10 +217,12 @@ export default function TicketLogin() {
   };
 
   if (isLoggedIn) {
+    let TicketComponent;
     const normalizedRole = role?.toLowerCase().trim();
+
     switch (normalizedRole) {
       case "user":
-        return (
+        TicketComponent = (
           <TicketMainUser
             onLogout={handleLogout}
             displayName={displayName}
@@ -227,8 +231,10 @@ export default function TicketLogin() {
             userRole={normalizedRole}
           />
         );
+        break;
+
       case "staff":
-        return (
+        TicketComponent = (
           <TicketMainStaff
             onLogout={handleLogout}
             displayName={displayName}
@@ -237,8 +243,10 @@ export default function TicketLogin() {
             userRole={normalizedRole}
           />
         );
+        break;
+
       case "admin":
-        return (
+        TicketComponent = (
           <TicketMainAdmin
             onLogout={handleLogout}
             displayName={displayName}
@@ -247,9 +255,20 @@ export default function TicketLogin() {
             userRole={normalizedRole}
           />
         );
+        break;
+
       default:
         return <div>Invalid Role: {role}</div>;
     }
+    return (
+      <NotificationProvider
+        userId={userId}
+        isLoggedIn={isLoggedIn}
+        role={normalizedRole}
+      >
+        {TicketComponent}
+      </NotificationProvider>
+    );
   }
 
   return (

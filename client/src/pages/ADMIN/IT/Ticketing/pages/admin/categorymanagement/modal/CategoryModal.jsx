@@ -1,9 +1,11 @@
 import styles from "./CategoryModal.module.css";
-
+import { toast } from "react-toastify";
 import ModalHeader from "./ModalHeader";
 import ModalFooter from "./ModalFooter";
 import CategoryForm from "./CategoryForm";
 import { useEffect, useState } from "react";
+
+import toastSuccessSound from "../../../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastSuccess.mp3";
 
 export default function CategoryModal({
   modalState,
@@ -15,6 +17,7 @@ export default function CategoryModal({
   loading,
   error,
 }) {
+  const toastSuccessAudio = new Audio(toastSuccessSound);
   const { open, mode, data } = modalState;
   const [formData, setFormData] = useState({});
 
@@ -39,13 +42,16 @@ export default function CategoryModal({
 
   useEffect(() => {
     if (open) {
-      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflowY = "scroll"; // always show scrollbar
+      document.body.style.overflow = "hidden"; // disable scrolling
     } else {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = "";
+      document.documentElement.style.overflowY = "";
     }
 
     return () => {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = "";
+      document.documentElement.style.overflowY = "";
     };
   }, [open]);
 
@@ -67,6 +73,13 @@ export default function CategoryModal({
     const success = await submitHandlers[mode]?.();
 
     if (success) {
+      const messages = {
+        add: `${config.singular} created successfully.`,
+        edit: `${config.singular} updated successfully.`,
+        delete: `${config.singular} deleted successfully.`,
+      };
+      toastSuccessAudio.play();
+      toast.success(messages[mode]);
       closeModal();
     }
   };

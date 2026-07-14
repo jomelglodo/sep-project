@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import styles from "./CategoryModal.module.css";
+import { useEffect, useRef, useState } from "react";
+import styles from "./CategoryForm.module.css";
 
 export default function CategoryForm({
   modalState,
@@ -7,24 +7,29 @@ export default function CategoryForm({
   formData,
   setFormData,
 }) {
-  const { mode, data } = modalState;
+  const { open, mode, data } = modalState;
+  const inputRef = useRef(null);
 
   /*  const [formData, setFormData] = useState({}); */
-
   useEffect(() => {
     if (data) {
       setFormData(data);
-      return;
+    } else {
+      const initialData = {};
+
+      config.fields.forEach((field) => {
+        initialData[field.name] = "";
+      });
+
+      setFormData(initialData);
     }
-
-    const initialData = {};
-
-    config.fields.forEach((field) => {
-      initialData[field.name] = "";
-    });
-
-    setFormData(initialData);
   }, [config, data]);
+
+  useEffect(() => {
+    if (modalState.open && mode !== "view") {
+      inputRef.current?.focus();
+    }
+  }, [modalState.open, mode, formData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,9 +44,10 @@ export default function CategoryForm({
     <div className={styles.body}>
       {config.fields.map((field) => (
         <div key={field.name} className={styles.formGroup}>
-          <label>{field.label}</label>
+          <label>{field.label} : </label>
 
           <input
+            ref={inputRef}
             type={field.type}
             name={field.name}
             value={formData[field.name] ?? ""}

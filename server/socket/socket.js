@@ -21,18 +21,20 @@ export function initializeSocket(server) {
     });
 
     //Optional: for staff room
-    socket.on("join-staff", () => {
+    socket.on("join-staff", (userId) => {
+      socket.join(`user:${userId}`);
       socket.join("staff");
-      console.log(`${socket.id} joined room staff`);
+      console.log(`${socket.id} joined room staff:${userId}`);
     });
     socket.on("disconnect", () => {
       console.log(`Client disconnected : ${socket.id}`);
     });
 
     //Optional: for staff room
-    socket.on("join-admin", () => {
+    socket.on("join-admin", (userId) => {
+      socket.join(`user:${userId}`);
       socket.join("admin");
-      console.log(`${socket.id} joined room admin`);
+      console.log(`${socket.id} joined room admin:${userId}`);
     });
 
     socket.on("disconnect", () => {

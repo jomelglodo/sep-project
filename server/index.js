@@ -68,6 +68,12 @@ import Ticket_AdminRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_AdminRoutes.j
 
 //-------------------------------------------------------------------------------------
 
+//NOTIFICATIONS ROUTES-----------------------------------------------------------------
+//  {#1e6,1}
+import Notification from "./routes/ADMIN/IT/Ticketing/notificationRoutes.js";
+
+//-------------------------------------------------------------------------------------
+
 // =========================================================
 // DATABASE CONNECTION TEST
 // =========================================================
@@ -114,6 +120,10 @@ app.use("/ris/receive", Ris_ReceiveRoutes);
 app.use("/con", Con_LoginRoutes);
 
 //ADMIN - IT - Ticketing
+//  {#0c3,2}
+//notification
+app.use("/ticketing/notifications", Notification);
+
 //mock data
 app.use("/ticketing/mockdata", MockData);
 app.use("/ticketing/mockcategory", MockCategory);

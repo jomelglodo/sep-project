@@ -13,9 +13,7 @@ export default function useCategoryData(configs) {
       const entries = Object.entries(configs);
       const result = await Promise.all(
         entries.map(async ([key, config]) => {
-          console.log("Fetching:", key, config.api.getAll.url);
           const data = await categoryService.getAll(config);
-          console.log("Received:", key, data);
           return [key, data];
         }),
       );

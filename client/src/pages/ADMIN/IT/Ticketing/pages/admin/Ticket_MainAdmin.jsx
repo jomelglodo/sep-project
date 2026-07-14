@@ -71,6 +71,14 @@ export default function TicketMainAdmin({
         break;
     }
   };
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [activePage]);
+
   return (
     <div className="ticket-mainadmin-home-layout">
       {/* TOPBAR */}
