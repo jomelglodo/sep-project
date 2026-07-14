@@ -6,7 +6,8 @@ import UpdateProfile from "./Ticket_UpdateProfile";
 import ChangePassword from "./Ticket_ChangePassword";
 
 //notification bell
-import NotificationBell from "../../../../components/notification/ADMIN/IT/Ticketing/NotificationBell";
+import NotificationBell from "../../../../components/ADMIN/IT/Ticketing/notification/NotificationBell";
+import NotificationDropDown from "../../../../components/ADMIN/IT/Ticketing/notification/NotificationDropDown";
 
 export default function TicketMainUserTopbar({
   displayName,
@@ -95,9 +96,10 @@ export default function TicketMainUserTopbar({
         {/* NOTIFICATIONS */}
         <div className="ticket-main-notification">
           <NotificationBell
-            onClick={() => setOpenNotifications((prev) => !prev)}
+            isOpen={openNotifications}
+            onToggle={() => setOpenNotifications((prev) => !prev)}
           />
-          {openNotifications && <div></div>}
+          {openNotifications && <NotificationDropDown />}
         </div>
         <div
           ref={profileRef}

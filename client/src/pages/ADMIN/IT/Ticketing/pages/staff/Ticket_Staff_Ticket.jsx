@@ -18,7 +18,7 @@ export default function StaffTicketManagement({ displayName }) {
   useEffect(() => {
     socket.on("ticket-created", (data) => {
       toast.info(
-        `A new ticket has been created by ${displayName} with Ticket No. : ${data.ticketNum}`,
+        `A new ticket has been created by ${data.displayname} with Ticket No. : ${data.ticketNum}`,
       );
     });
 

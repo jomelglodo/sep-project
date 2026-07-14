@@ -1,0 +1,82 @@
+.item {
+  display: flex;
+
+  gap: 12px;
+
+  padding: 15px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.item:hover {
+  background: #f6f9fc;
+}
+
+.unread {
+  border-left: 4px solid #2563eb;
+
+  background: #f5f9ff;
+
+  transition: 0.25s;
+}
+
+.icon_container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dot {
+  position: absolute;
+  left: -6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+
+  background: #2563eb;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  background: #eef4ff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 1rem;
+
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+}
+
+.title {
+  font-weight: 600;
+
+  font-size: 0.9rem;
+}
+
+.message {
+  margin-top: 4px;
+
+  color: #666;
+
+  font-size: 0.82rem;
+}
+
+.time {
+  margin-top: 8px;
+
+  color: #999;
+
+  font-size: 0.72rem;
+}

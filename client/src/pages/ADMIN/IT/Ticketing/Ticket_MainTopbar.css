@@ -102,6 +102,10 @@
   font-size: 12px;
 }
 
+.ticket-main-notification {
+  position: relative;
+}
+
 .ticket-main-profile-container img {
   height: 40px;
   width: 40px;

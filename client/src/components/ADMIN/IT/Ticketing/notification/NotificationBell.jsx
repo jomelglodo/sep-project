@@ -2,11 +2,14 @@ import { Bell } from "lucide-react";
 import { useNotification } from "../../../../../context/ADMIN/IT/Ticketing/NotificationContext";
 import styles from "./NotificationBell.module.css";
 
-export default function NotificationBell({ onClick }) {
+export default function NotificationBell({ isOpen, onToggle }) {
   const { unreadCount } = useNotification();
 
   return (
-    <div className={styles.bell} onClick={onClick}>
+    <div
+      className={`${styles.bell_button} ${isOpen ? styles.active : ""}`}
+      onClick={onToggle}
+    >
       <Bell size={22} />
 
       {unreadCount > 0 && (

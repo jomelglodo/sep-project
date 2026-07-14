@@ -20,32 +20,52 @@ export const getNotification = async (req, res) => {
 
 //mark as read
 export const markRead = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  await ticketPool.query(
-    `
+    await ticketPool.query(
+      `
         UPDATE notifications
-        SET is_read=true
+        SET is_read= TRUE
         WHERE notification_id=$1
         `,
-    [id],
-  );
+      [id],
+    );
 
-  res.json({ success: true });
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+
+    res.staus(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
 };
 
 //mark all as read
 export const markAllRead = async (req, res) => {
-  const { userId } = req.params;
+  try {
+    const { userId } = req.params;
 
-  await ticketPool.query(
-    `
-        UPDATE notifications
-        SET is_read=true
-        WHERE recipient_id=$1
-        `,
-    [userId],
-  );
+    await ticketPool.query(
+      `
+      UPDATE notifications
+      SET is_read = TRUE
+      WHERE recipient_id = $1
+      `,
+      [userId],
+    );
 
-  res.json({ success: true });
+    res.json({
+      success: true,
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
 };
