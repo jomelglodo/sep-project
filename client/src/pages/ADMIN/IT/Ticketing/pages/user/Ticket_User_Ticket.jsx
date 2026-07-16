@@ -88,7 +88,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
   }, [showCreateTicket]);
 
   //populate tickets using socket.io and runs only when the user view Ticket Page
-  //  {#f8c,27}
+  //  {#f8c,25}
   useEffect(() => {
     //initial fetch when component mounts
     fetchTickets();
@@ -99,8 +99,6 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
 
     const handleStartTroubleshoot = (data) => {
       fetchTickets();
-
-      //show a notification
       toast.info(
         `${data.ticketNum} is now In Progress, Assigned IT: ${data.staffName}`,
       );
@@ -116,6 +114,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
       socket.off("ticket-starttroubleshoot", handleStartTroubleshoot);
     };
   }, []);
+
   /*   useEffect(() => {
     let interval;
 

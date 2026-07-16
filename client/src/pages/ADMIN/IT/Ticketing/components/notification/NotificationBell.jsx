@@ -1,5 +1,5 @@
 import { Bell } from "lucide-react";
-import { useNotification } from "../../../../../context/ADMIN/IT/Ticketing/NotificationContext";
+import { useNotification } from "../../context/NotificationContext";
 import styles from "./NotificationBell.module.css";
 
 export default function NotificationBell({ isOpen, onToggle }) {

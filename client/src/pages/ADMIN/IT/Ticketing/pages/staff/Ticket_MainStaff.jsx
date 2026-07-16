@@ -58,7 +58,12 @@ export default function TicketMainStaff({
         return <MainStaffDashBoard displayName={displayName} />;
         break;
       case "ticketmanagement":
-        return <MainStaffTicketManagement displayName={displayName} />;
+        return (
+          <MainStaffTicketManagement
+            displayName={displayName}
+            loggedinUserId={loggedinUserId}
+          />
+        );
       default:
         break;
     }

@@ -16,7 +16,7 @@ import { FaEdit } from "react-icons/fa";
 import toastSuccessSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastSuccess.mp3";
 import toastWarningSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastWarning.mp3";
 
-export default function StaffAssignedTicket({ displayName }) {
+export default function StaffAssignedTicket({ displayName, loggedinUserId }) {
   const [selectedItem, setSelectedItem] = useState([]);
   const [ticketList, setTicketList] = useState([]);
   const [search, setSearch] = useState("");
@@ -176,6 +176,7 @@ export default function StaffAssignedTicket({ displayName }) {
     const formData = new FormData();
 
     formData.append("reason", staffReason);
+    formData.append("loggedinUser", loggedinUserId);
 
     if (attachmentFile) {
       formData.append("attachment", attachmentFile);

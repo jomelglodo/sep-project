@@ -69,8 +69,10 @@ import Ticket_AdminRoutes from "./routes/ADMIN/IT/Ticketing/Ticket_AdminRoutes.j
 //-------------------------------------------------------------------------------------
 
 //NOTIFICATIONS ROUTES-----------------------------------------------------------------
-//  {#1e6,1}
+//  {#1e6,3}
 import Notification from "./routes/ADMIN/IT/Ticketing/notificationRoutes.js";
+import TicketInspector from "./routes/ADMIN/IT/Ticketing/ticketInspectorRoutes.js";
+import Timeline from "./routes/ADMIN/IT/Ticketing/timelineRoutes.js";
 
 //-------------------------------------------------------------------------------------
 
@@ -120,9 +122,11 @@ app.use("/ris/receive", Ris_ReceiveRoutes);
 app.use("/con", Con_LoginRoutes);
 
 //ADMIN - IT - Ticketing
-//  {#0c3,2}
+//  {#0c3,4}
 //notification
 app.use("/ticketing/notifications", Notification);
+app.use("/ticketing/inspector", TicketInspector);
+app.use("/ticketing/timeline", Timeline);
 
 //mock data
 app.use("/ticketing/mockdata", MockData);

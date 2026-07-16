@@ -1,10 +1,10 @@
 import { createContext, useContext, useMemo, useEffect, useState } from "react";
-import socket from "../../../../services/socket.js";
+import socket from "../../../../../services/socket.js";
 import {
   getNotifications,
   markNotification,
   markAllNotificationsRead,
-} from "../../../../services/ADMIN/IT/Ticketing/notificationService.js";
+} from "../services/notificationService.js";
 
 const NotificationContext = createContext();
 
@@ -78,7 +78,6 @@ export function NotificationProvider({ children, userId, isLoggedIn, role }) {
   useEffect(() => {
     if (!isLoggedIn || !userId) return;
     const handleNotification = (notification) => {
-      console.log("New notification:", notification);
       /*  setNotifications((prev) => [notification, ...prev]); */
       setNotifications((prev) => {
         const exists = prev.some(
@@ -93,7 +92,7 @@ export function NotificationProvider({ children, userId, isLoggedIn, role }) {
     //  {#c27,6}
 
     socket.on("notification", handleNotification);
-    console.log(handleNotification);
+
     return () => {
       socket.off("notification", handleNotification);
     };

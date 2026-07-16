@@ -1,6 +1,8 @@
 import { ticketPool } from "../../../../db.js";
 import { getIO } from "../../../../socket/socket.js";
 import { createNotification } from "../../../../services/notificationService.js";
+import { createTimelineEvent } from "../../../../services/ADMIN/IT/Ticketing/timelineService.js";
+import { TIMELINE_EVENTS } from "../../../../constants/ADMIN/IT/Ticketing/timelineEvents.js";
 
 //GET PROFILE IMAGE
 export const getProfileImage = async (req, res) => {
@@ -283,12 +285,13 @@ export const createTicket = async (req, res) => {
       AND status='Active'
       `);
 
+    //create notification
     for (const admin of admins.rows) {
       await createNotification({
         client,
         recipientId: admin.user_id,
         senderId: userId,
-        type: "ticket-created",
+        type: TIMELINE_EVENTS.TICKET_CREATED,
         title: "New Ticket",
         message: `${displayname} created Ticket # ${ticketNum}`,
         referenceId: ticket.ticket_id,
@@ -296,7 +299,14 @@ export const createTicket = async (req, res) => {
       });
     }
 
-    //create notification
+    //add ticket_timeline
+    await createTimelineEvent({
+      client,
+      ticketId: ticket.ticket_id,
+      performedBy: userId,
+      eventType: TIMELINE_EVENTS.TICKET_CREATED,
+      message: `${displayname} created this ticket`,
+    });
 
     await client.query("COMMIT");
 
@@ -333,6 +343,7 @@ export const createTicket = async (req, res) => {
     client.release();
   }
 };
+
 // UPDATE TICKET
 export const updateTicket = async (req, res) => {
   const { selectedTicketNum } = req.params;
@@ -402,7 +413,6 @@ export const updateTicket = async (req, res) => {
 };
 
 // CANCEL TICKET
-
 export const cancelTicket = async (req, res) => {
   const { selTicketNum } = req.params;
 

@@ -12,7 +12,7 @@ import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import toastSuccessSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastSuccess.mp3";
 import toastWarningSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastWarning.mp3";
 
-export default function StaffAllTickets({ displayName }) {
+export default function StaffAllTickets({ displayName, loggedinUserId }) {
   const [ticketList, setTicketList] = useState([]);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -134,6 +134,7 @@ export default function StaffAllTickets({ displayName }) {
           },
           body: JSON.stringify({
             ticketId,
+            loggedinUserId: loggedinUserId,
             staffName: displayName,
           }),
         },

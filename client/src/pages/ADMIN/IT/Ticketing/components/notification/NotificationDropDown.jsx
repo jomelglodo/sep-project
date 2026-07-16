@@ -1,5 +1,5 @@
 import styles from "./NotificationDropDown.module.css";
-import { useNotification } from "../../../../../context/ADMIN/IT/Ticketing/NotificationContext";
+import { useNotification } from "../../context/NotificationContext";
 import NotificationItem from "./NotificationItem";
 
 export default function NotificationDropDown() {

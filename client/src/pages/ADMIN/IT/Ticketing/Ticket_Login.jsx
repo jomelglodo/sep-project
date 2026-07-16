@@ -12,7 +12,9 @@ import TicketMainUser from "./pages/user/Ticket_MainUser";
 import TicketMainStaff from "./pages/staff/Ticket_MainStaff";
 import TicketMainAdmin from "./pages/admin/Ticket_MainAdmin";
 
-import { NotificationProvider } from "../../../../context/ADMIN/IT/Ticketing/NotificationContext";
+import { NotificationProvider } from "./context/NotificationContext";
+import { TicketInspectorProvider } from "./context/TicketInspectorContext";
+import TicketInspector from "./components/ticketInspector/TicketInspector";
 
 export default function TicketLogin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -266,7 +268,10 @@ export default function TicketLogin() {
         isLoggedIn={isLoggedIn}
         role={normalizedRole}
       >
-        {TicketComponent}
+        <TicketInspectorProvider>
+          {TicketComponent}
+          <TicketInspector />
+        </TicketInspectorProvider>
       </NotificationProvider>
     );
   }

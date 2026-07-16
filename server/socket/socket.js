@@ -37,6 +37,16 @@ export function initializeSocket(server) {
       console.log(`${socket.id} joined room admin:${userId}`);
     });
 
+    socket.on("join-ticket", (ticketId) => {
+      socket.join(`ticket:${ticketId}`);
+      console.log(`${socket.id} joined ticket:${ticketId}`);
+    });
+
+    socket.on("leave-ticket", (ticketId) => {
+      socket.leave(`ticket:${ticketId}`);
+      console.log(`${socket.id} left ticket ${ticketId}`);
+    });
+
     socket.on("disconnect", () => {
       console.log(`Client disconnected : ${socket.id}`);
     });

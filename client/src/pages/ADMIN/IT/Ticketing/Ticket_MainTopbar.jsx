@@ -1,13 +1,15 @@
 import React, { Profiler, useEffect, useRef, useState } from "react";
 import "./Ticket_MainTopbar.css";
 import TicketIcon from "../../../../assets/images/admin/ticketing/Ticketing-Icon.png";
+import { toast } from "react-toastify";
+import socket from "../../../../services/socket.js";
 
 import UpdateProfile from "./Ticket_UpdateProfile";
 import ChangePassword from "./Ticket_ChangePassword";
 
 //notification bell
-import NotificationBell from "../../../../components/ADMIN/IT/Ticketing/notification/NotificationBell";
-import NotificationDropDown from "../../../../components/ADMIN/IT/Ticketing/notification/NotificationDropDown";
+import NotificationBell from "./components/notification/NotificationBell";
+import NotificationDropDown from "./components/notification/NotificationDropDown";
 
 export default function TicketMainUserTopbar({
   displayName,
@@ -29,6 +31,23 @@ export default function TicketMainUserTopbar({
     x: 0,
     y: 0,
   });
+  //EFFECTS
+
+  //  {#85d,15}
+  /*   useEffect(() => {
+    const fetchStarttroubleshoot = (data) => {
+      //show a notification
+      toast.info(
+        `${data.ticketNum} is now In Progress, Assigned IT: ${data.staffName}`,
+      );
+    };
+
+    socket.on("ticket-starttroubleshoot", fetchStarttroubleshoot);
+
+    return () => {
+      socket.off("ticket-starttroubleshoot", fetchStarttroubleshoot);
+    };
+  }, []); */
 
   //REFS
   const profileRef = useRef(null);

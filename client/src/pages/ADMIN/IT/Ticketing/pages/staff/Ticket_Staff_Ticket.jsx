@@ -9,7 +9,7 @@ import { FaListAlt, FaUserCheck, FaStickyNote } from "react-icons/fa";
 import AllTickets from "./Ticket_Staff_TicketAll";
 import AssignedTickets from "./Ticket_Staff_TicketAssigned";
 
-export default function StaffTicketManagement({ displayName }) {
+export default function StaffTicketManagement({ displayName, loggedinUserId }) {
   const [activeTab, setActiveTab] = useState("all");
 
   //  {#f8d,13}
@@ -30,10 +30,20 @@ export default function StaffTicketManagement({ displayName }) {
   const renderContent = () => {
     switch (activeTab) {
       case "all":
-        return <AllTickets displayName={displayName} />;
+        return (
+          <AllTickets
+            displayName={displayName}
+            loggedinUserId={loggedinUserId}
+          />
+        );
         break;
       case "assigned":
-        return <AssignedTickets displayName={displayName} />;
+        return (
+          <AssignedTickets
+            displayName={displayName}
+            loggedinUserId={loggedinUserId}
+          />
+        );
         break;
       case "noted":
         break;

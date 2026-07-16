@@ -3,6 +3,10 @@ import { ticketPool } from "../../../../db.js";
 import { getIO } from "../../../../socket/socket.js";
 //DASHBOARD ---------------------------------------------------------------------------
 
+import { createNotification } from "../../../../services/notificationService.js";
+import { createTimelineEvent } from "../../../../services/ADMIN/IT/Ticketing/timelineService.js";
+import { TIMELINE_EVENTS } from "../../../../constants/ADMIN/IT/Ticketing/timelineEvents.js";
+
 //DASHBOARD COUNTER
 export const dashboardCounter = async (req, res) => {
   const { staffName } = req.body;
@@ -202,7 +206,7 @@ export const getAttachment = async (req, res) => {
 //start troubleshoot
 export const startTroubleshoot = async (req, res) => {
   const { ticketNum } = req.params;
-  const { ticketId, staffName } = req.body;
+  const { ticketId, loggedinUserId, staffName } = req.body;
   const client = await ticketPool.connect();
 
   let committed = false;
@@ -216,12 +220,13 @@ export const startTroubleshoot = async (req, res) => {
       UPDATE tbl_tickets
       SET status = 'In Progress'
       WHERE ticket_num = $1
-      RETURNING user_id
+      RETURNING user_id, ticket_id
       `,
       [ticketNum],
     );
 
     const userId = result.rows[0].user_id;
+    const ticketId = result.rows[0].ticket_id;
 
     //INSERT DATA TO THE tbl_ticket_updates
     await client.query(
@@ -229,7 +234,29 @@ export const startTroubleshoot = async (req, res) => {
       [ticketId, ticketNum, staffName],
     );
 
+    /* CREATE NOTIFICATION */
+    await createNotification({
+      client,
+      recipientId: userId,
+      senderId: loggedinUserId,
+      type: TIMELINE_EVENTS.TICKET_START_TROUBLESHOOT,
+      title: "Start Troubleshoot",
+      message: `${staffName} start Ticket # ${ticketNum}`,
+      referenceId: ticketId,
+      referenceType: "ticket",
+    });
+
+    //add ticket_timeline
+    await createTimelineEvent({
+      client,
+      ticketId,
+      performedBy: loggedinUserId,
+      eventType: TIMELINE_EVENTS.TICKET_START_TROUBLESHOOT,
+      message: `${staffName} assigned to this ticket`,
+    });
+
     await client.query("COMMIT");
+
     committed = true;
 
     //  {#e4f,8}
@@ -309,7 +336,7 @@ export const finishTicket = async (req, res) => {
   const client = await ticketPool.connect();
 
   const { ticketNum } = req.params;
-  const { reason, attachment } = req.body;
+  const { reason, loggedinUserId, attachment } = req.body;
 
   const imageBuffer = req.file ? req.file.buffer : null;
   const fileName = req.file ? req.file.originalname : null;
@@ -326,12 +353,13 @@ export const finishTicket = async (req, res) => {
         UPDATE tbl_tickets
         SET status='Closed'
         WHERE ticket_num = $1
-        RETURNING user_id
+        RETURNING user_id,ticket_id
       `,
       [ticketNum],
     );
 
     const userId = result.rows[0].user_id;
+    const ticketId = result.rows[0].ticket_id;
 
     //update tbl_ticket_updates
     let updateTicketsQuery;
@@ -341,7 +369,7 @@ export const finishTicket = async (req, res) => {
         UPDATE tbl_ticket_updates
         SET update_comment = $1,
           time_finished = NOW()
-        WHERE ticket_num=$2
+        WHERE ticket_num=$2 RETURNING staff_name
         `,
         [reason, ticketNum],
       );
@@ -354,11 +382,34 @@ export const finishTicket = async (req, res) => {
           update_attachment_filename = $3,
           update_attachment_mimetype = $4,
           time_finished = NOW()
-        WHERE ticket_num=$5
+        WHERE ticket_num=$5 RETURNING staff_name
         `,
         [reason, imageBuffer, fileName, mimeType, ticketNum],
       );
     }
+
+    const staffName = updateTicketsQuery.rows[0].staff_name;
+
+    /* CREATE NOTIFICATION */
+    await createNotification({
+      client,
+      recipientId: userId,
+      senderId: loggedinUserId,
+      type: TIMELINE_EVENTS.TICKET_CLOSED,
+      title: "Ticket Closed",
+      message: `Ticket # ${ticketNum} is now closed`,
+      referenceId: ticketId,
+      referenceType: "ticket",
+    });
+
+    //add ticket_timeline
+    await createTimelineEvent({
+      client,
+      ticketId,
+      performedBy: loggedinUserId,
+      eventType: TIMELINE_EVENTS.TICKET_CLOSED,
+      message: `${staffName} mark this ticket as closed`,
+    });
 
     await client.query("COMMIT");
 
