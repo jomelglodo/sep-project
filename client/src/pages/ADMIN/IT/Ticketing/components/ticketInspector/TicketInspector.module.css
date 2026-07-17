@@ -3,7 +3,13 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.25);
   z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.25s ease;
   animation: fade 0.25s;
+}
+
+.backdrop.open {
+  opacity: 1;
 }
 
 .panel {
@@ -19,6 +25,13 @@
   animation: slide 0.25s ease;
   padding: 25px;
   overflow: auto;
+
+  transform: translateX(100%);
+  transition: transform 250ms ease;
+}
+
+.panel.open {
+  transform: translateX(0);
 }
 
 .header {
@@ -41,7 +54,7 @@
   padding: 4px 10px;
   border-radius: 20px;
   background: #eef2ff;
-  color: #2563eb;
+  color: white;
   font-size: 0.75rem;
   font-weight: 600;
 }
@@ -185,6 +198,22 @@
   display: flex;
   gap: 15px;
   margin-top: 18px;
+  opacity: 0;
+  transform: translateY(10px);
+
+  animation: timelineAppear 0.35s ease forwards;
+}
+
+@keyframes timelineAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .timeline_icon {
@@ -231,6 +260,17 @@
 .timeline_loading {
   padding: 25px;
   text-align: center;
+}
+
+.timeline {
+  height: 100%;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+  padding-right: 6px;
 }
 
 @keyframes slide {

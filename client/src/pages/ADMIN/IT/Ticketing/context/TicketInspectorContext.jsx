@@ -3,6 +3,9 @@ import { getTicket } from "../services/ticketInspectorService.js";
 import { getTimeline } from "../services/ticketTimelineService.js";
 import socket from "../../../../../services/socket.js";
 
+//socket
+import useTicketInspectorSocket from "../hooks/useTicketInspectorSocket.js";
+
 const TicketInspectorContext = createContext();
 
 export function TicketInspectorProvider({ children }) {
@@ -14,18 +17,7 @@ export function TicketInspectorProvider({ children }) {
 
   const [timeline, setTimeline] = useState([]);
 
-  //EFFECTS
-  useEffect(() => {
-    const handleTimelineUpdate = (event) => {
-      setTimeline((prev) => [...prev, event]);
-    };
-
-    socket.on("ticket-update", handleTimelineUpdate);
-
-    return () => {
-      socket.off("ticket-update", handleTimelineUpdate);
-    };
-  });
+  useTicketInspectorSocket({ ticket, setTicket, setTimeline });
 
   async function openTicket(ticketId) {
     try {

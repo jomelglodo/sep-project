@@ -1,7 +1,7 @@
 .ticket-mainadmin-home-layout {
   display: flex;
   flex-direction: column;
-  min-height: 90vh;
+  min-height: 80vh;
   font-family: Arial, sans-serif;
 }
 
@@ -18,6 +18,10 @@
   background-color: #f4f6fb;
   padding: 24px;
   overflow-y: auto;
+}
+
+.ticket-mainadmin-home-page-content::-webkit-scrollbar {
+  height: 6px;
 }
 
 .admin-renderpage-container {

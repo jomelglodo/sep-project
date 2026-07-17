@@ -4,24 +4,24 @@ export function getTimelineColor(type) {
       return "#2563eb";
 
     case "ticket-starttroubleshoot":
-      return "#f59e0b";
-
-    case "ticket-comment":
-      return "#7c3aed";
+      return "#ea580c";
 
     case "ticket-closed":
       return "#16a34a";
 
     case "ticket-reopened":
+      return "#9333ea";
+
+    case "ticket-attachment":
+      return "#0891b2";
+
+    case "ticket-priority":
       return "#dc2626";
 
     case "ticket-assigned":
-      return "#0891b2";
-
-    case "ticket-attachment":
-      return "#4b5563";
+      return "#6366f1";
 
     default:
-      return "#6b7280";
+      return "#64748b";
   }
 }

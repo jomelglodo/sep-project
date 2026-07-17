@@ -1,6 +1,7 @@
 import styles from "./TicketInspector.module.css";
 
 import { useTicketInspector } from "../../context/TicketInspectorContext";
+import { getStatusColor } from "./utils/ticketStatusColor.js";
 
 export default function TicketInspectorHeader() {
   const { ticket, loading, closeTicket } = useTicketInspector();
@@ -14,7 +15,14 @@ export default function TicketInspectorHeader() {
             {loading ? "Loading..." : `Ticket #${ticket?.ticket_num ?? ""}`}
           </h2>
 
-          {!loading && <span className={styles.status}>{ticket?.status}</span>}
+          {!loading && (
+            <span
+              className={styles.status}
+              style={{ backgroundColor: getStatusColor(ticket.status) }}
+            >
+              {ticket?.status}
+            </span>
+          )}
         </div>
 
         <button className={styles.close} onClick={closeTicket}>

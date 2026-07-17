@@ -228,6 +228,13 @@ export const startTroubleshoot = async (req, res) => {
     const userId = result.rows[0].user_id;
     const ticketId = result.rows[0].ticket_id;
 
+    //  {#70b,6}
+    /* SOCKET FOR CHANGING STATUS */
+    getIO().to(`ticket:${ticketId}`).emit("ticket-status-update", {
+      ticketId,
+      status: "In Progress",
+    });
+
     //INSERT DATA TO THE tbl_ticket_updates
     await client.query(
       "INSERT INTO tbl_ticket_updates(ticket_id,ticket_num,staff_name,time_started) VALUES ($1,$2,$3,NOW())",
@@ -360,6 +367,13 @@ export const finishTicket = async (req, res) => {
 
     const userId = result.rows[0].user_id;
     const ticketId = result.rows[0].ticket_id;
+
+    //  {#70b,6}
+    /* SOCKET FOR CHANGING STATUS */
+    getIO().to(`ticket:${ticketId}`).emit("ticket-status-update", {
+      ticketId,
+      status: "Closed",
+    });
 
     //update tbl_ticket_updates
     let updateTicketsQuery;

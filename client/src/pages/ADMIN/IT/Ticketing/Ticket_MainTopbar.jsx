@@ -31,7 +31,30 @@ export default function TicketMainUserTopbar({
     x: 0,
     y: 0,
   });
+
+  //REFS
+  const profileRef = useRef(null);
+  const notificationRef = useRef(null);
+
   //EFFECTS
+
+  //close the notification when the user click outside the ticket-main-notification
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target)
+      ) {
+        setOpenNotifications(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   //  {#85d,15}
   /*   useEffect(() => {
@@ -48,9 +71,6 @@ export default function TicketMainUserTopbar({
       socket.off("ticket-starttroubleshoot", fetchStarttroubleshoot);
     };
   }, []); */
-
-  //REFS
-  const profileRef = useRef(null);
 
   // HELPER FUNCTION
 
@@ -113,7 +133,7 @@ export default function TicketMainUserTopbar({
 
       <div className="ticket-main-profile-topright">
         {/* NOTIFICATIONS */}
-        <div className="ticket-main-notification">
+        <div className="ticket-main-notification" ref={notificationRef}>
           <NotificationBell
             isOpen={openNotifications}
             onToggle={() => setOpenNotifications((prev) => !prev)}

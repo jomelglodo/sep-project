@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import styles from "./TicketInspector.module.css";
 
 import { useTicketInspector } from "../../context/TicketInspectorContext";
@@ -13,15 +14,48 @@ import TicketTimeline from "./sections/TicketTimeline";
 export default function TicketInspector() {
   const { isOpen, loading, ticket, closeTicket } = useTicketInspector();
 
+  //Prevent page behind the modal to scroll
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function handleKeyDown(e) {
+      if (e.key === "Escape") {
+        closeTicket();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    /*  document.body.style.overflow = "hidden"; */
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      /*  document.body.style.overflow = ""; */
+    };
+  }, [isOpen]);
+
   if (!isOpen) {
     return null;
   }
-
   return (
     <>
-      <div className={styles.backdrop} onClick={closeTicket} />
+      <div
+        className={`${styles.backdrop} ${isOpen ? styles.open : ""}`}
+        onClick={closeTicket}
+      />
 
-      <aside className={styles.panel}>
+      <aside className={`${styles.panel} ${isOpen ? styles.open : ""}`}>
         <TicketInspectorHeader />
         {/* LOADING */}
         {loading ? (
