@@ -74,7 +74,10 @@ import Notification from "./routes/ADMIN/IT/Ticketing/notificationRoutes.js";
 import TicketInspector from "./routes/ADMIN/IT/Ticketing/ticketInspectorRoutes.js";
 import Timeline from "./routes/ADMIN/IT/Ticketing/timelineRoutes.js";
 
-//-------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
+
+//REPORTING----------------------------------------------------------------
+import Reporting from "./routes/ADMIN/IT/Ticketing/reportingRoutes.js";
 
 // =========================================================
 // DATABASE CONNECTION TEST
@@ -137,6 +140,9 @@ app.use("/ticketing/login", Ticket_LoginRoutes);
 app.use("/ticketing/user", Ticket_UserRoutes);
 app.use("/ticketing/staff", Ticket_StaffRoutes);
 app.use("/ticketing/admin", Ticket_AdminRoutes);
+
+//ADMIN - REPORTING
+app.use("/ticketing/reporting", Reporting);
 
 // app.get("/test", (req, res) => {
 //   res.json({ ok: true, time: Date.now() });

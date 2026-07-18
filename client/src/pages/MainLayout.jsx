@@ -38,7 +38,7 @@ export default function MainLayout() {
             <>
               <Ris />
             </>
-          ) : activeSub === "PPC - Warehouse - Consumable Issuance" ? (
+          ) : activeSub === "PPC - Warehoussepe - Consumable Issuance" ? (
             <>
               <ConLogin />
             </>

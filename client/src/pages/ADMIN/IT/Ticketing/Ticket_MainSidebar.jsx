@@ -163,7 +163,7 @@ export default function TicketMainUserHeader({
               className={`ticket-main-home-menu-item ${activePage === "report" ? "selectactive" : ""}
             }`}
               onClick={() => {
-                setActivePage("report");
+                setActivePage("reporting");
               }}
             >
               <span className="ticket-main-icon">

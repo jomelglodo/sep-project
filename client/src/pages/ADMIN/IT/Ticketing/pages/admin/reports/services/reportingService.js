@@ -1,7 +1,11 @@
-export async function getSummary() {}
+const API = process.env.REACT_APP_API_URL;
 
-export async function getStatusChart() {}
+export async function getSummaryReport() {
+  const response = await fetch(`${API}/ticketing/reporting/summary`);
 
-export async function getMonthlyTrend() {}
+  if (!response.ok) {
+    throw new Error("Failed to load report.");
+  }
 
-export async function getRecentTickets() {}
+  return response.json();
+}

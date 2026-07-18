@@ -9,6 +9,7 @@ import HeaderSidebar from "../../Ticket_MainSidebar";
 import Dashboard from "./Ticket_Admin_Dashboard";
 import UserManagement from "./usermanagement/User_Management";
 import Category from "./categorymanagement/Category";
+import Reporting from "./reports/TicketReporting";
 
 export default function TicketMainAdmin({
   onLogout,
@@ -65,7 +66,8 @@ export default function TicketMainAdmin({
         break;
       case "announcement":
         break;
-      case "report":
+      case "reporting":
+        return <Reporting />;
         break;
       default:
         break;
