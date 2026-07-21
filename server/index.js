@@ -26,6 +26,7 @@ initializeSocket(server);
 ======================== */
 
 app.use(cors());
+
 //app.use(express.json());
 app.use(
   express.json({
@@ -78,6 +79,9 @@ import Timeline from "./routes/ADMIN/IT/Ticketing/timelineRoutes.js";
 
 //REPORTING----------------------------------------------------------------
 import Reporting from "./routes/ADMIN/IT/Ticketing/reportingRoutes.js";
+
+//ANNOUNCEMENT----------------------------------------------------------------
+import AnnouncementManagement from "./routes/ADMIN/IT/Ticketing/announcementRoutes.js";
 
 // =========================================================
 // DATABASE CONNECTION TEST
@@ -144,6 +148,8 @@ app.use("/ticketing/admin", Ticket_AdminRoutes);
 //ADMIN - REPORTING
 app.use("/ticketing/reporting", Reporting);
 
+//ADMIN - ANNOUNCEMENT
+app.use("/ticketing/announcement", AnnouncementManagement);
 // app.get("/test", (req, res) => {
 //   res.json({ ok: true, time: Date.now() });
 // });

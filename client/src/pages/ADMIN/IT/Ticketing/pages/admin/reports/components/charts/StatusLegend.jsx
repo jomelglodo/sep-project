@@ -8,11 +8,22 @@ const COLORS = {
   Cancelled: "#ef4444",
 };
 
-export default function StatusLegend({ data }) {
+export default function StatusLegend({
+  data,
+  onSelectedStatus,
+  selectedStatus,
+}) {
   return (
     <div className={styles.legend}>
       {data.map((item) => (
-        <div key={item.label} className={styles.item}>
+        <button
+          type="button"
+          key={item.label}
+          className={`${styles.item} ${selectedStatus === item.label ? styles.active : ""}`}
+          /*    onMouseEnter={() => onSelectedStatus?.(item)}
+          onMouseLeave={() => onSelectedStatus?.(item)} */
+          onClick={() => onSelectedStatus?.(item)}
+        >
           <div className={styles.left}>
             <span
               className={styles.dot}
@@ -25,7 +36,7 @@ export default function StatusLegend({ data }) {
           </div>
 
           <strong>{item.value}</strong>
-        </div>
+        </button>
       ))}
     </div>
   );

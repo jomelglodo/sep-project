@@ -66,7 +66,7 @@ export default function TicketMainAdmin({
         break;
       case "announcement":
         break;
-      case "reporting":
+      case "report":
         return <Reporting />;
         break;
       default:

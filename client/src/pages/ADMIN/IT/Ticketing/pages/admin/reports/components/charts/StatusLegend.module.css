@@ -5,9 +5,28 @@
 }
 
 .item {
+  width: 100%;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  padding: 10px 12px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.item:hover {
+  background: #f3f4f6;
+}
+
+.active {
+  background: #eef6ff;
+  border: 1px solid #bfdbfe;
 }
 
 .left {

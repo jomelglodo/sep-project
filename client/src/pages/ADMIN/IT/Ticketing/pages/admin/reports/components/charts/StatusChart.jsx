@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styles from "./StatusChart.module.css";
 import ChartCard from "./ChartCard";
 import StatusLegend from "./StatusLegend";
@@ -13,6 +14,17 @@ const COLORS = {
 };
 
 export default function StatusChart({ data }) {
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(-1);
+
+  function handleSelectedStatus(item) {
+    const index = data.findIndex((status) => status.label === item.label);
+
+    setSelectedStatus((prev) => (prev === item.label ? null : item.label));
+
+    setActiveIndex((prev) => (prev === index ? -1 : index));
+  }
+
   return (
     <ChartCard title="Ticket Status Distribution">
       <div className={styles.container}>
@@ -26,11 +38,29 @@ export default function StatusChart({ data }) {
                 innerRadius={60}
                 outerRadius={100}
                 paddingAngle={3}
+                activeIndex={activeIndex}
+                activeShape={{ outerRadius: 110 }}
+                label={({ name, value, percent }) =>
+                  `${name} ${(percent * 100).toFixed(0)}%`
+                }
+                onMouseEnter={(_, index) => {
+                  if (selectedStatus === null) {
+                    setActiveIndex(index);
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (selectedStatus === null) {
+                    setActiveIndex(-1);
+                  }
+                }}
               >
-                {data.map((entry) => (
+                {data.map((entry, index) => (
                   <Cell
                     key={entry.label}
                     fill={COLORS[entry.label] ?? "#94a3b8"}
+                    fillOpacity={
+                      activeIndex === -1 || activeIndex === index ? 1 : 0.3
+                    }
                   />
                 ))}
               </Pie>
@@ -40,7 +70,11 @@ export default function StatusChart({ data }) {
           </ResponsiveContainer>
         </div>
 
-        <StatusLegend data={data} />
+        <StatusLegend
+          data={data}
+          selectedStatus={selectedStatus}
+          onSelectedStatus={handleSelectedStatus}
+        />
       </div>
     </ChartCard>
   );

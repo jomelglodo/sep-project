@@ -92,7 +92,7 @@ async function getMonthlyTrend(client) {
       )
 
       SELECT 
-        TO_CHAR(m.month_start,'Mon YYYYY') as label,
+        TO_CHAR(m.month_start,'Mon YYYY') as label,
         TO_CHAR(m.month_start,'YYYY-mm') as month,
         COALESCE(COUNT(t.ticket_id),0)::integer AS value
       FROM months m

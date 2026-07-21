@@ -8,31 +8,32 @@ import StatusChart from "./components/charts/StatusChart";
 
 import MonthlyTrendChart from "./components/charts/MonthlyTrendChart";
 
-import RecentTicketsTable from "./components/tables/RecentTicketsTable";
-
-import ReportingSkeleton from "./components/loading/ReportingSkeleton";
+import TicketHistory from "./tickethistory/TicketHistory";
 
 export default function TicketReporting() {
   const { loading, summary, statusChart, monthlyTrend, recentTickets } =
     useReporting();
+
   /* 
   if (loading) {
     return <ReportingSkeleton />;
   }
  */
+
+  function handleMonthClick() {}
   return (
     <div className={styles.container}>
       <SummaryCards summary={summary} />
 
-      <div className={styles.chartGrid}>
+      <div className={styles.chart_grid}>
         <StatusChart data={statusChart} />
 
-        {/*   <MonthlyTrendChart
-                    data={monthlyTrend}
-                />
- */}
+        <MonthlyTrendChart
+          data={monthlyTrend}
+          onMonthClick={handleMonthClick}
+        />
       </div>
-
+      <TicketHistory />
       {/*  <RecentTicketsTable
                 tickets={recentTickets}
             />  */}

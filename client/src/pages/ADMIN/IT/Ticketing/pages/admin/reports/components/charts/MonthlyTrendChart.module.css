@@ -1,0 +1,20 @@
+.tooltip {
+  background: #ffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
+}
+
+.current {
+  margin-top: 6px;
+  color: #22c55e;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.selected {
+  margin-top: 4px;
+  color: #2563eb;
+  font-weight: 600;
+}
