@@ -10,6 +10,7 @@ import Dashboard from "./Ticket_Admin_Dashboard";
 import UserManagement from "./usermanagement/User_Management";
 import Category from "./categorymanagement/Category";
 import Reporting from "./reports/TicketReporting";
+import Announcement from "./announcement/AnnouncementManagement";
 
 export default function TicketMainAdmin({
   onLogout,
@@ -65,6 +66,7 @@ export default function TicketMainAdmin({
         return <Category displayName={displayName} />;
         break;
       case "announcement":
+        return <Announcement loggedinUserId={loggedinUserId} />;
         break;
       case "report":
         return <Reporting />;

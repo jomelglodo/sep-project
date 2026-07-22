@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { getTicket } from "../services/ticketInspectorService.js";
 import { getTimeline } from "../services/ticketTimelineService.js";
 import socket from "../../../../../services/socket.js";
@@ -42,16 +42,36 @@ export function TicketInspectorProvider({ children }) {
     }
   }
 
+  const ticketRef = useRef(null);
+
+  useEffect(() => {
+    ticketRef.current = ticket;
+  }, [ticket]);
+
   function closeTicket() {
+    const ticketId = ticketRef.current?.ticket_id;
+
+    if (ticketId) {
+      socket.emit("leave-ticket", ticketId);
+    }
+
+    setIsOpen(false);
+    setTicket(null);
+  }
+
+  /*   function closeTicket() {
+    console.log("closeTicket ticket:", ticket);
+
+    if (ticket?.ticket_id) {
+      console.log("Leaving room:", ticket.ticket_id);
+      socket.emit("leave-ticket", ticket.ticket_id);
+    }
+
     setIsOpen(false);
 
     setTicket(null);
-
-    if (ticket?.ticket_id) {
-      socket.emit("leave-ticket", ticket.ticket_id);
-    }
   }
-
+ */
   return (
     <TicketInspectorContext.Provider
       value={{
