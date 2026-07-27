@@ -1,0 +1,30 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 90px;
+
+  padding: 6px 12px;
+
+  border-radius: 999px;
+
+  font-size: 0.78rem;
+
+  font-weight: 600;
+}
+
+.published {
+  color: #1d7a34;
+  background: #eaf8ee;
+}
+
+.draft {
+  color: #996c00;
+  background: #fff6da;
+}
+
+.expired {
+  color: #b42318;
+  background: #fdecec;
+}

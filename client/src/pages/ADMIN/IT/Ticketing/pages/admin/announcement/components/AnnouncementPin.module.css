@@ -1,0 +1,17 @@
+.pinned {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #d97706;
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+}
+
+.notPinned {
+  color: #b5b5b5;
+
+  font-size: 0.9rem;
+}

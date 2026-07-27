@@ -1,10 +1,13 @@
-import { useState } from "react";
-import { createAnnouncement } from "../services/announcementService.js";
+import { useEffect, useState } from "react";
+import {
+  createAnnouncement,
+  updateAnnouncement,
+} from "../services/announcementService.js";
 import { toast } from "react-toastify";
 import toastSuccessSound from "../../../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastSuccess.mp3";
 import toastWarningSound from "../../../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastWarning.mp3";
 
-export default function useAnnouncementForm() {
+export default function useAnnouncementForm({ onSuccess, announcement }) {
   const toastSuccessAudio = new Audio(toastSuccessSound);
   const toastWarningAudio = new Audio(toastWarningSound);
 
@@ -21,6 +24,21 @@ export default function useAnnouncementForm() {
 
   // Attachments
   const [files, setFiles] = useState([]);
+
+  //EFFECTS
+  useEffect(() => {
+    if (!announcement) return;
+
+    setTitle(announcement.title ?? "");
+    setContent(announcement.content ?? "");
+    setCategory(announcement.category ?? "");
+    setIsPublished(announcement.is_published ?? "");
+    setIsPinned(announcement.is_pinned ?? "");
+
+    setExpiryDate(
+      announcement.expiry_date ? announcement.expiry_date.slice(0, 10) : "",
+    );
+  }, [announcement]);
 
   function handleFileChange(event) {
     const selectedFiles = Array.from(event.target.files);
@@ -69,26 +87,43 @@ export default function useAnnouncementForm() {
         formData.append("files", file);
       });
 
-      await createAnnouncement(formData);
+      /*  await createAnnouncement(formData);
 
       toastSuccessAudio.play();
-      toast.success("Announcement created successfully.");
+      toast.success("Announcement created successfully."); */
+
+      if (announcement) {
+        await updateAnnouncement(announcement.announcement_id, formData);
+        toastSuccessAudio.play();
+        toast.success("Announcement updated successfully.");
+      } else {
+        await createAnnouncement(formData);
+
+        toastSuccessAudio.play();
+        toast.success("Announcement created successfully.");
+      }
 
       //reset form
-      setTitle("");
-      setCategory("");
-      setContent("");
+      if (!announcement) {
+        setTitle("");
+        setCategory("");
+        setContent("");
 
-      setIsPublished(true);
-      setIsPinned(false);
-      setExpiryDate("");
+        setIsPublished(true);
+        setIsPinned(false);
+        setExpiryDate("");
 
-      clearFiles();
+        clearFiles();
+      }
+
+      onSuccess?.();
     } catch (err) {
-      console.err(err);
+      console.error(err.response);
 
       toastWarningAudio.play();
-      toast.error("Failed to create announcement");
+      toast.error(
+        err.response?.data?.message || "Failed to create announcement",
+      );
     }
   }
 

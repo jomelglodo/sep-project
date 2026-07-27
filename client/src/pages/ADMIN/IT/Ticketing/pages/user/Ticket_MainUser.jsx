@@ -6,6 +6,7 @@ import HeaderSidebar from "../../Ticket_MainSidebar";
 //SIDEBAR PAGES
 import MainUserDashBoard from "./Ticket_User_Dashboard";
 import MainUserTicket from "./Ticket_User_Ticket";
+import AnnouncementUser from "../admin/announcementUser/AnnouncementUser";
 
 export default function TicketMainUser({
   onLogout,
@@ -69,6 +70,7 @@ export default function TicketMainUser({
         );
 
       case "announcement":
+        return <AnnouncementUser />;
       default:
         return null;
     }

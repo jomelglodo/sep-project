@@ -2,19 +2,34 @@ import express from "express";
 import upload from "../../../../middleware/ADMIN/IT/Ticketing/uploadAnnouncement.js";
 
 import {
-  getAnnouncement,
+  getAnnouncements,
   getAnnouncementById,
   createAnnouncement,
   updateAnnouncement,
   deleteAnnouncement,
+  toggleAnnouncementPublish,
+  toggleAnnouncementPin,
+  getUserAnnouncements,
+  getUserAnnouncementById,
+  downloadAnnouncementFile,
+  previewAttachmentFile,
 } from "../../../../controllers/ADMIN/IT/Ticketing/announcementControllers.js";
 
 const router = express.Router();
 
-router.get("/", getAnnouncement);
+//user
+router.get("/user", getUserAnnouncements);
+router.get("/user/:announcementId", getUserAnnouncementById);
+router.get("/file/:fileId", downloadAnnouncementFile);
+router.get("/file/:fileId/preview", previewAttachmentFile);
+
+//admin
+router.get("/", getAnnouncements);
 router.get("/:id", getAnnouncementById);
 router.post("/", upload.array("files"), createAnnouncement);
-router.put("/:id", updateAnnouncement);
-router.delete("/:id", deleteAnnouncement);
+router.put("/:announcementId", upload.array("files"), updateAnnouncement);
+router.delete("/:announcementId", deleteAnnouncement);
+router.patch("/:announcementId/publish", toggleAnnouncementPublish);
+router.patch("/:announcementId/pin", toggleAnnouncementPin);
 
 export default router;

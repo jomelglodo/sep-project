@@ -7,6 +7,7 @@ import "../../styles/staff/Ticket_MainStaff.css";
 //pages
 import MainStaffDashBoard from "./Ticket_Staff_Dashboard";
 import MainStaffTicketManagement from "./Ticket_Staff_Ticket";
+import AnnouncementUser from "../admin/announcementUser/AnnouncementUser";
 
 export default function TicketMainStaff({
   onLogout,
@@ -64,6 +65,8 @@ export default function TicketMainStaff({
             loggedinUserId={loggedinUserId}
           />
         );
+      case "announcement":
+        return <AnnouncementUser />;
       default:
         break;
     }
