@@ -176,7 +176,7 @@ export default function StaffAssignedTicket({ displayName, loggedinUserId }) {
     const formData = new FormData();
 
     formData.append("reason", staffReason);
-    formData.append("loggedinUser", loggedinUserId);
+    formData.append("loggedinUserId", loggedinUserId);
 
     if (attachmentFile) {
       formData.append("attachment", attachmentFile);
@@ -194,12 +194,16 @@ export default function StaffAssignedTicket({ displayName, loggedinUserId }) {
       const data = await response.json();
 
       if (data.success) {
+        fetchTickets();
         resetAttachment();
         resetSelection();
         setModalViewTicket(false);
+        toastSuccessAudio.play();
+        toast.success(`${ticketNum} is now closed`);
       }
     } catch (err) {
       console.error(err);
+      toastWarningAudio.play();
       toast.error(err);
     }
   }

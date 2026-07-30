@@ -1,5 +1,220 @@
 import { ticketPool } from "../../../../db.js";
 
+//USERS
+
+export async function getUserAnnouncementsService(queryParams) {
+  const { search = "", category = "" } = queryParams;
+
+  const conditions = [];
+  const values = [];
+
+  let query = `
+    SELECT
+
+      a.announcement_id,
+
+      a.title,
+
+      a.category,
+
+      a.content,
+
+      a.publish_date,
+
+      a.is_pinned,
+
+      u.d_name AS posted_by,
+
+      COUNT(f.file_id) AS attachment_count
+
+    FROM tbl_announcements a
+
+    LEFT JOIN "tbl_userAccounts" u
+      ON a.posted_by = u.user_id
+
+    LEFT JOIN tbl_announcement_files f
+      ON a.announcement_id = f.announcement_id
+  `;
+
+  conditions.push(`a.is_published = TRUE`);
+
+  conditions.push(`
+    (
+      a.expiry_date IS NULL
+
+      OR
+
+      a.expiry_date >= CURRENT_DATE
+    )
+  `);
+
+  if (search) {
+    values.push(`%${search}%`);
+
+    conditions.push(`
+      (
+        a.title ILIKE $${values.length}
+
+        OR
+
+        a.content ILIKE $${values.length}
+      )
+    `);
+  }
+
+  if (category) {
+    values.push(category);
+
+    conditions.push(`
+      a.category = $${values.length}
+    `);
+  }
+
+  query += `
+    WHERE ${conditions.join(" AND ")}
+
+    GROUP BY
+      a.announcement_id,
+      u.d_name
+
+    ORDER BY
+
+      a.is_pinned DESC,
+
+      a.publish_date DESC
+  `;
+
+  const result = await ticketPool.query(query, values);
+  return result.rows;
+}
+
+export async function getUserAnnouncementByIdService(announcementId) {
+  const announcementResult = await ticketPool.query(
+    `
+    SELECT
+      a.announcement_id,
+      a.title,
+      a.category,
+      a.content,
+      a.publish_date,
+      a.is_pinned,
+      u.d_name AS posted_by
+    FROM tbl_announcements a
+    LEFT JOIN "tbl_userAccounts" u
+      ON a.posted_by=u.user_id
+    WHERE
+      a.announcement_id=$1
+      AND a.is_published=TRUE
+      AND (a.expiry_date IS NULL OR a.expiry_date>=CURRENT_DATE)
+    `,
+    [announcementId],
+  );
+
+  if (!announcementResult.rowCount) {
+    throw new Error("Announcement not found.");
+  }
+
+  const files = await ticketPool.query(
+    `
+      SELECT
+        file_id,
+        original_filename,
+        file_type,
+        file_size
+      FROM tbl_announcement_files
+      WHERE announcement_id=$1
+      ORDER BY file_id
+
+    `,
+    [announcementId],
+  );
+
+  return {
+    ...announcementResult.rows[0],
+    files: files.rows,
+  };
+}
+
+export async function downloadAnnouncementFileService(fileId) {
+  const result = await ticketPool.query(
+    `
+    SELECT
+      file_id,
+      original_filename,
+      file_type,
+      file_data
+    FROM tbl_announcement_files
+    WHERE file_id=$1
+    `,
+    [fileId],
+  );
+
+  if (!result.rowCount) {
+    throw new Error("File not found");
+  }
+
+  return result.rows[0];
+}
+
+//DASHBOARD
+export async function getAnnouncementDashboardService() {
+  const result = await ticketPool.query(`
+    SELECT
+      COUNT(*) AS total,
+      COUNT(*) FILTER (WHERE is_published = TRUE)::int AS published,
+      COUNT(*) FILTER (WHERE is_published = FALSE)::int AS drafts,
+      COUNT(*) FILTER (WHERE is_pinned = TRUE)::int AS pinned,
+      COUNT(*) FILTER (WHERE expiry_date IS NOT NULL AND expiry_date < CURRENT_DATE)::int AS expired,
+      (
+        SELECT COUNT(*)
+        FROM tbl_announcement_files
+      )::int as attachments,
+      (
+        SELECT COALESCE(SUM(file_size),0)
+        FROM tbl_announcement_files
+      )::bigint AS storage_used
+    FROM tbl_announcements
+    `);
+
+  return result.rows[0];
+}
+
+export async function getAnnouncemetCategorySummaryService() {
+  const result = await ticketPool.query(`
+    SELECT
+      category,
+      COUNT(*)::int AS total
+    FROM tbl_announcements
+    GROUP BY category
+    ORDER BY total DESC,category ASC
+    `);
+
+  return result.rows;
+}
+
+export async function getRecentAnnouncementsService(limit = 5) {
+  const result = await ticketPool.query(
+    `
+    SELECT
+      a.announcement_id,
+      a.title,
+      a.category,
+      u.d_name AS posted_by,
+      a.publish_date,
+      a.is_published,
+      a.is_pinned
+    FROM tbl_announcements a
+    LEFT JOIN "tbl_userAccounts" u
+      ON a.posted_by = u.user_id
+    ORDER BY
+      a.created_at DESC
+    LIMIT $1
+    `,
+    [limit],
+  );
+
+  return result.rows;
+}
 //ADMIN
 export async function getAnnouncementsService(queryParams) {
   const {
@@ -383,162 +598,6 @@ export async function toggleAnnouncementPinService(announcementId) {
 
   if (!result.rowCount) {
     throw new Error("Announcement not found.");
-  }
-
-  return result.rows[0];
-}
-
-//USERS
-
-export async function getUserAnnouncementsService(queryParams) {
-  const { search = "", category = "" } = queryParams;
-
-  const conditions = [];
-  const values = [];
-
-  let query = `
-    SELECT
-
-      a.announcement_id,
-
-      a.title,
-
-      a.category,
-
-      a.content,
-
-      a.publish_date,
-
-      a.is_pinned,
-
-      u.d_name AS posted_by,
-
-      COUNT(f.file_id) AS attachment_count
-
-    FROM tbl_announcements a
-
-    LEFT JOIN "tbl_userAccounts" u
-      ON a.posted_by = u.user_id
-
-    LEFT JOIN tbl_announcement_files f
-      ON a.announcement_id = f.announcement_id
-  `;
-
-  conditions.push(`a.is_published = TRUE`);
-
-  conditions.push(`
-    (
-      a.expiry_date IS NULL
-
-      OR
-
-      a.expiry_date >= CURRENT_DATE
-    )
-  `);
-
-  if (search) {
-    values.push(`%${search}%`);
-
-    conditions.push(`
-      (
-        a.title ILIKE $${values.length}
-
-        OR
-
-        a.content ILIKE $${values.length}
-      )
-    `);
-  }
-
-  if (category) {
-    values.push(category);
-
-    conditions.push(`
-      a.category = $${values.length}
-    `);
-  }
-
-  query += `
-    WHERE ${conditions.join(" AND ")}
-
-    GROUP BY
-      a.announcement_id,
-      u.d_name
-
-    ORDER BY
-
-      a.is_pinned DESC,
-
-      a.publish_date DESC
-  `;
-
-  const result = await ticketPool.query(query, values);
-  return result.rows;
-}
-
-export async function getUserAnnouncementByIdService(announcementId) {
-  const announcementResult = await ticketPool.query(
-    `
-    SELECT
-      a.announcement_id,
-      a.title,
-      a.category,
-      a.content,
-      a.publish_date,
-      a.is_pinned,
-      u.d_name AS posted_by
-    FROM tbl_announcements a
-    LEFT JOIN "tbl_userAccounts" u
-      ON a.posted_by=u.user_id
-    WHERE
-      a.announcement_id=$1
-      AND a.is_published=TRUE
-      AND (a.expiry_date IS NULL OR a.expiry_date>=CURRENT_DATE)
-    `,
-    [announcementId],
-  );
-
-  if (!announcementResult.rowCount) {
-    throw new Error("Announcement not found.");
-  }
-
-  const files = await ticketPool.query(
-    `
-      SELECT
-        file_id,
-        original_filename,
-        file_type,
-        file_size
-      FROM tbl_announcement_files
-      WHERE announcement_id=$1
-      ORDER BY file_id
-
-    `,
-    [announcementId],
-  );
-
-  return {
-    ...announcementResult.rows[0],
-    files: files.rows,
-  };
-}
-
-export async function downloadAnnouncementFileService(fileId) {
-  const result = await ticketPool.query(
-    `
-    SELECT
-      file_id,
-      original_filename,
-      file_type,
-      file_data
-    FROM tbl_announcement_files
-    WHERE file_id=$1
-    `,
-    [fileId],
-  );
-
-  if (!result.rowCount) {
-    throw new Error("File not found");
   }
 
   return result.rows[0];

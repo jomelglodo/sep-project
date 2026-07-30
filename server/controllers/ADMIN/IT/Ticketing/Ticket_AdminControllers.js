@@ -1,5 +1,54 @@
 import { ticketPool } from "../../../../db.js";
 
+//DASHBOARD
+async function getTIcketCount() {
+  const result = await ticketPool.query(`
+    SELECT
+      COUNT(*)::int AS total,
+      COUNT(*) FILTER (WHERE status='Open')::int AS open,
+      COUNT(*) FILTER (WHERE status='In Progress')::int AS inprogress,
+      COUNT(*) FILTER (WHERE status='Closed')::int AS closed,
+      COUNT(*) FILTER (WHERE status='Cancelled')::int AS cancelled
+    FROM tbl_tickets
+    `);
+
+  return result.rows[0];
+}
+
+async function getRecentTickets() {
+  const result = await ticketPool.query(`
+    SELECT
+      ticket_num,
+      TO_CHAR(date_submitted, 'YYYY-MM-DD') AS date_submitted,
+      r_name,
+      subject_title,
+      status
+    FROM tbl_tickets
+    ORDER BY date_submitted DESC
+    LIMIT 20
+    `);
+
+  return result.rows;
+}
+
+export const getTicketDashboardData = async (req, res) => {
+  try {
+    const count = await getTIcketCount();
+    const recentTickets = await getRecentTickets();
+
+    res.json({
+      success: true,
+      count,
+      recentTickets,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to get ticket dashboard data!",
+    });
+  }
+};
 //get user count
 export const userCounter = async (req, res) => {
   try {

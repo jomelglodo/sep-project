@@ -17,6 +17,8 @@ import { TbTicketOff } from "react-icons/tb";
 export default function MainStaffDashBoard({ displayName }) {
   const [ticketList, setTicketList] = useState([]);
   const [staffName, setStaffName] = useState("");
+  const [activities, setActivities] = useState([]);
+  const [performanceMetric, setPerformanceMetric] = useState([]);
 
   const [counterTickets, setCounterTickets] = useState({
     total: 0,
@@ -74,8 +76,12 @@ export default function MainStaffDashBoard({ displayName }) {
  */
 
   useEffect(() => {
-    fetchDashboardCounter();
-    fetchTableTickets();
+    Promise.all([
+      fetchDashboardCounter(),
+      fetchTableTickets(),
+      getActivities(),
+      getPerformanceMetric(),
+    ]).catch(console.error);
   }, [staffName]);
 
   //  {#e34,12}
@@ -136,6 +142,31 @@ export default function MainStaffDashBoard({ displayName }) {
     }
   };
 
+  const getActivities = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/ticketing/staff/activities/${displayName}`,
+      );
+
+      const data = await response.json();
+      setActivities(data.activities);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const getPerformanceMetric = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/ticketing/staff/performancemetric/${displayName}`,
+      );
+
+      const data = await response.json();
+      setPerformanceMetric(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <div className="ticket-mainstaff-dashboard-container">
       <h2 className="ticket-mainstaff-dashboard-title">Dashboard</h2>
@@ -150,14 +181,14 @@ export default function MainStaffDashBoard({ displayName }) {
 
           <BsFillTicketPerforatedFill />
         </div>
-        <div className="ticket-mainstaff-dashboard-ticketcounter-group open">
+        {/*         <div className="ticket-mainstaff-dashboard-ticketcounter-group open">
           <div className="ticket-mainstaff-dashboard-count">
             <h3>{counterTickets.open}</h3>
             <p>Open Tickets</p>
           </div>
 
           <FaFolderOpen />
-        </div>
+        </div> */}
         <div className="ticket-mainstaff-dashboard-ticketcounter-group inprogress">
           <div className="ticket-mainstaff-dashboard-count">
             <h3>{counterTickets.inprogress}</h3>
@@ -174,21 +205,21 @@ export default function MainStaffDashBoard({ displayName }) {
 
           <FaCheckSquare />
         </div>
-        <div className="ticket-mainstaff-dashboard-ticketcounter-group cancelled">
+        {/*  <div className="ticket-mainstaff-dashboard-ticketcounter-group cancelled">
           <div className="ticket-mainstaff-dashboard-count">
             <h3>{counterTickets.cancelled}</h3>
             <p>Cancelled</p>
           </div>
 
           <TbTicketOff />
-        </div>
+        </div> */}
       </div>
       <div className="ticket-mainstaff-dashboard-body">
         <div className="ticket-mainstaff-dashboard-statistics">
           {/* RECENT TICKET TABLE */}
           <div className="ticket-mainstaff-dashboard-table-wrapper ticket-mainstaff-card">
             <h3 className="ticket-mainstaff-dashboard-table-title">
-              Assign Tickets
+              Assigned Tickets (In Progress)
             </h3>
             <div className="ticket-mainstaff-dashboard-table-container">
               <table className="ticket-mainstaff-dashboard-table">
@@ -216,7 +247,6 @@ export default function MainStaffDashBoard({ displayName }) {
                               : ""
                           }
                         >
-                          {" "}
                           {item.status}
                         </span>
                       </td>
@@ -241,17 +271,17 @@ export default function MainStaffDashBoard({ displayName }) {
             <div className="ticket-mainstaff-dashboard-performancemetric-breakdown">
               <div className="ticket-mainstaff-dashboard-performancemetric-total mainstaff-performancemetric-group">
                 <p>Total Assigned : </p>
-                <h3>0</h3>
+                <h3>{counterTickets.total}</h3>
               </div>
 
               <div className="ticket-mainstaff-dashboard-performancemetric-resolved mainstaff-performancemetric-group">
                 <p>Resolved Today : </p>
-                <h3>0</h3>
+                <h3>{performanceMetric.resolved}</h3>
               </div>
 
               <div className="ticket-mainstaff-dashboard-performancemetric-average mainstaff-performancemetric-group">
                 <p>Average Resolution : </p>
-                <h3>0</h3>
+                <h3>{performanceMetric.resolution}</h3>
               </div>
 
               <div className="ticket-mainstaff-dashboard-performancemetric-SLA mainstaff-performancemetric-group">
@@ -266,11 +296,9 @@ export default function MainStaffDashBoard({ displayName }) {
               Recent Activity
             </h3>
             <div className="ticket-mainstaff-dashboard-performanceactivity-body">
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
+              {activities.map((activity) => (
+                <p>{`${activity.message} ( ${activity.ticket_num} )`}</p>
+              ))}
             </div>
           </div>
         </div>

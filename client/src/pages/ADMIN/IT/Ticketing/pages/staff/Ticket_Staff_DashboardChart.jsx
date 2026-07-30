@@ -11,16 +11,16 @@ import {
 
 export default function StaffTicketDashboardChart({ ticketCounts }) {
   const data = [
-    { name: "Open", value: ticketCounts.open },
+    /*  { name: "Open", value: ticketCounts.open }, */
     { name: "In Progress", value: ticketCounts.inprogress },
     { name: "Closed", value: ticketCounts.closed },
-    { name: "Cancelled", value: ticketCounts.cancelled },
+    /*  { name: "Cancelled", value: ticketCounts.cancelled }, */
   ];
   const COLORS = [
-    "#f59e0b", // Open
+    /*   "#f59e0b", */ // Open
     "#8b5cf6", // In progress
     "#10b981", // Closed
-    "#ef4444", // Cancelled
+    /*     "#ef4444", */ // Cancelled
   ];
   return (
     <ResponsiveContainer width="100%" height="100%">

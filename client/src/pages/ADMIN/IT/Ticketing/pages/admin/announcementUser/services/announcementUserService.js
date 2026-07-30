@@ -49,6 +49,6 @@ export async function downloadAnnouncementFile(fileId) {
 }
 
 //preview attachment
-export async function getPreviewUrl(fileId) {
+export function getPreviewUrl(fileId) {
   return `${API}/ticketing/announcement/file/${fileId}/preview`;
 }

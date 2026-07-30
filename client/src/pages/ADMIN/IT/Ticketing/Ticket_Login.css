@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
 :root {
   --fc: white;
   --fc-header: #0dceec;

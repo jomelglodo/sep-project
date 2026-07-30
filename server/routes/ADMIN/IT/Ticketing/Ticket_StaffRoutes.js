@@ -4,6 +4,8 @@ import multer from "multer";
 import {
   dashboardCounter,
   populateTickets,
+  getRecentActivities,
+  getPerformanceMetric,
   getAllTickets,
   getAttachment,
   startTroubleshoot,
@@ -22,6 +24,8 @@ const upload = multer({ storage: multer.memoryStorage() });
 //POST
 router.post("/getcounter", dashboardCounter);
 router.post("/populatetickets", populateTickets);
+router.get("/activities/:displayName", getRecentActivities);
+router.get("/performancemetric/:displayName", getPerformanceMetric);
 
 //TICKET MANAGEMENT - ALL
 

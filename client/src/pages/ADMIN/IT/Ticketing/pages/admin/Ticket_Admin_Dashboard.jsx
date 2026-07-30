@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../../styles/admin/Ticket_Admin_Dashboard.css";
+import axios from "axios";
 
 //ICONS
 import { BsFillTicketPerforatedFill } from "react-icons/bs";
@@ -8,17 +9,40 @@ import { FaClock } from "react-icons/fa";
 import { FaCheckSquare } from "react-icons/fa";
 import { TbTicketOff } from "react-icons/tb";
 
+import AnnouncementDashboard from "./announcement/components/dashboard/AnnouncementDashboard";
+import Ticket_Admin_TicketChart from "./Ticket_Admin_TicketChart";
+
 export default function MainAdminDashboard() {
+  const [ticketList, setTIcketList] = useState([]);
   const [counterTickets, setCounterTickets] = useState({
-    total: 1,
+    total: 0,
     open: 0,
-    inprogress: 10,
-    closed: 2,
-    cancelled: 15,
+    inprogress: 0,
+    closed: 0,
+    cancelled: 0,
   });
+
+  async function getDashboardData() {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/ticketing/admin/dashboard`,
+      );
+
+      const data = response.data;
+      setCounterTickets(data.count);
+      setTIcketList(data.recentTickets);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  useEffect(() => {
+    getDashboardData();
+  }, []);
+
   return (
     <div className="ticket-mainadmin-dashboard-container">
-      <h2 className="ticket-mainadmin-dashboard-title">Dashboard</h2>
+      <h2 className="ticket-mainadmin-dashboard-title"> Ticket Dashboard</h2>
       {/* TICKET COUNTER */}
 
       <div className="ticket-mainadmin-dashboard-ticketcounter-container">
@@ -65,94 +89,60 @@ export default function MainAdminDashboard() {
       </div>
       <div className="ticket-mainadmin-dashboard-body">
         <div className="ticket-mainadmin-dashboard-statistics">
-          {/* RECENT TICKET TABLE */}
-          <div className="ticket-mainadmin-dashboard-table-wrapper ticket-mainstaff-card">
-            <h3 className="ticket-mainadmin-dashboard-table-title">
-              Assign Tickets
-            </h3>
-            <div className="ticket-mainadmin-dashboard-table-container">
-              <table className="ticket-mainadmin-dashboard-table">
-                <thead>
-                  <tr>
-                    <th>Ticket No.</th>
-                    <th>Date Created</th>
-                    <th>User</th>
-                    <th>Subject</th>
-                    <th style={{ textAlign: "center" }}>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* {ticketList.map((item, index) => (
-                       <tr key={index}>
-                         <td>{item.ticket_num}</td>
-                         <td>{item.date_submitted}</td>
-                         <td>{item.r_name}</td>
-                         <td>{item.subject_title}</td>
-                         <td style={{ textAlign: "center" }}>
-                           <span
-                             className={
-                               item.status === "In Progress"
-                                 ? "mainstaff-status-inprogress"
-                                 : ""
-                             }
-                           >
-                             {" "}
-                             {item.status}
-                           </span>
-                         </td>
-                       </tr>
-                     ))} */}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          {/* CHART */}
-          <div className="ticket-mainadmin-dashboard-chart-wrapper ticket-mainstaff-card">
-            <h3 className="ticket-mainadmin-dashboard-chart-title">
-              Ticket Status
-            </h3>
-            {/*  <DashboardChart ticketCounts={counterTickets} /> */}
-          </div>
-
-          <div className="ticket-mainadmin-dashboard-performancemetric ticket-mainstaff-card">
-            <h3 className="ticket-mainadmin-dashboard-performancemetric-title">
-              Performance Metric
-            </h3>
-            <div className="ticket-mainadmin-dashboard-performancemetric-breakdown">
-              <div className="ticket-mainadmin-dashboard-performancemetric-total mainstaff-performancemetric-group">
-                <p>Total Assigned : </p>
-                <h3>0</h3>
-              </div>
-
-              <div className="ticket-mainadmin-dashboard-performancemetric-resolved mainstaff-performancemetric-group">
-                <p>Resolved Today : </p>
-                <h3>0</h3>
-              </div>
-
-              <div className="ticket-mainadmin-dashboard-performancemetric-average mainstaff-performancemetric-group">
-                <p>Average Resolution : </p>
-                <h3>0</h3>
-              </div>
-
-              <div className="ticket-mainadmin-dashboard-performancemetric-SLA mainstaff-performancemetric-group">
-                <p>SLA Compliance : </p>
-                <h3>0</h3>
+          <section className="ticket-mainadmin-dashboard-grid">
+            {/* RECENT TICKET TABLE */}
+            <div className="ticket-mainadmin-dashboard-table-wrapper ticket-mainstaff-card">
+              <h3 className="ticket-mainadmin-dashboard-table-title">
+                Assign Tickets
+              </h3>
+              <div className="ticket-mainadmin-dashboard-table-container">
+                <table className="ticket-mainadmin-dashboard-table">
+                  <thead>
+                    <tr>
+                      <th>Ticket No.</th>
+                      <th>Date Created</th>
+                      <th>User</th>
+                      <th>Subject</th>
+                      <th style={{ textAlign: "center" }}>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {ticketList.map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.ticket_num}</td>
+                        <td>{item.date_submitted}</td>
+                        <td>{item.r_name}</td>
+                        <td>{item.subject_title}</td>
+                        <td style={{ textAlign: "center" }}>
+                          <span
+                            className={
+                              item.status === "In Progress"
+                                ? "mainstaff-status-inprogress"
+                                : ""
+                            }
+                          >
+                            {item.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
-          </div>
 
-          <div className="ticket-mainadmin-dashboard-performanceactivity-container ticket-mainstaff-card">
-            <h3 className="ticket-mainadmin-dashboard-performanceactivity-title">
-              Recent Activity
-            </h3>
-            <div className="ticket-mainadmin-dashboard-performanceactivity-body">
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
-              <p>dasdasd</p>
+            {/* CHART */}
+            <div className="ticket-mainadmin-dashboard-chart-wrapper ticket-mainstaff-card">
+              <h3 className="ticket-mainadmin-dashboard-chart-title">
+                Ticket Status
+              </h3>
+              <Ticket_Admin_TicketChart data={counterTickets} />
             </div>
-          </div>
+          </section>
+
+          <section>
+            <AnnouncementDashboard />
+          </section>
         </div>
       </div>
     </div>

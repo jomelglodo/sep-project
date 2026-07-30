@@ -89,6 +89,7 @@ export const populateTickets = async (req, res) => {
             INNER JOIN tbl_ticket_updates u
                 ON t.ticket_id=u.ticket_id
             WHERE u.staff_name = $1
+              AND status='In Progress'
             ORDER BY
                 CASE WHEN status = 'In Progress' THEN 0 ELSE 1 END,
                 t.ticket_num DESC
@@ -102,6 +103,104 @@ export const populateTickets = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Server Error",
+    });
+  }
+};
+
+export const getRecentActivities = async (req, res) => {
+  const { displayName } = req.params;
+  try {
+    const getUserId = await ticketPool.query(
+      `
+      SELECT 
+        user_id
+      FROM "tbl_userAccounts"
+      WHERE d_name = $1
+      `,
+      [displayName],
+    );
+
+    const userId = getUserId.rows[0].user_id;
+
+    const result = await ticketPool.query(
+      `
+      SELECT
+        tt.message,
+        t.ticket_num
+      FROM tbl_ticket_timeline tt
+      INNER JOIN tbl_tickets t
+        ON tt.ticket_id=t.ticket_id
+      WHERE tt.performed_by=$1
+      ORDER BY tt.timeline_id DESC
+      LIMIT 10
+      `,
+      [userId],
+    );
+
+    return res.json({
+      success: true,
+      activities: result.rows,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to get timeline activities",
+    });
+  }
+};
+
+async function resolvedToday(displayName) {
+  const result = await ticketPool.query(
+    `
+  SELECT
+    COUNT(*) FILTER (WHERE time_finished::date = CURRENT_DATE)  AS resolved_today
+  FROM tbl_ticket_updates
+  WHERE staff_name = $1
+  `,
+    [displayName],
+  );
+
+  return result.rows[0].resolved_today;
+}
+
+async function resolutionTime(displayName) {
+  const result = await ticketPool.query(`
+    SELECT
+      CONCAT(
+        EXTRACT(DAY FROM avg_interval)::int, ' Days ',
+        EXTRACT(HOUR FROM avg_interval)::int, ' Hours ',
+        EXTRACT(MINUTE FROM avg_interval)::int, ' Minutes'
+      ) AS average_resolution_time
+    FROM (
+      SELECT AVG(u.time_finished - t.date_submitted) AS avg_interval
+      FROM tbl_tickets t
+      INNER JOIN tbl_ticket_updates u
+        ON t.ticket_num=u.ticket_num
+      WHERE t.status = 'Closed'
+        AND u.time_finished IS NOT NULL
+    ) x
+    `);
+
+  return result.rows[0].average_resolution_time;
+}
+export const getPerformanceMetric = async (req, res) => {
+  const { displayName } = req.params;
+
+  const resolved = await resolvedToday(displayName);
+  const resolution = await resolutionTime(displayName);
+
+  return res.json({
+    success: true,
+    resolved,
+    resolution,
+  });
+  try {
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve performance metric data",
     });
   }
 };

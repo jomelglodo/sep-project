@@ -11,10 +11,12 @@ import toastSuccessSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketin
 export default function MainUserTicket({ displayName, loggedinUserId }) {
   // 2. STATES
   const [search, setSearch] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   //list variables
   const [assetList, setAssetList] = useState([]);
   const [ticketList, setTicketList] = useState([]);
+  const [subjectPreData, setSubjectPreData] = useState([]);
 
   //DATA STORAGE
   /* Create ticket */
@@ -73,7 +75,18 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
       resetForm();
 
       //get the current date
-      setCurDate(getCurrentDate());
+      const loadData = async () => {
+        try {
+          await Promise.all([
+            setCurDate(getCurrentDate()),
+            fetchSubjectPreData(),
+          ]);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      loadData();
     }
 
     //populate asset
@@ -86,6 +99,10 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
         console.error(err);
       });
   }, [showCreateTicket]);
+
+  useEffect(() => {
+    console.log("subject" + subjectPreData);
+  }, []);
 
   //populate tickets using socket.io and runs only when the user view Ticket Page
   //  {#f8c,25}
@@ -137,8 +154,8 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
     const delay = setTimeout(() => {
       fetchTickets();
     }, 300);
-    return clearTimeout(delay);
-  }, [search]);
+    return () => clearTimeout(delay);
+  }, [search, selectedStatus]);
 
   // 5. API FUNCTIONS
 
@@ -153,15 +170,27 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
           },
           body: JSON.stringify({
             d_name: displayName,
+            search,
+            selectedStatus,
           }),
         },
       );
 
       const data = await response.json();
+
       setTicketList(data);
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const fetchSubjectPreData = async () => {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/ticketing/user/subjectpredata`,
+    );
+
+    const data = await response.json();
+    setSubjectPreData(data.subject);
   };
 
   // 6. EVENT HANDLERS
@@ -570,6 +599,8 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                 <div className="ticket-mainuser-ticket-modal-group">
                   <label>Subject</label>
                   <input
+                    list="subject"
+                    className="ticket-mainuser-ticket-modal-subject"
                     required
                     type="text"
                     value={subject}
@@ -577,6 +608,11 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                       setSubject(e.target.value);
                     }}
                   />
+                  <datalist id="subject">
+                    {subjectPreData.map((item) => (
+                      <option key={item.subject} value={item.subject} />
+                    ))}
+                  </datalist>
                 </div>
 
                 <div className="ticket-mainuser-ticket-modal-group">
@@ -839,6 +875,16 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                   setSearch(e.target.value);
                 }}
               />
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+              >
+                <option value="">All Status</option>
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Closed">Closed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
             </div>
           </div>
         </div>
@@ -848,7 +894,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
           <div className="ticket-mainuser-ticket-tablecontainer">
             <TableVirtuoso
               className="ticket-mainuser-ticket-table-virtuoso"
-              data={filteredTickets}
+              data={ticketList}
               components={{
                 Table: (props) => (
                   <table {...props} className="ticket-mainuser-ticket-table" />

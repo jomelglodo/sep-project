@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getSubjectPreData,
   getProfileImage,
   countTicket,
   populateTickets,
@@ -28,6 +29,7 @@ router.get("/ticket/profileimage/:userId", getProfileImage);
 //single image attachment
 router.post("/ticket/createticket", upload.single("attachment"), createTicket);
 router.post("/ticket/gettickets", populateTickets);
+router.get("/subjectpredata", getSubjectPreData);
 
 //PUT
 router.put("/ticket/cancelticket/:selTicketNum", cancelTicket);

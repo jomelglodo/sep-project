@@ -1,10 +1,10 @@
 import styles from "./AnnouncementViewerModal.module.css";
+import { useEffect, useState } from "react";
 
 import {
   downloadAnnouncementFile,
   getPreviewUrl,
 } from "../services/announcementUserService.js";
-import { useState } from "react";
 
 export default function AnnouncementViewerModal({ announcement, onClose }) {
   const [previewImage, setPreviewImage] = useState(null);
@@ -32,11 +32,19 @@ export default function AnnouncementViewerModal({ announcement, onClose }) {
     }
   }
 
+  //EFFECTS
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
   //helper function
   function handleOpenFile(file) {
     if (file.file_type.startsWith("image/")) {
       setPreviewImage(getPreviewUrl(file.file_id));
-
       return;
     }
 

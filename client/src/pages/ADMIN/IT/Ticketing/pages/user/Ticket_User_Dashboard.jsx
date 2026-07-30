@@ -52,6 +52,29 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
     fetchTickets();
   }, []);
 
+  const fetchTickets = async () => {
+    try {
+      const result = await fetch(
+        `${process.env.REACT_APP_API_URL}/ticketing/user/ticket/gettickets`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            d_name: displayName,
+            tab: "dashboard",
+          }),
+        },
+      );
+
+      const data = await result.json();
+      setTicketList(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   //  {#705,22}
   //socket.io
 
@@ -75,27 +98,6 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
     };
   }, []);
 
-  const fetchTickets = async () => {
-    try {
-      const result = await fetch(
-        `${process.env.REACT_APP_API_URL}/ticketing/user/ticket/gettickets`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            d_name: displayName,
-          }),
-        },
-      );
-
-      const data = await result.json();
-      setTicketList(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
   return (
     <div className="ticket-mainuser-dashboard-container">
       <h2 className="ticket-mainuser-dashboard-title">Dashbord</h2>

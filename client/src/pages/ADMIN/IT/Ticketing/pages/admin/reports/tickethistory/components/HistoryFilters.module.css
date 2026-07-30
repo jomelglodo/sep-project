@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  button {
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    background: rgb(189, 190, 189);
+    transition: 0.25s ease;
+  }
+
+  button:hover {
+    transform: scale(1.1);
+  }
+}
+
+.search {
+  flex: 1;
+}
+
+.container input,
+.container select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #968c8c;
+}
+
+.container input:focus,
+.container select:focus {
+  outline: none;
+  border: 2px solid blue;
+}

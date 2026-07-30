@@ -1,12 +1,13 @@
 .grid {
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 20px;
 }
 
 .card {
+  flex: 1;
+
   background: white;
 
   border-radius: 16px;
@@ -19,7 +20,7 @@
 
   gap: 18px;
 
-  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 .card svg {

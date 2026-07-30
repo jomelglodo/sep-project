@@ -12,6 +12,17 @@ export default function HistoryFilters({
 
   return (
     <div className={styles.container}>
+      {/* SEARCH */}
+      <input
+        className={styles.search}
+        type="text"
+        placeholder="Search ticket..."
+        value={filters.search}
+        onChange={(e) => {
+          updateFilter("search", e.target.value);
+        }}
+      />
+
       {/* STATUS */}
       <select
         value={filters.status}
@@ -62,15 +73,6 @@ export default function HistoryFilters({
         value={filters.month}
         onChange={(e) => {
           updateFilter("month", e.target.value);
-        }}
-      />
-      {/* SEARCH */}
-      <input
-        type="text"
-        placeholder="Search ticket..."
-        value={filters.search}
-        onChange={(e) => {
-          updateFilter("search", e.target.value);
         }}
       />
 

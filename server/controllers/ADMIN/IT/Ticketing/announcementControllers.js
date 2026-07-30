@@ -9,7 +9,148 @@ import {
   getUserAnnouncementsService,
   getUserAnnouncementByIdService,
   downloadAnnouncementFileService,
+  getAnnouncementDashboardService,
+  getAnnouncemetCategorySummaryService,
+  getRecentAnnouncementsService,
 } from "../../../../services/ADMIN/IT/Ticketing/announcementServices.js";
+
+//USERS
+
+export async function getUserAnnouncements(req, res) {
+  try {
+    const announcements = await getUserAnnouncementsService(req.query);
+
+    res.json({
+      success: true,
+      announcements,
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to load announcements.",
+    });
+  }
+}
+
+export async function getUserAnnouncementById(req, res) {
+  try {
+    const announcementId = Number(req.params.announcementId);
+
+    const announcement = await getUserAnnouncementByIdService(announcementId);
+    res.json({
+      success: true,
+      announcement,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to load announcement..",
+    });
+  }
+}
+
+//download attachment file
+export async function downloadAnnouncementFile(req, res) {
+  try {
+    const fileId = Number(req.params.fileId);
+
+    const file = await downloadAnnouncementFileService(fileId);
+
+    res.setHeader("Content-Type", file.file_type);
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${file.original_filename}"`,
+    );
+
+    res.send(file.file_data);
+  } catch (err) {
+    console.error(err);
+
+    res.status(404).json({
+      success: false,
+      message: err.message,
+    });
+  }
+}
+
+//preview attachment file
+export async function previewAttachmentFile(req, res) {
+  try {
+    const fileId = Number(req.params.fileId);
+    const file = await downloadAnnouncementFileService(fileId);
+    res.setHeader("Content-Type", file.file_type);
+
+    res.setHeader(
+      "Content-Disposition",
+      `inline; filename="${file.original_filename}"`,
+    );
+
+    res.send(file.file_data);
+  } catch (err) {
+    console.error(err);
+    res.status(404).json({
+      success: false,
+      message: err.message,
+    });
+  }
+}
+
+//DASHBOARD
+export async function getAnnouncementDashboard(req, res) {
+  try {
+    const dashboard = await getAnnouncementDashboardService();
+
+    res.json({
+      success: true,
+      dashboard,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to load dashboard",
+    });
+  }
+}
+
+export async function getAnnouncementCategorySummary(req, res) {
+  try {
+    const categories = await getAnnouncemetCategorySummaryService();
+
+    res.json({
+      success: true,
+      categories,
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to load category summary",
+    });
+  }
+}
+
+export async function getRecentAnnouncements(req, res) {
+  try {
+    const announcements = await getRecentAnnouncementsService();
+
+    res.json({
+      success: true,
+      announcements,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to load recent announcements",
+    });
+  }
+}
 
 //ADMIN
 export async function getAnnouncements(req, res) {
@@ -150,91 +291,6 @@ export async function toggleAnnouncementPin(req, res) {
   } catch (err) {
     console.error(err);
     res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-}
-
-//USERS
-
-export async function getUserAnnouncements(req, res) {
-  try {
-    const announcements = await getUserAnnouncementsService(req.query);
-
-    res.json({
-      success: true,
-      announcements,
-    });
-  } catch (err) {
-    console.error(err);
-
-    res.status(500).json({
-      success: false,
-      message: "Failed to load announcements.",
-    });
-  }
-}
-
-export async function getUserAnnouncementById(req, res) {
-  try {
-    const announcementId = Number(req.params.announcementId);
-
-    const announcement = await getUserAnnouncementByIdService(announcementId);
-    res.json({
-      success: true,
-      announcement,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({
-      success: false,
-      message: "Failed to load announcement..",
-    });
-  }
-}
-
-//download attachment file
-export async function downloadAnnouncementFile(req, res) {
-  try {
-    const fileId = Number(req.params.fileId);
-
-    const file = await downloadAnnouncementFileService(fileId);
-
-    res.setHeader("Content-Type", file.file_type);
-
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="${file.original_filename}"`,
-    );
-
-    res.send(file.file_data);
-  } catch (err) {
-    console.error(err);
-
-    res.status(404).json({
-      success: false,
-      message: err.message,
-    });
-  }
-}
-
-//preview attachment file
-export async function previewAttachmentFile(req, res) {
-  try {
-    const fileId = Number(req.params.fileId);
-    const file = await downloadAnnouncementFileService(fileId);
-    res.setHeader("Content-Type", file.file_type);
-
-    res.setHeader(
-      "Content-Disposition",
-      `inline; filename="${file.original_filename}"`,
-    );
-
-    res.send(file.file_data);
-  } catch (err) {
-    console.error(err);
-    res.status(404).json({
       success: false,
       message: err.message,
     });

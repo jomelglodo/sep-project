@@ -26,7 +26,6 @@
 }
 
 .ticket-mainadmin-dashboard-ticketcounter-group,
-.ticket-mainadmin-dashboard-performancemetric,
 .ticket-mainadmin-dashboard-performanceactivity-container {
   background-color: white;
   padding: 1.3rem;
@@ -151,7 +150,7 @@
 
 .ticket-mainadmin-dashboard-statistics {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
   gap: 10px;
 }
 
@@ -163,9 +162,14 @@
 }
  */
 
+.ticket-mainadmin-dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
+
 .ticket-mainadmin-dashboard-table-title,
 .ticket-mainadmin-dashboard-chart-title,
-.ticket-mainadmin-dashboard-performancemetric-title,
 .ticket-mainadmin-dashboard-performanceactivity-title {
   margin-bottom: 10px;
   width: 100%;
@@ -261,56 +265,14 @@
 }
 
 /* PERFORMANCE METRIC */
-.ticket-mainadmin-dashboard-performancemetric {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.ticket-mainadmin-dashboard-performancemetric-breakdown {
+.ticket-mainadmin-dashboard-announcement {
   background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 30vh;
-  gap: 20px;
-  padding: 20px;
-}
-
-.mainadmin-performancemetric-group {
-  display: flex;
-  gap: 20px;
-  border-bottom: 1px solid rgb(169, 164, 164);
-  padding-bottom: 10px;
-}
-
-.mainadmin-performancemetric-group p,
-.mainadmin-performancemetric-group h3 {
-  flex: 1;
-}
-
-.mainadmin-performancemetric-group p {
-  font-size: 0.9rem;
-}
-
-/* PERFORMANCE ACTIVITY */
-
-.ticket-mainadmin-dashboard-performanceactivity-body {
-  padding: 10px;
-  border: 1px solid rgb(169, 164, 164);
-  width: 100%;
-  height: 40vh;
-  overflow: auto;
-}
-
-.ticket-mainadmin-dashboard-performanceactivity-body p {
-  padding: 5px;
-  border-bottom: 1px solid rgb(152, 151, 151);
-  font-size: 0.9rem;
-}
-
-.ticket-mainadmin-dashboard-performanceactivity-body p:nth-child(even) {
-  background-color: rgb(188, 226, 248);
+  padding: 1.3rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  transition: 0.2s;
+  font-weight: 500;
+  max-height: 50vh;
 }
 
 @media (max-width: 1024px) {

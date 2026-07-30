@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getTicketDashboardData,
   userCounter,
   userList,
   addUser,
@@ -10,6 +11,7 @@ import {
 const router = express.Router();
 
 //GET
+router.get("/dashboard", getTicketDashboardData);
 router.get("/usercounter", userCounter);
 router.get("/userlist", userList);
 

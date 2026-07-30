@@ -4,6 +4,28 @@ import { createNotification } from "../../../../services/notificationService.js"
 import { createTimelineEvent } from "../../../../services/ADMIN/IT/Ticketing/timelineService.js";
 import { TIMELINE_EVENTS } from "../../../../constants/ADMIN/IT/Ticketing/timelineEvents.js";
 
+//GET SUBJECT PREDATA
+export const getSubjectPreData = async (req, res) => {
+  try {
+    const result = await ticketPool.query(`
+      SELECT
+        subject
+      FROM tbl_subject_predata
+      ORDER BY subject ASC
+      `);
+
+    res.json({
+      success: true,
+      subject: result.rows,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve subject pre data!",
+    });
+  }
+};
 //GET PROFILE IMAGE
 export const getProfileImage = async (req, res) => {
   const { userId } = req.params;
@@ -67,9 +89,9 @@ export const countTicket = async (req, res) => {
 //POPULATE TICKETS
 export const populateTickets = async (req, res) => {
   try {
-    const { d_name } = req.body;
-    const response = await ticketPool.query(
-      `
+    const { d_name, search, selectedStatus, tab = "" } = req.body;
+    const params = [d_name, search ?? ""];
+    let query = `
         SELECT 
           t.ticket_num AS ticket_num_ticket,
           t.r_name,
@@ -93,7 +115,20 @@ export const populateTickets = async (req, res) => {
         LEFT JOIN tbl_ticket_updates u
           ON t.ticket_num = u.ticket_num
         WHERE t.r_name = $1
-        ORDER BY 
+          AND (
+            $2 = ''
+            OR t.ticket_num ILIKE '%' || $2 || '%'
+            OR t.subject_title ILIKE '%' || $2 || '%')`;
+
+    if (tab !== "dashboard") {
+      query += ` AND (
+            $3 = ''
+            OR t.status=$3::ticket_status
+          )`;
+      params.push(selectedStatus ?? "");
+    }
+
+    query += `ORDER BY 
           CASE t.status
             WHEN 'In Progress' THEN 1
             WHEN 'Open' THEN 2
@@ -103,9 +138,13 @@ export const populateTickets = async (req, res) => {
           END,
           t.ticket_num DESC
 
-      `,
-      [d_name],
-    );
+      `;
+
+    if (tab === "dashboard") {
+      query += `LIMIT 5`;
+    }
+
+    const response = await ticketPool.query(query, params);
 
     res.json(response.rows);
   } catch (err) {

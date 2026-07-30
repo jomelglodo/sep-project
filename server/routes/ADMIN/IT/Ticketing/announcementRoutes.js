@@ -13,6 +13,9 @@ import {
   getUserAnnouncementById,
   downloadAnnouncementFile,
   previewAttachmentFile,
+  getAnnouncementDashboard,
+  getAnnouncementCategorySummary,
+  getRecentAnnouncements,
 } from "../../../../controllers/ADMIN/IT/Ticketing/announcementControllers.js";
 
 const router = express.Router();
@@ -22,6 +25,11 @@ router.get("/user", getUserAnnouncements);
 router.get("/user/:announcementId", getUserAnnouncementById);
 router.get("/file/:fileId", downloadAnnouncementFile);
 router.get("/file/:fileId/preview", previewAttachmentFile);
+
+//dashboard
+router.get("/dashboard", getAnnouncementDashboard);
+router.get("/dashboard/categories", getAnnouncementCategorySummary);
+router.get("/dashboard/recent", getRecentAnnouncements);
 
 //admin
 router.get("/", getAnnouncements);

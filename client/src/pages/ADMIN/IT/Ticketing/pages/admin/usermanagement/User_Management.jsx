@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import Statistics from "./Statistics";
 import SearchFilter from "./SearchFilter";
 import UserTable from "./UserTable";
-import Pagination from "./Pagination";
 
 // ==> MODALS
 import AddUserModal from "./modal_forms/AddUserModal";
@@ -281,7 +280,6 @@ export default function MainAdminUserManagement({ displayName }) {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
-      <Pagination />
 
       {/* Add User Modal */}
       <AddUserModal

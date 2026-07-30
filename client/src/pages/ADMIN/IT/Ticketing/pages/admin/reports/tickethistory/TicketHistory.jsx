@@ -95,7 +95,9 @@ export default function TicketHistory() {
         updateFilter={updateFilter}
         resetFilters={resetFilters}
       />
-      <button onClick={handleExport}>Export Excel</button>
+      <button className={styles.export_button} onClick={handleExport}>
+        Export Excel
+      </button>
       <HistoryTable
         tickets={tickets}
         loading={loading}

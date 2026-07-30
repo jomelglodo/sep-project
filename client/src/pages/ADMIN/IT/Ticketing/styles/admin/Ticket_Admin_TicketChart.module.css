@@ -1,0 +1,56 @@
+.container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  align-items: center;
+  gap: 24px;
+
+  height: 100%;
+}
+
+.chart {
+  width: 100%;
+  height: 280px;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 12px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.item:hover {
+  background-color: #f3f4f6;
+}
+
+.active {
+  background: #eef6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
