@@ -10,7 +10,7 @@ export default function NotificationBell({ isOpen, onToggle }) {
       className={`${styles.bell_button} ${isOpen ? styles.active : ""}`}
       onClick={onToggle}
     >
-      <Bell size={22} />
+      <Bell size={20} />
 
       {unreadCount > 0 && (
         <span className={styles.badge}>

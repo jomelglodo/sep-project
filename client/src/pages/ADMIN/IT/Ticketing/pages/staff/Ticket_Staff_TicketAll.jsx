@@ -66,12 +66,11 @@ export default function StaffAllTickets({ displayName, loggedinUserId }) {
   }, [search, statusFilter]);
 
   /* SOCKET IO */
-  //  {#9a8,11}
+  //  {#9a8,10}
   useEffect(() => {
     const refresh = () => {
       getAllTickets(search, statusFilter);
     };
-
     socket.on("ticket-created", refresh);
     return () => {
       socket.off("ticket-created");

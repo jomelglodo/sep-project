@@ -6,6 +6,8 @@ import {
   markAllNotificationsRead,
 } from "../services/notificationService.js";
 
+import { toast } from "react-toastify";
+
 const NotificationContext = createContext();
 
 export function NotificationProvider({ children, userId, isLoggedIn, role }) {
@@ -79,6 +81,14 @@ export function NotificationProvider({ children, userId, isLoggedIn, role }) {
     if (!isLoggedIn || !userId) return;
     const handleNotification = (notification) => {
       /*  setNotifications((prev) => [notification, ...prev]); */
+
+      toast.info(
+        <div>
+          <strong>{notification.title}</strong>
+          <br />
+          {notification.message}
+        </div>,
+      );
       setNotifications((prev) => {
         const exists = prev.some(
           (n) => n.notification_id === notification.notification_id,

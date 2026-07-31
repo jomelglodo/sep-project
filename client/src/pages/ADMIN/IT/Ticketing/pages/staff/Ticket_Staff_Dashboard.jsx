@@ -86,7 +86,7 @@ export default function MainStaffDashBoard({ displayName }) {
 
   //  {#e34,12}
   //notification once new ticket is created
-  useEffect(() => {
+  /*   useEffect(() => {
     socket.on("ticket-created", (data) => {
       toast.info(
         `A new ticket has been created by ${data.displayname} with Ticket No. : ${data.ticketNum}`,
@@ -96,7 +96,7 @@ export default function MainStaffDashBoard({ displayName }) {
     return () => {
       socket.off("ticket-created");
     };
-  }, []);
+  }, []); */
 
   //API
 

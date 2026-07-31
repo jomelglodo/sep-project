@@ -29,7 +29,10 @@ export async function createNotification({
   );
 
   const notification = result.rows[0];
-
+  /*   console.log(
+    "Room members:",
+    getIO().sockets.adapter.rooms.get(`user:${recipientId}`),
+  ); */
   //  {#2d9,1}
   getIO().to(`user:${recipientId}`).emit("notification", notification);
 

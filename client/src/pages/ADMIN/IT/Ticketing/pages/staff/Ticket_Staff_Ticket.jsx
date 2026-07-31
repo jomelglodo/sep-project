@@ -15,7 +15,7 @@ export default function StaffTicketManagement({ displayName, loggedinUserId }) {
   //  {#f8d,13}
   //EFFECTS
   //notification once new ticket is created
-  useEffect(() => {
+  /*   useEffect(() => {
     socket.on("ticket-created", (data) => {
       toast.info(
         `A new ticket has been created by ${data.displayname} with Ticket No. : ${data.ticketNum}`,
@@ -25,7 +25,7 @@ export default function StaffTicketManagement({ displayName, loggedinUserId }) {
     return () => {
       socket.off("ticket-created");
     };
-  }, []);
+  }, []); */
 
   const renderContent = () => {
     switch (activeTab) {

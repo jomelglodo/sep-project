@@ -14,7 +14,7 @@ export default function useAnnouncementForm({ onSuccess, announcement }) {
   const [userId, setUserId] = useState("");
   // Basic Information
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("General");
   const [content, setContent] = useState("");
 
   // Publication Settings

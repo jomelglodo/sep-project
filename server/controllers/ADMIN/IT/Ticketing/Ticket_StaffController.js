@@ -184,6 +184,7 @@ async function resolutionTime(displayName) {
 
   return result.rows[0].average_resolution_time;
 }
+
 export const getPerformanceMetric = async (req, res) => {
   const { displayName } = req.params;
 

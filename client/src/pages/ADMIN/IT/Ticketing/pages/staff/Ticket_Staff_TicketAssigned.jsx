@@ -88,8 +88,8 @@ export default function StaffAssignedTicket({ displayName, loggedinUserId }) {
     const refresh = (data) => {
       fetchTickets();
 
-      toastSuccessAudio.play();
-      toast.success(`Ticket: ${data.ticketNum} is now closed `);
+      /* toastSuccessAudio.play();
+      toast.success(`Ticket: ${data.ticketNum} is now closed `) */
     };
 
     socket.on("ticket-finished", refresh);

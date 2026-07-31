@@ -8,6 +8,7 @@ import "../../styles/user/Ticket_User_Ticket.css";
 import socket from "../../../../../../services/socket";
 
 import toastSuccessSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastSuccess.mp3";
+import toastWarningSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastWarning.mp3";
 export default function MainUserTicket({ displayName, loggedinUserId }) {
   // 2. STATES
   const [search, setSearch] = useState("");
@@ -61,6 +62,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
 
   //audio
   const toastSuccessAudio = new Audio(toastSuccessSound);
+  const toastWarningAudio = new Audio(toastWarningSound);
 
   // 3. REFS
   const fileInputRef = useRef(null);
@@ -100,35 +102,38 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
       });
   }, [showCreateTicket]);
 
-  useEffect(() => {
-    console.log("subject" + subjectPreData);
-  }, []);
-
   //populate tickets using socket.io and runs only when the user view Ticket Page
-  //  {#f8c,25}
+  //  {#f8c,32}
   useEffect(() => {
     //initial fetch when component mounts
     fetchTickets();
 
-    const handleCreatedTicket = () => {
+    const refreshTable = () => {
       fetchTickets();
+    };
+
+    const again = (data) => {
+      fetchTickets();
+      toast.success(data.status);
     };
 
     const handleStartTroubleshoot = (data) => {
       fetchTickets();
-      toast.info(
+      /*  toast.info(
         `${data.ticketNum} is now In Progress, Assigned IT: ${data.staffName}`,
-      );
+      ); */
     };
     //listen for update from the server
-    socket.on("ticket-created", handleCreatedTicket);
+    socket.on("ticket-created", refreshTable);
 
     socket.on("ticket-starttroubleshoot", handleStartTroubleshoot);
+    socket.on("ticket-finished", again);
 
     //cleanup
     return () => {
-      socket.off("ticket-created", handleCreatedTicket);
+      socket.off("ticket-created", refreshTable);
       socket.off("ticket-starttroubleshoot", handleStartTroubleshoot);
+      socket.off("ticket-finished", again);
     };
   }, []);
 
@@ -316,13 +321,14 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
       const data = await response.json();
 
       if (!data.success) {
+        toastWarningAudio.play();
         return toast.error(data.message);
       }
 
       setShowEditConfirm(false);
       setShowEditTicket(false);
       resetForm();
-
+      toastSuccessAudio.play();
       return toast.success("Ticket successfully updated");
     } catch (err) {
       console.error(err);
@@ -644,7 +650,11 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                   />
                   {previewUrl && (
                     <div className="ticket-mainuser-ticket-modal-gallery">
-                      <img src={previewUrl} alt={"Preview"} />
+                      <img
+                        src={previewUrl}
+                        alt={"Preview"}
+                        onClick={() => setShowImageViewer(true)}
+                      />
                     </div>
                   )}
                 </div>
@@ -837,7 +847,8 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
           onClick={() => setShowImageViewer(false)}
         >
           <img
-            src={viewImage}
+            /*  src={viewImage} */
+            src={showCreateTicket ? previewUrl : viewImage}
             alt="Attachment"
             className="ticket-mainuser-edit-imageviewer-image"
             onClick={(e) => e.stopPropagation()}
