@@ -198,6 +198,56 @@ export const getTicketImage = async (req, res) => {
   }
 };
 
+export const monthlyTrend = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const result = await ticketPool.query(
+      `
+      SELECT
+        months.month,
+        COALESCE(COUNT(t.ticket_id),0) AS total
+      FROM generate_series(1,12) AS months(month)
+      LEFT JOIN tbl_tickets t
+        ON EXTRACT(MONTH FROM t.date_submitted) = months.month
+        AND EXTRACT(YEAR FROM t.date_submitted) = EXTRACT (YEAR FROM CURRENT_DATE)
+        AND user_id=$1
+      GROUP BY months.month
+      ORDER BY months.month
+      `,
+      [userId],
+    );
+
+    const monthNames = [
+      "",
+      "Jan",
+      "Feb",
+      "Mar",
+      "April",
+      "May",
+      "June",
+      "July",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const chartData = result.rows.map((row) => ({
+      month: monthNames[Number(row.month)],
+      total: Number(row.total),
+    }));
+
+    res.json({ chartData, year: new Date().getFullYear() });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to get monthly tickets",
+    });
+  }
+};
+
 //POPULATE ASSET
 export const populateAsset = async (req, res) => {
   try {

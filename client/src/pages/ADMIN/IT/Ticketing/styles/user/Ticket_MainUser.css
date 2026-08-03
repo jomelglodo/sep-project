@@ -16,8 +16,8 @@
 .ticket-mainuser-home-layout {
   display: flex;
   flex-direction: column;
-  /* height: 100vh; */
-  min-height: 90vh;
+  height: 100%;
+
   font-family: Arial, sans-serif;
 }
 
@@ -33,11 +33,19 @@
   background: #f4f6fb;
   padding: 24px;
   overflow-y: auto;
+  display: flex;
+  scrollbar-width: none; /* Firefox */
+}
+
+.ticket-mainuser-home-page-content::-webkit-scrollbar {
+  display: none; /* Chrome, Edge, Safari */
 }
 
 .user-renderpage-container {
   animation: curtainOpen 1s ease-out;
   transform-origin: left;
+
+  width: 100%;
 }
 .ticket-mainuser-home-title {
   font-size: 22px;

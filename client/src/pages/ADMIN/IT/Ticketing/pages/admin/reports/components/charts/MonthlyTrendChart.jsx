@@ -55,8 +55,6 @@ export default function MonthlyTrendChart({ data, onSelectMonth }) {
     setSelectedMonth(nextSelection);
 
     onSelectMonth?.(nextSelection);
-
-    console.log(nextSelection);
   }
   return (
     <ChartCard title="Monthly Ticket Trend">

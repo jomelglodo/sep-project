@@ -9,6 +9,7 @@ import socket from "../../../../../../services/socket";
 
 import toastSuccessSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastSuccess.mp3";
 import toastWarningSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastWarning.mp3";
+
 export default function MainUserTicket({ displayName, loggedinUserId }) {
   // 2. STATES
   const [search, setSearch] = useState("");
@@ -162,6 +163,21 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
     return () => clearTimeout(delay);
   }, [search, selectedStatus]);
 
+  //hide form scrollbar
+  useEffect(() => {
+    if (showCreateTicket) {
+      document.body.style.overflow = "hidden";
+    } else if (showEditTicket) {
+      document.body.style.overflow = "hidden";
+    } else if (showCancelTicket) {
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showCreateTicket, showEditTicket, showCancelTicket]);
+
   // 5. API FUNCTIONS
 
   const fetchTickets = async () => {
@@ -202,6 +218,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
 
   function handleCancelledTicket(item) {
     if (item.status !== "Open") {
+      toastWarningAudio.play();
       toast.warning(`Only tickets with an "OPEN" status can be cancelled!`);
       return;
     }
@@ -235,6 +252,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
 
   function handleEditButton(item) {
     if (item.status !== "Open") {
+      toastWarningAudio.play();
       toast.warning(`Only tickets with an "OPEN" status can be editted`);
       return;
     }
@@ -670,6 +688,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                 <button
                   type="button"
                   className="ticket-mainuser-ticket-modal-clearbtn"
+                  onClick={() => resetForm()}
                 >
                   Clear
                 </button>
@@ -766,7 +785,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                   />
                 </div>
 
-                <div className="ticket-mainuser-edit-modal-group">
+                <div className="ticket-mainuser-edit-modal-group details">
                   <label>Description</label>
                   <textarea
                     required
@@ -785,7 +804,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                   </div> */}
                 </div>
 
-                <div className="ticket-mainuser-edit-modal-group">
+                <div className="ticket-mainuser-edit-modal-group details">
                   <label>Attachment</label>
                   <input
                     ref={editFileInputRef}

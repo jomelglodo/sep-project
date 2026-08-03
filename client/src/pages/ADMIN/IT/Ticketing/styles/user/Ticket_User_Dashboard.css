@@ -132,8 +132,20 @@
 
 .ticket-mainuser-dashboard-statistics {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+}
+
+/* .ticket-mainuser-dashboard-table-container {
+  grid-column: 1;
+}
+ */
+/* .ticket-mainuser-dashboard-chart-wrapper {
+  grid-column: 2;
+}
+ */
+.ticket-mainuser-dashboard-monthlychart-wrapper {
+  grid-column: 1 / -1;
 }
 
 /* TABLE */
@@ -227,8 +239,24 @@
   color: rgb(92, 92, 98);
 }
 
-@media (max-width: 768px) {
+.ticket-mainuser-dashboard-monthlychart-wrapper {
+  margin-top: 25px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 0.7rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0px 5px 20px 0px rgba(153, 152, 152, 0.6);
+}
+
+.ticket-mainuser-dashboard-monthlychart-wrapper h3 {
+  color: rgb(92, 92, 98);
+}
+
+@media (max-width: 1024px) {
   .ticket-mainuser-dashboard-statistics {
     grid-template-columns: 1fr;
+  }
+  .ticket-mainuser-dashboard-monthlychart-wrapper {
+    grid-column: auto;
   }
 }

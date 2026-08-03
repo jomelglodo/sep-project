@@ -5,6 +5,7 @@ import {
   countTicket,
   populateTickets,
   getTicketImage,
+  monthlyTrend,
   populateAsset,
   createTicket,
   cancelTicket,
@@ -30,6 +31,7 @@ router.get("/ticket/profileimage/:userId", getProfileImage);
 router.post("/ticket/createticket", upload.single("attachment"), createTicket);
 router.post("/ticket/gettickets", populateTickets);
 router.get("/subjectpredata", getSubjectPreData);
+router.get("/monthlytrend/:userId", monthlyTrend);
 
 //PUT
 router.put("/ticket/cancelticket/:selTicketNum", cancelTicket);

@@ -1,8 +1,8 @@
 .ticket-mainadmin-home-layout {
   display: flex;
   flex-direction: column;
-  min-height: 80vh;
   font-family: Arial, sans-serif;
+  height: 100%;
 }
 
 .ticket-mainadmin-home-body {
@@ -17,16 +17,23 @@
 
   background-color: #f4f6fb;
   padding: 24px;
+
   overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
 }
 
 .ticket-mainadmin-home-page-content::-webkit-scrollbar {
-  height: 6px;
+  display: none; /* Chrome, Edge, Safari */
 }
+
+/* .ticket-mainadmin-home-page-content::-webkit-scrollbar {
+  height: 6px;
+} */
 
 .admin-renderpage-container {
   animation: curtainOpen 1s ease-out;
   transform-origin: left;
+  width: 100%;
 }
 
 @keyframes curtainOpen {

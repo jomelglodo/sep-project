@@ -233,7 +233,7 @@ export default function ConManagement({ closeManagement }) {
       );
 
       const data = await res.json();
-
+      /* console.log("Data : " + data) */
       setIssuanceData(data);
     } catch (err) {
       console.error(err);
@@ -1137,12 +1137,12 @@ export default function ConManagement({ closeManagement }) {
             />
           </div>
         </div>
-      </div>
-      {/* FOOTER */}
-      <div className="con-mgmt-footer-container">
-        <p>
-          Total Records : <span>{issuanceData.length}</span>
-        </p>
+        {/* FOOTER */}
+        <div className="con-mgmt-footer-container">
+          <p>
+            Total Records : <span>{issuanceData.length}</span>
+          </p>
+        </div>
       </div>
     </div>
   );

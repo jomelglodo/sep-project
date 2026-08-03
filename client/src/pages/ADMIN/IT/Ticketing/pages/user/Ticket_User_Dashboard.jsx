@@ -11,8 +11,13 @@ import { FaClock } from "react-icons/fa";
 import { FaCheckSquare } from "react-icons/fa";
 import { TbTicketOff } from "react-icons/tb";
 
+//COMPONENT
+import MonthlyTrendChart from "./montlyChart/MonthlyTrendChart";
+
 export default function MainUserDashBoard({ displayName, loggedinUserId }) {
   const [ticketList, setTicketList] = useState([]);
+  const [montlyTrend, setMonthlyTrend] = useState([]);
+  const [year, setYear] = useState("");
 
   const [counterTicket, setCounterTicket] = useState({
     total: 0,
@@ -49,7 +54,10 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
   }, [loggedinUserId]);
 
   useEffect(() => {
-    fetchTickets();
+    const loadData = async () => {
+      await Promise.all([fetchTickets(), fetchMontlyTrend()]);
+    };
+    loadData();
   }, []);
 
   const fetchTickets = async () => {
@@ -75,19 +83,33 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
     }
   };
 
+  const fetchMontlyTrend = async () => {
+    try {
+      const result = await fetch(`
+        ${process.env.REACT_APP_API_URL}/ticketing/user/monthlytrend/${loggedinUserId}
+        `);
+
+      const data = await result.json();
+      setMonthlyTrend(data.chartData);
+      setYear(data.year);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   //  {#705,22}
   //socket.io
 
   useEffect(() => {
     const fetchCreatedTicket = () => {
       fetchTickets();
+      fetchMontlyTrend();
     };
     const fetchStarttroubleshoot = (data) => {
       fetchTickets();
       //show a notification
-      toast.info(
+      /* toast.info(
         `${data.ticketNum} is now In Progress, Assigned IT: ${data.staffName}`,
-      );
+      ); */
     };
     socket.on("ticket-created", fetchCreatedTicket);
     socket.on("ticket-starttroubleshoot", fetchStarttroubleshoot);
@@ -147,7 +169,7 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
       <div className="ticket-mainuser-dashboard-statistics">
         {/* RECENT TICKET TABLE */}
         <div className="ticket-mainuser-dashboard-table-wrapper">
-          <h3>Recent Tickets</h3>
+          <h3>Recent Tickets (In Progress)</h3>
           <div className="ticket-mainuser-dashboard-table-container">
             <table className="ticket-mainuser-dashboard-table">
               <thead>
@@ -187,6 +209,11 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
         <div className="ticket-mainuser-dashboard-chart-wrapper">
           <h3>Ticket Distributions</h3>
           <UserTicketDashboardChart ticketStats={counterTicket} />
+        </div>
+
+        <div className="ticket-mainuser-dashboard-monthlychart-wrapper">
+          <h3>Monthly Ticket Trend ({year})</h3>
+          <MonthlyTrendChart data={montlyTrend} />
         </div>
       </div>
     </div>

@@ -45,7 +45,7 @@ input[type="password"]::-ms-clear {
 /* Ticket Container */
 .ticket-login-page {
   color: white;
-  min-height: 80vh;
+  height: 100%;
 
   display: flex;
   align-items: center;

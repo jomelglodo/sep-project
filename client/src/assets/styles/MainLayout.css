@@ -3,8 +3,16 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* body no longer scrolls */
+}
+
 .app-container {
-  min-height: 100vh;
+  /*  min-height: 100vh; */
+  height: 100vh;
   display: flex;
   flex-direction: column;
 
@@ -150,7 +158,8 @@
 /* MAIN CONTENT */
 .main-container {
   flex: 1;
-  padding: 20px;
+  height: 100%;
+  overflow: hidden;
 }
 
 .content-box {
@@ -161,15 +170,13 @@
 
   /* backdrop-filter: blur(20px); */
 
-  border-radius: 20px;
-
   border: 1px solid rgba(255, 255, 255, 0.08);
 
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 1px rgba(255, 255, 255, 0.08);
 
-  padding: 20px;
+  height: 100%;
 }
 
 .content-box::before {

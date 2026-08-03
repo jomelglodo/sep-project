@@ -773,7 +773,7 @@
 
 .con-mgmt-page {
   width: 100%;
-  min-height: 70vh;
+  height: 100%;
   padding: 15px;
   background: var(--bg-color);
   display: flex;
@@ -847,6 +847,11 @@
 .con-mgmt-exportdata-container button:hover {
   background-color: #1e293b;
   transform: translateY(-1px);
+}
+
+.con-mgmt-container {
+  height: 100%;
+  overflow: hidden;
 }
 
 /* SEARCH */
@@ -927,7 +932,7 @@
   /*   width: 100%;
   background-color: #fff;
   border: 1px solid var(--radius); */
-  height: 60vh; /* ONLY TABLE HEIGHT */
+  height: 80%; /* ONLY TABLE HEIGHT */
   overflow: hidden;
 }
 
