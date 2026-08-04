@@ -14,8 +14,12 @@ export default function TicketMainUser({
   setDisplayName,
   loggedinUserId,
   userRole,
+  accessToken,
 }) {
   const [activePage, setActivePage] = useState("dashboard");
+  useEffect(() => {
+    console.log("token : " + accessToken);
+  }, []);
   /* useEffect(() => {
     let timeout;
 
@@ -66,6 +70,7 @@ export default function TicketMainUser({
           <MainUserTicket
             displayName={displayName}
             loggedinUserId={loggedinUserId}
+            accessToken={accessToken}
           />
         );
 

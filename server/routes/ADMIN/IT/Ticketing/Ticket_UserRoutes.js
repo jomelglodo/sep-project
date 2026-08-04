@@ -1,4 +1,5 @@
 import express from "express";
+import { verifyTicketUser } from "../../../../middleware/ADMIN/IT/Ticketing/ticketAuth.js";
 import {
   getSubjectPreData,
   getProfileImage,
@@ -28,7 +29,12 @@ router.get("/ticket/profileimage/:userId", getProfileImage);
 //multiple image attachment
 //router.post("/createticket", upload.array("attachments", 10), createTicket);
 //single image attachment
-router.post("/ticket/createticket", upload.single("attachment"), createTicket);
+router.post(
+  "/ticket/createticket",
+  upload.single("attachment"),
+  verifyTicketUser,
+  createTicket,
+);
 router.post("/ticket/gettickets", populateTickets);
 router.get("/subjectpredata", getSubjectPreData);
 router.get("/monthlytrend/:userId", monthlyTrend);

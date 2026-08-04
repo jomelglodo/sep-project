@@ -28,7 +28,7 @@ export default function MainLayout() {
     <div className="app-container">
       <Header setActiveSub={setActiveSub} />
       <div className="main-container">
-        <div className="content-box" key={activeSub}>
+        <div className="content-box">
           {activeSub === "FINANCE - Convertion" ? (
             <>
               <h2 className="content-title">{activeSub}</h2>

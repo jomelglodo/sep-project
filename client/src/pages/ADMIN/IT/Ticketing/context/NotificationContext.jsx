@@ -7,6 +7,7 @@ import {
 } from "../services/notificationService.js";
 
 import { toast } from "react-toastify";
+import toastSuccessSound from "../../../../../assets/sounds/ADMIN/IT/Ticketing/toastSuccess.mp3";
 
 const NotificationContext = createContext();
 
@@ -15,6 +16,8 @@ export function NotificationProvider({ children, userId, isLoggedIn, role }) {
   const [loading, setLoading] = useState(true);
 
   const [, forceUpdate] = useState(0);
+
+  const toastSuccessAudio = new Audio(toastSuccessSound);
 
   //force to render every minute to update the notification time created
   useEffect(() => {
@@ -82,6 +85,7 @@ export function NotificationProvider({ children, userId, isLoggedIn, role }) {
     const handleNotification = (notification) => {
       /*  setNotifications((prev) => [notification, ...prev]); */
 
+      toastSuccessAudio.play();
       toast.info(
         <div>
           <strong>{notification.title}</strong>
@@ -89,6 +93,7 @@ export function NotificationProvider({ children, userId, isLoggedIn, role }) {
           {notification.message}
         </div>,
       );
+
       setNotifications((prev) => {
         const exists = prev.some(
           (n) => n.notification_id === notification.notification_id,

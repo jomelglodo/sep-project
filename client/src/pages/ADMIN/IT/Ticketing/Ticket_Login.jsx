@@ -42,6 +42,7 @@ export default function TicketLogin() {
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
   const [userId, setUserId] = useState("");
+  const [accessToken, setAccessToken] = useState("");
 
   //MESSAGE
   const [successMessage, setSuccessMessage] = useState(false);
@@ -57,6 +58,10 @@ export default function TicketLogin() {
   //     setUserId(auth.user_id);
   //   }
   // }, []);
+
+  useEffect(() => {
+    refreshLogin();
+  }, []);
 
   useEffect(() => {
     if (usernameRef.current) {
@@ -154,6 +159,36 @@ export default function TicketLogin() {
     };
   }, [isLoggedIn, userId, role]);
 
+  async function refreshLogin() {
+    try {
+      console.log("API:", process.env.REACT_APP_API_URL);
+      const response = await axios.post(
+        `
+        ${process.env.REACT_APP_API_URL}/ticketing/login/refresh
+        `,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+
+      if (!response.data.success) {
+        return;
+      }
+
+      const { accessToken, user } = response.data;
+      const payload = JSON.parse(atob(accessToken.split(".")[1]));
+
+      setAccessToken(accessToken);
+      setUserId(user.user_id);
+      setDisplayName(user.d_name);
+      setRole(user.role);
+      setIsLoggedIn(true);
+    } catch (err) {
+      console.log("No active session");
+    }
+  }
+
   //USER LOG IN
   async function handleSubmit(e) {
     e.preventDefault();
@@ -170,11 +205,12 @@ export default function TicketLogin() {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         },
       );
 
       if (response.data.success) {
-        const { d_name, role, user_id } = response.data;
+        const { d_name, role, user_id, accessToken } = response.data;
         /* localStorage.setItem(
           "ticketingAuth",
           JSON.stringify({
@@ -186,7 +222,7 @@ export default function TicketLogin() {
             lastActivity: Date.now(),
           }),
         ); */
-
+        setAccessToken(accessToken);
         setRole(role);
         setDisplayName(d_name);
         setUserId(user_id);
@@ -198,11 +234,26 @@ export default function TicketLogin() {
       console.error(err);
     }
   }
-  const handleLogout = () => {
+
+  const handleLogout = async () => {
     //localStorage.removeItem("ticketingAuth");
+
+    try {
+      await axios.post(
+        `
+        ${process.env.REACT_APP_API_URL}/ticketing/login/logout
+        `,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+    } catch (err) {}
+    setAccessToken("");
 
     setUsername("");
     setPassword("");
+
     setRole("");
     setUserId("");
     setDisplayName("");
@@ -231,6 +282,7 @@ export default function TicketLogin() {
             setDisplayName={setDisplayName}
             loggedinUserId={userId}
             userRole={normalizedRole}
+            accessToken={accessToken}
           />
         );
         break;
@@ -243,6 +295,7 @@ export default function TicketLogin() {
             setDisplayName={setDisplayName}
             loggedinUserId={userId}
             userRole={normalizedRole}
+            accessToken={accessToken}
           />
         );
         break;
@@ -255,6 +308,7 @@ export default function TicketLogin() {
             setDisplayName={setDisplayName}
             loggedinUserId={userId}
             userRole={normalizedRole}
+            accessToken={accessToken}
           />
         );
         break;

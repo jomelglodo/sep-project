@@ -701,18 +701,23 @@
 /* TABLE */
 .ticket-mainuser-ticket-tablewrapper {
   height: 100%;
+  width: 100%;
 }
 
 /* TABLE CONTAINER */
 .ticket-mainuser-ticket-tablecontainer {
   width: 100%;
   height: 80%;
+  border-radius: 14px;
+  background: #fff;
   overflow: hidden;
+  box-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .ticket-mainuser-ticket-table-virtuoso {
   height: 100%;
-  width: 100%;
 }
 
 .ticket-mainuser-ticket-table {
@@ -722,32 +727,48 @@
 }
 
 /* TABLE BODY */
-.ticket-mainuser-ticket-table tr {
-  transition: background 0.5s ease;
+.ticket-mainuser-ticket-table tbody tr {
+  transition: 0.2s;
+}
+
+.ticket-mainuser-ticket-table tbody tr:hover {
+  background: #edf6ff;
+}
+
+.ticket-mainuser-ticket-table tbody tr:nth-child(even) {
+  background: #fafafa;
 }
 
 /* TABLE CELLS */
-.ticket-mainuser-ticket-table th {
-  background-color: #1e3a8a;
+.ticket-mainuser-ticket-table thead th {
+  background-color: #1f2937;
   color: white;
-  padding: 0.5rem;
+  padding: 14px 16px;
   text-align: left;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-align: left;
+
   position: sticky;
-  font-size: 0.9rem;
   top: 0;
   z-index: 2;
 }
 
-.ticket-mainuser-ticket-table td {
+.ticket-mainuser-ticket-table tbody td {
   padding: 8px;
   font-size: 0.8rem;
-  border: 1px solid #e5e5e5;
+  border-bottom: 1px solid #ececec;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+  color: #444;
   /* text-overflow: ellipsis; */
 }
 
-.ticket-mainuser-ticket-table th.ticket-mainuser-ticket-status-columnheader {
+.ticket-mainuser-ticket-table th.ticket-mainuser-ticket-status-columnheader,
+.ticket-mainuser-ticket-table th.ticket-mainuser-ticket-action-columnheader {
   text-align: center;
 }
 
@@ -755,13 +776,30 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px 14px;
+
+  padding: 6px 12px;
   border-radius: 30px;
   font-size: 0.8rem;
+  font-weight: 600;
 }
+.ticket-mainuser-ticket-status-column.open {
+  background: #fff3cd;
+  color: #9a6700;
+}
+
 .ticket-mainuser-ticket-status-column.inprogress {
-  background-color: #dcfce7;
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.ticket-mainuser-ticket-status-column.closed {
+  background: #dcfce7;
   color: #15803d;
+}
+
+.ticket-mainuser-ticket-status-column.cancelled {
+  background: #fee2e2;
+  color: #dc2626;
 }
 
 /* ACTION BUTTONS */
@@ -773,22 +811,67 @@
   cursor: pointer;
 }
 
+.ticket-mainuser-ticket-table-viewbtn,
 .ticket-mainuser-ticket-table-editbtn {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 4px 8px;
+  background: #eef6ff;
+  color: #2563eb;
+  font-size: 1rem;
+
+  transition: 0.2s;
+
   cursor: pointer;
+  border: none;
+  padding: 8px;
   border-radius: 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .ticket-mainuser-ticket-table-cancelbtn {
-  background: #dc2626;
-  color: white;
+  background: #fee2e2;
+  color: #dc2626;
   border: none;
-  padding: 4px 8px;
+  padding: 8px;
   cursor: pointer;
   border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.ticket-mainuser-ticket-table-viewbtn:hover,
+.ticket-mainuser-ticket-table-editbtn:hover {
+  background: #2563eb;
+  color: white;
+}
+.ticket-mainuser-ticket-table-cancelbtn:hover {
+  background: #dc2626;
+  color: white;
+}
+
+.ticket-mainuser-ticket-table th:nth-child(1),
+.ticket-mainuser-ticket-table td:nth-child(1) {
+  width: 60px;
+  text-align: center;
+}
+
+.ticket-mainuser-ticket-table th:nth-child(2) {
+  width: 140px;
+}
+
+.ticket-mainuser-ticket-table th:nth-child(4) {
+  width: 280px;
+}
+
+.ticket-mainuser-ticket-table th:nth-child(5) {
+  width: 120px;
+}
+
+.ticket-mainuser-ticket-table th:last-child {
+  width: 140px;
 }
 
 @media (max-width: 768px) {

@@ -318,8 +318,9 @@ export const createTicket = async (req, res) => {
     console.log("FILE:", req.file); */
     await client.query("BEGIN");
 
-    const { userId, displayname, asset, faTag, subject, description } =
-      req.body;
+    const { displayname, asset, faTag, subject, description } = req.body;
+
+    const userId = req.user.userId;
 
     const ticketNum = await getTicketNum(client);
 

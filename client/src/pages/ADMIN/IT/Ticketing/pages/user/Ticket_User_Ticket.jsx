@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { TableVirtuoso } from "react-virtuoso";
-import { FaEdit } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 import "../../styles/user/Ticket_User_Ticket.css";
 import socket from "../../../../../../services/socket";
@@ -10,10 +11,15 @@ import socket from "../../../../../../services/socket";
 import toastSuccessSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastSuccess.mp3";
 import toastWarningSound from "../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastWarning.mp3";
 
-export default function MainUserTicket({ displayName, loggedinUserId }) {
+export default function MainUserTicket({
+  displayName,
+  loggedinUserId,
+  accessToken,
+}) {
   // 2. STATES
   const [search, setSearch] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [isViewAction, setIsViewAction] = useState(false);
 
   //list variables
   const [assetList, setAssetList] = useState([]);
@@ -41,6 +47,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
 
   const [editAttachment, setEditAttachment] = useState(null);
   const [editPreviewUrl, setEditPreviewUrl] = useState();
+
   /* const [editPreviewUrlEdit, setEditPreviewUrlEdit] = useState(""); */
   const [showImageViewer, setShowImageViewer] = useState(false);
   const [viewImage, setViewImage] = useState("");
@@ -71,7 +78,6 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
   const isCreating = useRef(false);
 
   // 4. EFFECTS
-
   //reset form and populate assets
   useEffect(() => {
     if (showCreateTicket) {
@@ -250,11 +256,15 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
     }
   }
 
-  function handleEditButton(item) {
-    if (item.status !== "Open") {
+  function handleEditButton(item, action) {
+    if (item.status !== "Open" && action !== "view") {
       toastWarningAudio.play();
       toast.warning(`Only tickets with an "OPEN" status can be editted`);
       return;
+    }
+
+    if (action === "view") {
+      setIsViewAction(true);
     }
 
     setEditDateSubmitted(item.d_submitted);
@@ -380,6 +390,9 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
       `,
         {
           method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
           body: formData,
         },
       );
@@ -435,6 +448,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
+
       return;
     }
 
@@ -707,6 +721,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
               <button
                 className="ticket-mainuser-edit-modal-closebtn"
                 onClick={() => {
+                  setIsViewAction(false);
                   closeEditModal();
                 }}
               >
@@ -739,33 +754,45 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                 <div className="ticket-mainuser-edit-modal-grid">
                   <div className="ticket-mainuser-edit-modal-group">
                     <label>Asset Type</label>
-
-                    <select
-                      required
-                      value={editAsset}
-                      onChange={(e) => {
-                        setEditAsset(e.target.value);
-                      }}
-                    >
-                      <option value="" disabled>
-                        --Select--
-                      </option>
-                      {assetList.map((item) => (
-                        <option value={item.asset}> {item.asset}</option>
-                      ))}
-                    </select>
+                    {isViewAction ? (
+                      <input type="text" value={editAsset} readOnly />
+                    ) : (
+                      <select
+                        required
+                        value={editAsset}
+                        onChange={(e) => {
+                          setEditAsset(e.target.value);
+                        }}
+                      >
+                        <option value="" disabled>
+                          --Select--
+                        </option>
+                        {assetList.map((item) => (
+                          <option value={item.asset}> {item.asset}</option>
+                        ))}
+                      </select>
+                    )}
                   </div>
 
                   <div className="ticket-mainuser-edit-modal-group">
                     <label>FA-Tag</label>
                     <input
+                      list="list-editinput"
                       required
                       type="text"
                       value={editFaTag}
+                      readOnly={isViewAction ?? null}
                       onChange={(e) => {
                         setEditFaTag(e.target.value);
                       }}
                     />
+
+                    {!isViewAction && (
+                      <datalist id="list-editinput">
+                        <option value="N/A">N/A</option>
+                        <option value="N/A">N/A</option>
+                      </datalist>
+                    )}
                   </div>
                 </div>
               </div>
@@ -779,6 +806,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                     required
                     type="text"
                     value={editSubject}
+                    readOnly={isViewAction ?? null}
                     onChange={(e) => {
                       setEditSubject(e.target.value);
                     }}
@@ -789,6 +817,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                   <label>Description</label>
                   <textarea
                     required
+                    readOnly={isViewAction ?? null}
                     value={editDescription}
                     onChange={(e) => {
                       setEditDescription(e.target.value);
@@ -811,6 +840,7 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
+                    disabled={isViewAction ?? null}
                   />
                   {editHasAttachment ? (
                     <div className="ticket-mainuser-edit-modal-gallery">
@@ -847,12 +877,14 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
               </div>
 
               <div className="ticket-mainuser-edit-modal-buttons">
-                <button
-                  type="submit"
-                  className="ticket-mainuser-edit-modal-submitbtn"
-                >
-                  Save Changes
-                </button>
+                {isViewAction ? null : (
+                  <button
+                    type="submit"
+                    className="ticket-mainuser-edit-modal-submitbtn"
+                  >
+                    Save Changes
+                  </button>
+                )}
               </div>
             </form>
           </div>
@@ -942,7 +974,9 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                   <th>IT In-charge</th>
                   <th>Date Started</th>
                   <th>Date Finished</th>
-                  <th>Action</th>
+                  <th className="ticket-mainuser-ticket-action-columnheader">
+                    Action
+                  </th>
                 </tr>
               )}
               itemContent={(index, item) => (
@@ -953,7 +987,9 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                   <td>{item.subject_title}</td>
                   <td>
                     <span
-                      className={`ticket-mainuser-ticket-status-column ${item.status === "In Progress" ? "inprogress" : ""}`}
+                      className={`ticket-mainuser-ticket-status-column ${item.status
+                        .toLowerCase()
+                        .replace(/\s+/g, "")}`}
                     >
                       {item.status}
                     </span>
@@ -964,13 +1000,22 @@ export default function MainUserTicket({ displayName, loggedinUserId }) {
                   <td>
                     <div className="ticket-mainuser-ticket-table-actionbtn">
                       <button
+                        className="ticket-mainuser-ticket-table-viewbtn"
+                        title="View Ticket"
+                        onClick={() => {
+                          handleEditButton(item, "view");
+                        }}
+                      >
+                        <FaMagnifyingGlass />
+                      </button>
+                      <button
                         title="Edit Ticket"
                         className="ticket-mainuser-ticket-table-editbtn"
                         onClick={() => {
-                          handleEditButton(item);
+                          handleEditButton(item, "edit");
                         }}
                       >
-                        <FaEdit />
+                        <MdEdit />
                       </button>
                       <button
                         className="ticket-mainuser-ticket-table-cancelbtn"

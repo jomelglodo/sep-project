@@ -26,10 +26,10 @@ export function initializeSocket(server) {
       socket.join("staff");
       console.log(`${socket.id} joined room staff:${userId}`);
     });
-    socket.on("disconnect", () => {
+    /*  socket.on("disconnect", () => {
       console.log(`Client disconnected : ${socket.id}`);
     });
-
+ */
     //Optional: for staff room
     socket.on("join-admin", (userId) => {
       socket.join(`user:${userId}`);

@@ -5,6 +5,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import cookieParser from "cookie-parser";
 
 //  {#fe8,2}
 import http from "http";
@@ -47,6 +48,9 @@ app.use(
     limit: "50mb",
   }),
 );
+
+app.use(cookieParser());
+
 //PPC-WAREHOUSE
 
 //RIS ROUTES-------------------------------------------------------------------------
