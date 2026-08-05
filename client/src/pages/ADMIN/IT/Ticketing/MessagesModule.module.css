@@ -1,0 +1,57 @@
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal {
+  position: relative;
+  top: 10px;
+  background: white;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+  max-height: 200px;
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: black;
+  border-radius: 8px;
+
+  transform: translateY(0);
+  animation: slideDown 0.5s ease-in-out;
+}
+
+.modal span {
+  font-size: 4rem;
+  color: gray;
+}
+
+.modal button {
+  background: #91ff9f;
+  font-size: 1.2rem;
+  border: none;
+  padding: 5px 100px;
+  transition: 0.25s ease;
+  border-radius: 8px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  opacity: 0.7;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

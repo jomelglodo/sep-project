@@ -16,8 +16,14 @@ import { NotificationProvider } from "./context/NotificationContext";
 import { TicketInspectorProvider } from "./context/TicketInspectorContext";
 import TicketInspector from "./components/ticketInspector/TicketInspector";
 
+//Status messages modal
+import { MessagesModule } from "./MessagesModule";
+import { FaSketch } from "react-icons/fa6";
+
 export default function TicketLogin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [messagesModule, setMessagesModule] = useState(false);
+  const [messagesData, setMessagesData] = useState([]);
   //LOG IN UI
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -161,7 +167,7 @@ export default function TicketLogin() {
 
   async function refreshLogin() {
     try {
-      console.log("API:", process.env.REACT_APP_API_URL);
+      /* console.log("API:", process.env.REACT_APP_API_URL); */
       const response = await axios.post(
         `
         ${process.env.REACT_APP_API_URL}/ticketing/login/refresh
@@ -228,10 +234,21 @@ export default function TicketLogin() {
         setUserId(user_id);
         setIsLoggedIn(true);
       } else {
-        alert(response.data.message);
+        setMessagesData(response.data);
+        setMessagesModule(true);
+        /*   alert(response.data.message); */
       }
     } catch (err) {
-      console.error(err);
+      if (!err.response.success) {
+        /*   console.error(err);
+        console.log(err.response.status); // 403
+        console.log(err.response.data); // whole JSON */
+        /* alert(err.response.data.message); */ // Maximum active sessions reached
+        setMessagesData(err.response.data);
+        setMessagesModule(true);
+      } else {
+        console.error(err);
+      }
     }
   }
 
@@ -332,6 +349,15 @@ export default function TicketLogin() {
 
   return (
     <div className="ticket-login-page">
+      {messagesModule && (
+        <MessagesModule
+          response={messagesData}
+          onClose={() => {
+            setMessagesData("");
+            setMessagesModule(false);
+          }}
+        />
+      )}
       <div
         className={`ticket-login-card ${showChangePassword ? "flip-to-change" : "flip-to-login"}`}
       >

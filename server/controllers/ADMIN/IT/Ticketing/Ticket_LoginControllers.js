@@ -383,7 +383,7 @@ export const logout = async (req, res) => {
     await ticketPool.query(
       `
       UPDATE tbl_refresh_tokens
-      set
+      SET
         is_revoked = TRUE,
         revoked_at = NOW(),
         revoked_reason = 'Logout'
@@ -395,8 +395,8 @@ export const logout = async (req, res) => {
       [payload.sessionId, tokenHash],
     );
 
-    console.log(result.rowCount);
-    console.log(result.rows);
+    /*     console.log(result.rowCount);
+    console.log(result.rows); */
 
     res.clearCookie("refreshToken", {
       path: "/ticketing/login",

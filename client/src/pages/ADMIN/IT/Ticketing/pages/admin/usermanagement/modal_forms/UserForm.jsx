@@ -84,20 +84,37 @@ export default function MainAdminUserForm({
             ))}
           </select>
         </div>
-      </div>
-      <div className={styles.form_group}>
-        <label>Status *</label>
-        <select name="status" value={formData.status} onChange={handleChange}>
-          <option value="" disabled>
-            Select Status
-          </option>
-          {status.map((item, index) => (
-            <option key={index} value={item.status}>
-              {item.status}
+
+        <div className={styles.form_group}>
+          <label>Maximum Sessions *</label>
+          <select
+            name="sessions"
+            value={formData.sessions}
+            onChange={handleChange}
+          >
+            {[1, 2, 3, 4, 5].map((item, index) => (
+              <option key={index} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className={styles.form_group}>
+          <label>Status *</label>
+          <select name="status" value={formData.status} onChange={handleChange}>
+            <option value="" disabled>
+              Select Status
             </option>
-          ))}
-        </select>
+            {status.map((item, index) => (
+              <option key={index} value={item.status}>
+                {item.status}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
+
       {mode === "add" && (
         <>
           <div className={styles.form_group}>

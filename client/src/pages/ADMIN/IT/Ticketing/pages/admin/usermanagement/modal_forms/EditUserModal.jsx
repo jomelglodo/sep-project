@@ -18,6 +18,7 @@ export default function MainAdminEditUser({
     email: "",
     department: "",
     role: "",
+    sessions: "1",
     status: "Active",
   };
 
@@ -28,6 +29,7 @@ export default function MainAdminEditUser({
 
   useEffect(() => {
     if (user) {
+      /* console.log("user: " + user.maximum_sessions); */
       setFormData({
         d_name: user.d_name,
         username: user.username,
@@ -35,6 +37,7 @@ export default function MainAdminEditUser({
         department: user.department,
         role: user.role,
         status: user.status,
+        sessions: user.maximum_sessions,
       });
     }
   }, [user]);
@@ -75,6 +78,7 @@ export default function MainAdminEditUser({
 
     return Object.keys(newErrors).length === 0;
   };
+
   return (
     <Modal
       open={open}

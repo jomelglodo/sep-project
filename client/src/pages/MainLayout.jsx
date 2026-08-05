@@ -67,7 +67,7 @@ export default function MainLayout() {
           ) : (
             <div className="empty-space">
               <div className="empty-image-container">
-                <div
+                {/*  <div
                   className="empty-space-card empty-space-pic1"
                   style={{
                     backgroundImage: `url(${sepLogo})`,
@@ -80,7 +80,7 @@ export default function MainLayout() {
                 <div
                   className="empty-space-card empty-space-pic3"
                   style={{ backgroundImage: `url(${sepLogo})` }}
-                ></div>
+                ></div> */}
               </div>
             </div>
           )}

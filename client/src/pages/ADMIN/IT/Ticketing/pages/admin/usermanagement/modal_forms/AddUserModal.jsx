@@ -18,6 +18,7 @@ export default function MainAdminAddUser({
     username: "",
     email: "",
     department: "",
+    sessions: "1",
     role: "",
     status: "Active",
     password: "",
@@ -43,6 +44,8 @@ export default function MainAdminAddUser({
       newErrors.department = "Select a department";
 
     if (!formData.role.trim()) newErrors.role = "Select a role.";
+
+    if (!formData.sessions.trim()) newErrors.sessions = "Select a sessions.";
 
     if (!formData.password.length > 5)
       newErrors.password = "Password must be at least 5 characters.";

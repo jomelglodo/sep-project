@@ -36,7 +36,13 @@ export default function MainStaffUserTable({
               <th>Department</th>
               <th>Role</th>
               <th>Status</th>
-              <th>Last Login</th>
+              <th
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                Max Sessions
+              </th>
               <th
                 style={{
                   textAlign: "center",
@@ -75,7 +81,14 @@ export default function MainStaffUserTable({
                       {user.status}
                     </span>
                   </td>
-                  <td>{user.last_login}</td>
+                  <td
+                    style={{
+                      textAlign: "center",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {user.maximum_sessions}
+                  </td>
                   <td className={styles.actions}>
                     {user.role === "admin" ? (
                       <></>
@@ -89,7 +102,9 @@ export default function MainStaffUserTable({
                         </button>
                         <button
                           className={`${styles.action_btn} ${styles.edit}`}
-                          onClick={() => onEdit(user)}
+                          onClick={() => {
+                            onEdit(user);
+                          }}
                         >
                           <FaEdit />
                         </button>

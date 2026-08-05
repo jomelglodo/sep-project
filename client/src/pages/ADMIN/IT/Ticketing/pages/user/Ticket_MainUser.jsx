@@ -17,9 +17,7 @@ export default function TicketMainUser({
   accessToken,
 }) {
   const [activePage, setActivePage] = useState("dashboard");
-  useEffect(() => {
-    console.log("token : " + accessToken);
-  }, []);
+
   /* useEffect(() => {
     let timeout;
 

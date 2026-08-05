@@ -49,6 +49,7 @@ export const getTicketDashboardData = async (req, res) => {
     });
   }
 };
+
 //get user count
 export const userCounter = async (req, res) => {
   try {
@@ -86,7 +87,8 @@ export const userList = async (req, res) => {
         department,
         role,
         status,
-        last_login
+        last_login,
+        maximum_sessions
       FROM "tbl_userAccounts"
       WHERE status IN('Active','Inactive')
       ORDER BY user_id ASC
@@ -110,6 +112,7 @@ export const addUser = async (req, res) => {
     role,
     status,
     created_by,
+    sessions,
   } = req.body;
   const email = userEmail?.trim() || null;
   try {
@@ -124,11 +127,22 @@ export const addUser = async (req, res) => {
         role,
         status,
         date_created,
-        created_by
-      ) VALUES($1,$2,$3,$4,$5,$6,$7,NOW(),$8)
+        created_by,
+        maximum_sessions
+      ) VALUES($1,$2,$3,$4,$5,$6,$7,NOW(),$8,$9)
        RETURNING *
       `,
-      [username, password, d_name, department, email, role, status, created_by],
+      [
+        username,
+        password,
+        d_name,
+        department,
+        email,
+        role,
+        status,
+        created_by,
+        sessions,
+      ],
     );
 
     if (result.rowCount === 0) {
@@ -157,6 +171,7 @@ export const updateUser = async (req, res) => {
     department,
     role,
     status,
+    sessions,
   } = req.body;
   const email = userEmail?.trim() || null;
   try {
@@ -169,11 +184,12 @@ export const updateUser = async (req, res) => {
         email=$3,
         department=$4,
         role=$5,
-        status=$6
-      WHERE user_id=$7
+        status=$6,
+        maximum_sessions=$7
+      WHERE user_id=$8
       RETURNING *
       `,
-      [d_name, username, email, department, role, status, user_id],
+      [d_name, username, email, department, role, status, sessions, user_id],
     );
 
     if (result.rowCount === 0) {
