@@ -231,7 +231,7 @@ export const refreshAccessToken = async (req, res) => {
 
     if (session.is_revoked) {
       res.clearCookie("refreshToken", {
-        path: "/",
+        path: "/ticketing/login",
       });
 
       return res.status(401).json({
