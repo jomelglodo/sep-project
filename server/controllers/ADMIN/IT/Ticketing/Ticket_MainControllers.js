@@ -148,7 +148,7 @@ export const getProfileImage = async (req, res) => {
 // SAVE CHANGES
 export const applyChanges = async (req, res) => {
   const { userId } = req.params;
-  const { displayname, email, department } = req.body;
+  const { email, department } = req.body;
 
   let imageBuffer;
   let filename;
@@ -167,16 +167,14 @@ export const applyChanges = async (req, res) => {
       `
       UPDATE "tbl_userAccounts"
       SET
-        d_name = $1,
-        email = $2,
-        department = $3,
-        profile_image = COALESCE($4,profile_image),
-        profile_image_filename = COALESCE($5,profile_image_filename),
-        profile_image_mimetype = COALESCE($6, profile_image_mimetype)
-      WHERE user_id = $7
+        email = $1,
+        department = $2,
+        profile_image = COALESCE($3,profile_image),
+        profile_image_filename = COALESCE($4,profile_image_filename),
+        profile_image_mimetype = COALESCE($5, profile_image_mimetype)
+      WHERE user_id = $6
       `,
       [
-        displayname,
         email,
         department,
         imageBuffer ?? null,

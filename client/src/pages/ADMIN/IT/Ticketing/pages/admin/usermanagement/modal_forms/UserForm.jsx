@@ -120,7 +120,7 @@ export default function MainAdminUserForm({
           <div className={styles.form_group}>
             <label>Password *</label>
             <input
-              type="text"
+              type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
@@ -133,7 +133,7 @@ export default function MainAdminUserForm({
           <div className={styles.form_group}>
             <label>Confirm Password *</label>
             <input
-              type="text"
+              type="password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}

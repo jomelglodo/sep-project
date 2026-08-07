@@ -2,12 +2,15 @@ import React, { useEffect, useState, useRef } from "react";
 import "./Ticket_UpdateProfile.css";
 import { toast } from "react-toastify";
 
+import SuccessSound from "../../../../assets/sounds/ADMIN/IT/Ticketing/toastSuccess.mp3";
 export default function MainUpdateProfile({
   loggedinUserId,
   closeModal,
   onDisplayNameChange,
   onProfileImageChange,
 }) {
+  const SuccessAudio = new Audio(SuccessSound);
+
   const [departmentList, setDepartmentList] = useState([]);
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -85,7 +88,6 @@ export default function MainUpdateProfile({
 
   async function handleConfirmChanges() {
     const formData = new FormData();
-    formData.append("displayname", displayName);
     formData.append("email", email);
     formData.append("department", department);
 
@@ -103,7 +105,6 @@ export default function MainUpdateProfile({
       );
 
       const data = await response.json();
-      console.log(data);
       if (data.success) {
         onDisplayNameChange(displayName);
         setShowChangesConfirmation(false);
@@ -111,7 +112,7 @@ export default function MainUpdateProfile({
 
         //update the profile image display on the topbar
         onProfileImageChange();
-
+        SuccessAudio.play();
         toast.success(data.message);
       } else {
         toast.error(data.message);
@@ -197,6 +198,7 @@ export default function MainUpdateProfile({
               ref={displayNameRef}
               required
               type="text"
+              readOnly
               value={displayName}
               onChange={(e) => {
                 setDisplayName(e.target.value);

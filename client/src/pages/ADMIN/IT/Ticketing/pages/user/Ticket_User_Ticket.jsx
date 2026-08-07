@@ -4,6 +4,7 @@ import { TableVirtuoso } from "react-virtuoso";
 import { MdEdit } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import { IoCreateOutline } from "react-icons/io5";
 
 import "../../styles/user/Ticket_User_Ticket.css";
 import socket from "../../../../../../services/socket";
@@ -20,6 +21,7 @@ export default function MainUserTicket({
   const [search, setSearch] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isViewAction, setIsViewAction] = useState(false);
+  const [isClosedTicket, setIsClosedTicket] = useState(false);
 
   //list variables
   const [assetList, setAssetList] = useState([]);
@@ -55,6 +57,8 @@ export default function MainUserTicket({
   const [editHasAttachment, setEditHasAttachment] = useState(false);
   const [editAttachmentFilename, setEditAttachmentFilename] = useState("");
   const [editNewAttachment, setNewAttachment] = useState(false);
+
+  const [ITAction, setITAction] = useState("");
 
   //MODAL
   const [showCreateTicket, setShowCreateTicket] = useState(false);
@@ -265,6 +269,10 @@ export default function MainUserTicket({
 
     if (action === "view") {
       setIsViewAction(true);
+
+      if (item.status.toUpperCase() === "CLOSED") {
+        setIsClosedTicket(true);
+      }
     }
 
     setEditDateSubmitted(item.d_submitted);
@@ -276,6 +284,9 @@ export default function MainUserTicket({
     //if there is an image attachment
     setEditHasAttachment(item.has_attachment);
     setEditAttachmentFilename(item.attachment_filename);
+
+    //it attachment
+    setITAction(item.update_comment);
 
     setSelectedTicketNum(item.ticket_num_ticket);
 
@@ -722,6 +733,7 @@ export default function MainUserTicket({
                 className="ticket-mainuser-edit-modal-closebtn"
                 onClick={() => {
                   setIsViewAction(false);
+                  setIsClosedTicket(false);
                   closeEditModal();
                 }}
               >
@@ -886,6 +898,23 @@ export default function MainUserTicket({
                   </button>
                 )}
               </div>
+
+              {isViewAction && isClosedTicket && (
+                <div className="ticket-mainuser-edit-modal-staffactions">
+                  <h3>IT Action</h3>
+                  <div className="ticket-mainuser-edit-modal-group">
+                    <label>Actions</label>
+                    <textarea
+                      required
+                      readOnly
+                      value={ITAction}
+                      placeholder="Actions is not applicable"
+                      rows={6}
+                      maxLength={2000}
+                    />
+                  </div>
+                </div>
+              )}
             </form>
           </div>
         </div>
@@ -922,12 +951,15 @@ export default function MainUserTicket({
                 setShowCreateTicket(true);
               }}
             >
+              <span>
+                <IoCreateOutline />
+              </span>
               Create Ticket
             </button>
           </div>
           <div className="ticket-mainuser-ticket-header-group">
             <div className="ticket-mainuser-ticket-search-container">
-              <label htmlFor="">Search</label>
+              <label>Search</label>
               <input
                 title="Search..."
                 value={search}

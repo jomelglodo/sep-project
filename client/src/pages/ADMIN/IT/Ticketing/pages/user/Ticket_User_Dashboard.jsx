@@ -96,6 +96,7 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
       console.error(err);
     }
   };
+
   //  {#705,22}
   //socket.io
 
@@ -189,7 +190,7 @@ export default function MainUserDashBoard({ displayName, loggedinUserId }) {
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{item.ticket_num_ticket}</td>
-                    <td>{item.date_submitted}</td>
+                    <td>{item.d_submitted}</td>
                     <td>{item.subject_title}</td>
                     <td>
                       <span

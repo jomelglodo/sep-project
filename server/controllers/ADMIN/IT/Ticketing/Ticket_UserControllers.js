@@ -109,6 +109,7 @@ export const populateTickets = async (req, res) => {
           t.status,
           u.ticket_num,
           u.staff_name,
+          u.update_comment,
           TO_CHAR(u.time_started,'YYYY-MM-DD HH24:MI:SS') as t_started,
           TO_CHAR(u.time_finished,'YYYY-MM-DD HH24:MI:SS') as t_finished
         FROM tbl_tickets t
@@ -144,9 +145,9 @@ export const populateTickets = async (req, res) => {
       query += `LIMIT 5`;
     }
 
-    const response = await ticketPool.query(query, params);
+    const result = await ticketPool.query(query, params);
 
-    res.json(response.rows);
+    res.json(result.rows);
   } catch (err) {
     console.error(err);
   }
