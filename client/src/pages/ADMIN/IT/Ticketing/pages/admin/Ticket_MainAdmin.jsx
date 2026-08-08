@@ -66,7 +66,12 @@ export default function TicketMainAdmin({
         return <Category displayName={displayName} />;
         break;
       case "announcement":
-        return <Announcement loggedinUserId={loggedinUserId} />;
+        return (
+          <Announcement
+            loggedinUserId={loggedinUserId}
+            displayName={displayName}
+          />
+        );
         break;
       case "report":
         return <Reporting />;

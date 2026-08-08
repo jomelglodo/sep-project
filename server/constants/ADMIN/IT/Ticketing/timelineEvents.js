@@ -9,4 +9,6 @@ export const TIMELINE_EVENTS = {
   TICKET_RESOLVED: "ticket-resolved",
   TICKET_CLOSED: "ticket-closed",
   TICKET_REOPENED: "ticket-reopened",
+
+  ANNOUNCEMENT_PUBLISHED: "announcement-published",
 };

@@ -25,7 +25,10 @@ import { toast } from "react-toastify";
 import successSound from "../../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastSuccess.mp3";
 import warningSound from "../../../../../../../assets/sounds/ADMIN/IT/Ticketing/toastWarning.mp3";
 
-export default function AnnouncementManagement({ loggedinUserId }) {
+export default function AnnouncementManagement({
+  loggedinUserId,
+  displayName,
+}) {
   const successAudio = new Audio(successSound);
   const warningAudio = new Audio(warningSound);
 
@@ -71,6 +74,8 @@ export default function AnnouncementManagement({ loggedinUserId }) {
     try {
       const result = await toggleAnnouncementPublish(
         announcement.announcement_id,
+        loggedinUserId,
+        displayName,
       );
 
       successAudio.play();

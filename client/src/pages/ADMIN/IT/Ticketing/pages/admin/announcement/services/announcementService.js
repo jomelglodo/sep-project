@@ -47,9 +47,17 @@ export async function deleteAnnouncement(announcementId) {
 }
 
 //toggle publish
-export async function toggleAnnouncementPublish(announcementId) {
+export async function toggleAnnouncementPublish(
+  announcementId,
+  loggedinUserId,
+  displayName,
+) {
   const { data } = await axios.patch(
     `${API}/ticketing/announcement/${announcementId}/publish`,
+    {
+      loggedinUserId,
+      displayName,
+    },
   );
 
   return data;

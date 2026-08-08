@@ -215,6 +215,7 @@ export async function getRecentAnnouncementsService(limit = 5) {
 
   return result.rows;
 }
+
 //ADMIN
 export async function getAnnouncementsService(queryParams) {
   const {

@@ -14,6 +14,9 @@ import {
   getRecentAnnouncementsService,
 } from "../../../../services/ADMIN/IT/Ticketing/announcementServices.js";
 
+import { createNotification } from "../../../../services/notificationService.js";
+import { TIMELINE_EVENTS } from "../../../../constants/ADMIN/IT/Ticketing/timelineEvents.js";
+
 //USERS
 
 export async function getUserAnnouncements(req, res) {
@@ -261,20 +264,64 @@ export async function deleteAnnouncement(req, res) {
 }
 
 export async function toggleAnnouncementPublish(req, res) {
-  try {
-    const announcementId = Number(req.params.announcementId);
-    await toggleAnnouncementPublishService(announcementId);
+  const client = await ticketPool.connect();
 
+  try {
+    await client.query("BEGIN");
+
+    const { loggedinUserId, displayName } = req.body;
+    const announcementId = Number(req.params.announcementId);
+    const result = await toggleAnnouncementPublishService(announcementId);
+
+    //if the announcement is publish create a notification to all recipient
+
+    const isPublished = result.is_published;
+
+    if (isPublished === true) {
+      //get all user and staff
+      const users = await client.query(`
+      SELECT user_id,role,status
+      FROM "tbl_userAccounts"
+      WHERE role IN ('staff','user')
+      AND status='Active'
+      `);
+
+      for (const user of users.rows) {
+        await createNotification({
+          client,
+          recipientId: user.user_id,
+          senderId: loggedinUserId,
+          type: TIMELINE_EVENTS.ANNOUNCEMENT_PUBLISHED,
+          title: "New Announcement",
+          message: `${displayName} created new announcement`,
+          referenceId: announcementId,
+          referenceType: "announcement",
+        });
+      }
+    } else {
+      await client.query(
+        `
+        DELETE FROM notifications
+        WHERE reference_id=$1
+        `,
+        [announcementId],
+      );
+    }
+
+    await client.query("COMMIT");
     res.json({
       success: true,
       message: "Announcement status updated successfully",
     });
   } catch (err) {
+    await client.query("ROLLBACK");
     console.error(err);
     res.status(500).json({
       success: false,
       message: err.message,
     });
+  } finally {
+    client.release();
   }
 }
 
