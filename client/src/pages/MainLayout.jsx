@@ -6,7 +6,10 @@ import Header from "../components/MainHeader";
 import Convertion from "./FINANCE/CONVERTION/Convertion";
 import Ris from "../pages/PPC/WAREHOUSE/RIS/Ris";
 import ConLogin from "../pages/PPC/WAREHOUSE/Consumable/Con_Login";
+
+//IT
 import TicketLogin from "./ADMIN/IT/Ticketing/Ticket_Login";
+import ITRFLogin from "./ADMIN/IT/ITRF/Login";
 
 import sepLogo from "../assets/images/SEP.png";
 
@@ -31,7 +34,6 @@ export default function MainLayout() {
         <div className="content-box">
           {activeSub === "FINANCE - Convertion" ? (
             <>
-              <h2 className="content-title">{activeSub}</h2>
               <Convertion />
             </>
           ) : activeSub === "PPC - Warehouse - RIS" ? (
@@ -58,6 +60,10 @@ export default function MainLayout() {
               />
 
               <TicketLogin />
+            </>
+          ) : activeSub === "ADMIN - IT - ITRF" ? (
+            <>
+              <ITRFLogin />
             </>
           ) : activeSub ? (
             <>

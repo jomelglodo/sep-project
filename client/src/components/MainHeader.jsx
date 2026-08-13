@@ -32,7 +32,7 @@ const department = {
       FACILITY: [],
       GA: [],
       HR: [],
-      IT: ["Ticketing"],
+      IT: ["Ticketing", "ITRF"],
     },
   },
 
